@@ -19,6 +19,38 @@ module.exports = {
                 use: {
                     loader: "ts-loader",
                 }
+            },
+            {
+                test: /\.(c|sa|sc)ss$/,
+                use: [
+                    {
+                        loader: "style-loader",
+                        options: {
+                            sourceMap: true
+                        }
+                    },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            sourceMap: true
+                        }
+                    },
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            sourceMap: true
+                        },
+                        plugins: [
+                            require('autoprefixer'),
+                        ]
+                    },
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            sourceMap: true
+                        }
+                    }
+                ]
             }
         ]
     }

@@ -9,7 +9,12 @@ module.exports = {
         path: path.resolve(__dirname, 'dist')
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js']
+        extensions: ['.ts', '.tsx', '.js'],
+        alias: {
+            Controller: path.resolve(__dirname, "src/js/controllers"),
+            Model: path.resolve(__dirname, "src/js/models"),
+            View: path.resolve(__dirname, "src/js/views"),
+        }
     },
     module: {
         rules: [
@@ -38,11 +43,11 @@ module.exports = {
                     {
                         loader: "postcss-loader",
                         options: {
-                            sourceMap: true
-                        },
-                        plugins: [
-                            require('autoprefixer'),
-                        ]
+                            sourceMap: true,
+                            plugins: [
+                                require('autoprefixer'),
+                            ]
+                        }
                     },
                     {
                         loader: "sass-loader",

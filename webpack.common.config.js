@@ -12,9 +12,9 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
         alias: {
-            Controller: path.resolve(__dirname, "src/js/controllers"),
-            Model: path.resolve(__dirname, "src/js/models"),
-            View: path.resolve(__dirname, "src/js/views"),
+            Controller: path.resolve(__dirname, "src/ts/controllers"),
+            Model: path.resolve(__dirname, "src/ts/models"),
+            View: path.resolve(__dirname, "src/ts/views"),
         }
     },
     module: {

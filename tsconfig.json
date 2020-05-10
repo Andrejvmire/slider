@@ -6,6 +6,7 @@
     "target": "ES2017",
     "removeComments": true,
     "sourceMap": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "esModuleInterop": true
   }
 }

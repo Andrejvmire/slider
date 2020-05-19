@@ -1,5 +1,6 @@
 import Points from "./Points";
 import Ruler from "./Ruler";
+import Publisher from "./Publisher";
 
 type returnEmptyObject = {};
 type returnValue = {
@@ -8,11 +9,13 @@ type returnValue = {
     points: number[]
 }
 
-export default class Slider {
+export default class Slider extends Publisher implements IPublisher {
+    protected _subscribers: ISubscriber[];
     private _points: Points;
     private readonly _ruler: Ruler;
 
     constructor(from: number, to: number, step: number = 1) {
+        super();
         this._ruler = new Ruler(from, to, step);
     }
 
@@ -21,6 +24,7 @@ export default class Slider {
             this._ruler.checkValue(points);
             this._points = new Points(points);
         }
+        this.notify();
         return this;
     }
 
@@ -41,6 +45,7 @@ export default class Slider {
         }
         this._points
             .move(to)
+        this.notify();
         return this;
     }
 
@@ -50,6 +55,7 @@ export default class Slider {
         try {
             this._ruler.checkValue(currentValue + step);
             this._points.nextPoint(currentValue, step);
+            this.notify();
         } catch (e) {
             this._points.nextPoint(currentValue, 0);
         }
@@ -62,6 +68,7 @@ export default class Slider {
         try {
             this._ruler.checkValue(currentValue - step);
             this._points.prevPoint(currentValue, step);
+            this.notify();
         } catch (e) {
             this._points.prevPoint(currentValue, 0);
         }

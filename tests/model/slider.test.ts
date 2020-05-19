@@ -19,9 +19,9 @@ describe("Slider model", function () {
         });
         it('should stay at the old value', () => {
             expect(
-                this.slider.points([30,60]).move(130).values()
+                this.slider.points([30, 60]).move(130).values()
             )
-                .toStrictEqual({min: 0, max: 100, points:[30,60]})
+                .toStrictEqual({min: 0, max: 100, points: [30, 60]})
         });
         it('should dont move on one step', () => {
             expect(
@@ -69,7 +69,7 @@ describe("Slider model", function () {
         })
         it('should return single value', () => {
             expect(
-                this.slider.points([30,30]).values()
+                this.slider.points([30, 30]).values()
             )
                 .toStrictEqual({min: 10, max: 120, points: [30]})
         });
@@ -81,7 +81,7 @@ describe("Slider model", function () {
         });
         it('should move second point to 70', () => {
             expect(
-                this.slider.points([30,60]).move(70).values()
+                this.slider.points([30, 60]).move(70).values()
             )
                 .toStrictEqual({min: 10, max: 120, points: [30, 70]})
         });
@@ -102,6 +102,39 @@ describe("Slider model", function () {
                 this.slider.points([21, 70]).prevPoint(21).values()
             )
                 .toStrictEqual({min: 10, max: 120, points: [20, 70]})
+        });
+    });
+    describe('test callback', () => {
+        const slider = new Slider(0, 120),
+            subscriber = {
+                update: jest.fn(x => x)
+            },
+            startObj = {min: 0, max: 120}
+        slider.attach(subscriber);
+        slider.points([60, 40]);
+        slider.move(20);
+        slider.nextPoint(60);
+        slider.prevPoint(20);
+        slider.detach(subscriber);
+        it('should return value', function () {
+            expect(subscriber.update.mock.results[0].value)
+                .toStrictEqual(Object.assign(startObj, {points: [40, 60]}))
+        });
+        it('should return points 20, 60', function () {
+            expect(subscriber.update.mock.results[1].value)
+                .toStrictEqual(Object.assign(startObj, {points: [20, 60]}))
+        });
+        it('should move point 60 + 1', function () {
+            expect(subscriber.update.mock.results[2].value)
+                .toStrictEqual(Object.assign(startObj, {points: [20, 61]}))
+        });
+        it('should move point 20 - 1', function () {
+            expect(subscriber.update.mock.results[3].value)
+                .toStrictEqual(Object.assign(startObj, {points: [19, 61]}))
+        });
+        it('should', function () {
+            expect(subscriber.update.mock.results[4])
+                .toStrictEqual(undefined)
         });
     })
 })

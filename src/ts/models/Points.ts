@@ -3,14 +3,9 @@ import Point from "./Point";
 export default class Points {
     private _points: Point[];
 
-    constructor(points: number);
-    constructor(points: [number, number])
-    constructor(points: [number])
-    constructor(points: any) {
+    constructor(points: number | [number] | [number, number]) {
         if (Array.isArray(points)) {
-            if (typeof points[1] !== 'undefined') {
-                points = (points[0] === points[1]) ? [points[0]] : points;
-            }
+            points = (points[0] === points[1]) ? [points[0]] : points;
             this._points = points
                 .map(
                     (item: number) => new Point(item)

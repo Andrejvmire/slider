@@ -1,93 +1,83 @@
-import Point from "./Point";
+import Points from "./Points";
+import Ruler from "./Ruler";
+import Publisher from "./Publisher";
 
-type returnEmptyObject = {};
+//модель не может отдавать пустой объект
+// type returnEmptyObject = {};
 type returnValue = {
-    from: number,
-    to: number,
-    points: number[]
+    min: number,
+    max: number,
+    points: number[],
+    step?: number
 }
 
-export class Slider {
-    private _points: Point[] | undefined;
+export type sliderConstructor = {
+    from: number,
+    to: number,
+    step?: number,
+    points: number | [number, number]
+}
 
-    private pointInRange(value: number): boolean {
-        if (value >= this._from && value <= this._to) return true;
-        throw new Error(`Point value ${value} out of range: less ${this._from} or more ${this._to}`);
+export default class Slider extends Publisher implements IPublisher {
+    protected _subscribers: ISubscriber[];
+    private readonly _points: Points;
+    private readonly _ruler: Ruler;
+
+    constructor(options: sliderConstructor) {
+        let {from, to, step, points} = options;
+        super();
+        this._ruler = new Ruler(from, to, step);
+        this._ruler.checkValue(points);
+        this._points = new Points(points);
     }
 
-    constructor(private _from: number, private _to: number, private _step: number = 1) {
-    }
-
-    points(points: [number]): Slider;
-    points(points: [number, number]): Slider;
-    points(points: any[]): Slider {
-        points = (points[0] === points[1]) ? [points[0]] : points;
-        try {
-            this._points = points
-                .filter(
-                    item => this.pointInRange(item)
-                )
-                .map(
-                    item => new Point(item)
-                )
-        } catch (e) {
-            throw new Error(e.message);
-        }
-        return this;
-    }
-
-    values(): returnValue | returnEmptyObject {
-        if (typeof this._points === 'undefined') return {};
+    values(): returnValue { //| returnEmptyObject {
+        // if (typeof this._points === 'undefined') return {};
         return {
-            from: this._from,
-            to: this._to,
-            points: this._points
-                .sort((a, b) => a.value - b.value)
-                .map(
-                    item => item.value
-                )
+            ...this._ruler.delimiters,
+            points: this._points.values()
         }
     }
 
     move(to: number): Slider {
+        // _points не может быть undefined
+        // if (typeof this._points === 'undefined') return this;
         try {
-            this.pointInRange(to);
-        } catch (e) {
-            return this;
-        }
-        if (typeof this._points === "undefined") this._points = [new Point(to)];
-        this._points
-            .reduce(
-                (prevValue, curValue) => {
-                    return (Math.abs(prevValue.value - to) < Math.abs(curValue.value - to)) ? prevValue : curValue;
-                }
-            )
-            .value = to;
-        return this;
-    }
-
-    private from(currentValue: number, to: number): Slider {
-        if (typeof this._points === 'undefined') return this;
-        try {
-            this.pointInRange(currentValue + to)
+            this._ruler.checkValue(to);
         } catch (e) {
             return this;
         }
         this._points
-            .reverse()
-            .map(item => {
-                if (item.value === currentValue) {
-                    item.value += to;
-                }
-            })
+            .move(to)
+        this.notify();
         return this;
     }
 
     nextPoint(currentValue: number): Slider {
-        return this.from(currentValue, this._step);
+        // _points не может быть undefined
+        // if (typeof this._points === 'undefined') return this;
+        let {step} = this._ruler;
+        try {
+            this._ruler.checkValue(currentValue + step);
+            this._points.nextPoint(currentValue, step);
+            this.notify();
+        } catch (e) {
+            this._points.nextPoint(currentValue, 0);
+        }
+        return this;
     }
 
     prevPoint(currentValue: number): Slider {
-        return this.from(currentValue, -this._step);
+        // _points не может быть undefined
+        // if (typeof this._points === 'undefined') return this;
+        let {step} = this._ruler;
+        try {
+            this._ruler.checkValue(currentValue - step);
+            this._points.prevPoint(currentValue, step);
+            this.notify();
+        } catch (e) {
+            this._points.prevPoint(currentValue, 0);
+        }
+        return this;
     }
 }

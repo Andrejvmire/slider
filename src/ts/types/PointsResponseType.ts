@@ -1,0 +1,3 @@
+type PointsResponseType = {
+    points: PointType[]
+}

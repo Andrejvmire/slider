@@ -1,0 +1,3 @@
+type PointResponseType = {
+    point: number
+};

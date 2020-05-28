@@ -1,0 +1,1 @@
+type ModelResponseType = PointsResponseType | RulerResponseType | PointResponseType;

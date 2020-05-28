@@ -3,5 +3,7 @@ interface IPublisher {
 
     detach(subscriber: ISubscriber): void;
 
-    notify(): void;
+    notify(data: ModelResponseType): void;
+
+    value: ModelResponseType;
 }

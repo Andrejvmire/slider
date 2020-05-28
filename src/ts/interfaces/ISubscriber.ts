@@ -1,3 +1,3 @@
 interface ISubscriber {
-    update(publisher: IPublisher): void;
+    update(data: ModelResponseType): void;
 }

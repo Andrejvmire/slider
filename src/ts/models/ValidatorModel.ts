@@ -12,10 +12,10 @@ export default class ValidatorModel {
     static inRange(min: number, max: number, value: number | number[]) {
         let model = new ValidatorModel(),
             result: boolean;
-        if (typeof value === 'object') {
+        if (Array.isArray(value)) {
             value.map(
                 item => {
-                    if ((item < min) && (item > max)) {
+                    if ((item < min) || (item > max)) {
                         model._result = false;
                         model.setError(`Value ${item} isn't in range: less then ${min} or more then ${max}`)
                     }

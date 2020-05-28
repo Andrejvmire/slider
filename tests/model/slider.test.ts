@@ -3,6 +3,20 @@ import Slider from '../../src/ts/models/SliderModel';
 describe("Модель Slider", function () {
     const startObj = <SliderOptionsType>{ruler: [0, 120], points: [0, 120]}
     describe('Обработка некорректных данных', function () {
+        it('Будет вызвана ошибка при создании модели (Points за пределами Ruler`а) для 1-ой точки', function () {
+            const errorInSlider = () => {
+                return new Slider({ruler: [0, 20], points: 25})
+            }
+            expect(() => errorInSlider())
+                .toThrowError()
+        });
+        it('Будет вызвана ошибка при создании модели (Points за пределами Ruler`а) для массива точек', function () {
+            const errorInSlider = () => {
+                return new Slider({ruler: [0, 20], points: [3, 25]})
+            }
+            expect(() => errorInSlider())
+                .toThrowError()
+        });
         it('новая величина за пределами (не будет принята)', () => {
             expect(
                 (() => {

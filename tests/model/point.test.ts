@@ -1,4 +1,4 @@
-import Point from "../../src/ts/models/Point";
+import Point from "../../src/ts/models/PointModel";
 
 describe("Point class", function () {
     describe("Success tests", () => {
@@ -9,7 +9,7 @@ describe("Point class", function () {
             expect(
                 this.point.value
             )
-                .toStrictEqual(55)
+                .toStrictEqual({point: 55})
         });
     })
 })

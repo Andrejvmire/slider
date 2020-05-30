@@ -71,7 +71,7 @@ export default class SliderModel extends AbstractPublisher implements ISubscribe
     }
 
     update(value: ModelResponseType): void {
-
+        this.notify();
     }
 
     get value(): ModelResponseType {

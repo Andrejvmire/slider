@@ -14,5 +14,6 @@ export default class PointModel extends AbstractPublisher implements IPublisher 
 
     set value(point: PointResponseType) {
         this._point = point.point;
+        this.notify();
     }
 }

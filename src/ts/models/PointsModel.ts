@@ -1,7 +1,7 @@
 import PointModel from "./PointModel";
 import AbstractPublisher from "./AbstractPublisher";
 
-export default class PointsModel extends AbstractPublisher implements IPublisher, IPointsEvents {
+export default class PointsModel extends AbstractPublisher implements IPublisher, IPointsEvents, ISubscriber {
     private _points: PointModel[];
 
     constructor(points: PointsType) {
@@ -13,6 +13,9 @@ export default class PointsModel extends AbstractPublisher implements IPublisher
                 point => new PointModel(point)
             )
         }
+        this._points.map(
+            point => point.attach(this)
+        )
     }
 
     get value(): PointsResponseType {
@@ -33,7 +36,6 @@ export default class PointsModel extends AbstractPublisher implements IPublisher
                 }
             )
             .value = {point: newValue};
-        this.notify();
         return this;
     }
 
@@ -46,7 +48,10 @@ export default class PointsModel extends AbstractPublisher implements IPublisher
                     }
                 }
             )
-        this.notify();
         return this;
+    }
+
+    update(data: ModelResponseType): void {
+        this.notify();
     }
 }

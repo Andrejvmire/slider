@@ -49,7 +49,7 @@ export default class SliderModel extends AbstractPublisher implements ISubscribe
         let {step} = this.getRulerValue(),
             nextValue = currentValue + step;
         if (this.validate(nextValue)) {
-            this._points.nextTo(currentValue, nextValue);
+            this._points.moveTo(currentValue, nextValue);
             this.notify();
         }
     }
@@ -58,14 +58,14 @@ export default class SliderModel extends AbstractPublisher implements ISubscribe
         let {step} = this.getRulerValue(),
             nextValue = currentValue - step;
         if (this.validate(nextValue)) {
-            this._points.nextTo(currentValue, nextValue);
+            this._points.moveTo(currentValue, nextValue);
             this.notify();
         }
     }
 
     move(newValue: number): void {
         if (this.validate(newValue)) {
-            this._points.move(newValue)
+            this._points.move(newValue);
             this.notify();
         }
     }

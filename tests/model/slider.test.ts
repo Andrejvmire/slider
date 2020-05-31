@@ -141,25 +141,29 @@ describe("Модель Slider", function () {
             },
             startObj = {min: 0, max: 120, step: 1}
         slider.attach(subscriber);
+        slider.move(20);
+        slider.next(60);
+        slider.prev(20);
+        slider.detach(subscriber);
+        it('Повторная подписка не должна вызвать ошибку', function () {
+            expect(() => slider.attach(subscriber))
+                .not.toThrowError()
+        });
         it('Должен вернуть точки 20, 60', function () {
-            slider.move(20);
             expect(subscriber.update.mock.results[0].value)
                 .toStrictEqual(Object.assign(startObj, {points: [20, 60]}))
         });
         it('Должен вернуть сдвиг точки вправо (60 + 1)', function () {
-            slider.next(60);
             expect(subscriber.update.mock.results[1].value)
                 .toStrictEqual(Object.assign(startObj, {points: [20, 61]}))
         });
         it('Должен вернуть сдвиг точки влево 20 - 1', function () {
-            slider.prev(20);
             expect(subscriber.update.mock.results[2].value)
                 .toStrictEqual(Object.assign(startObj, {points: [19, 61]}))
         });
-        it('Долже вернуть undefined - Slider отписался от Points', function () {
-            slider.detach(subscriber);
-            expect(subscriber.update.mock.results[3])
-                .toStrictEqual(undefined)
+        it('Не должен вернуть ошибку при повторной отписки', function () {
+            expect(()=> slider.detach(subscriber))
+                .not.toThrowError()
         });
     })
 })

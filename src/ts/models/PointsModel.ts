@@ -37,7 +37,7 @@ export default class PointsModel extends AbstractPublisher implements IPublisher
         return this;
     }
 
-    nextTo(curValue: number, nextValue: number): PointsModel {
+    moveTo(curValue: number, nextValue: number): PointsModel {
         this._points
             .map(
                 item => {

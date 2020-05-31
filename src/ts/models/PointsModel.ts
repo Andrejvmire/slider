@@ -1,7 +1,7 @@
 import PointModel from "./PointModel";
 import AbstractPublisher from "./AbstractPublisher";
 
-export default class PointsModel extends AbstractPublisher implements IPublisher, IPointsEvents, ISubscriber {
+export default class PointsModel extends AbstractPublisher implements IPublisher, IPointsEvents {
     private _points: PointModel[];
 
     constructor(points: PointsType) {
@@ -13,16 +13,13 @@ export default class PointsModel extends AbstractPublisher implements IPublisher
                 point => new PointModel(point)
             )
         }
-        this._points.map(
-            point => point.attach(this)
-        )
     }
 
     get value(): PointsResponseType {
         return {
             points: this._points
                 .map(point => {
-                    return point.value.point
+                    return point.value
                 })
                 .sort((a, b) => a - b)
         }
@@ -32,10 +29,11 @@ export default class PointsModel extends AbstractPublisher implements IPublisher
         this._points
             .reduce(
                 (prevValue, curValue) => {
-                    return (Math.abs(prevValue.value.point - newValue) < Math.abs(curValue.value.point - newValue)) ? prevValue : curValue;
+                    return (Math.abs(prevValue.value - newValue) < Math.abs(curValue.value - newValue)) ? prevValue : curValue;
                 }
             )
-            .value = {point: newValue};
+            .value = newValue;
+        this.notify();
         return this;
     }
 
@@ -43,15 +41,12 @@ export default class PointsModel extends AbstractPublisher implements IPublisher
         this._points
             .map(
                 item => {
-                    if (item.value.point === curValue) {
-                        item.value = {point: nextValue};
+                    if (item.value === curValue) {
+                        item.value = nextValue;
                     }
                 }
             )
-        return this;
-    }
-
-    update(data: ModelResponseType): void {
         this.notify();
+        return this;
     }
 }

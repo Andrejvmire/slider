@@ -138,8 +138,7 @@ describe("Модель Slider", function () {
         const slider = new Slider({ruler: [0, 120], points: [60, 40]}),
             subscriber = {
                 update: jest.fn(x => x)
-            },
-            startObj = {min: 0, max: 120, step: 1}
+            };
         slider.attach(subscriber);
         slider.move(20);
         slider.next(60);
@@ -151,15 +150,15 @@ describe("Модель Slider", function () {
         });
         it('Должен вернуть точки 20, 60', function () {
             expect(subscriber.update.mock.results[0].value)
-                .toStrictEqual(Object.assign(startObj, {points: [20, 60]}))
+                .toStrictEqual({points: [20, 60]})
         });
         it('Должен вернуть сдвиг точки вправо (60 + 1)', function () {
             expect(subscriber.update.mock.results[1].value)
-                .toStrictEqual(Object.assign(startObj, {points: [20, 61]}))
+                .toStrictEqual( {points: [20, 61]});
         });
         it('Должен вернуть сдвиг точки влево 20 - 1', function () {
             expect(subscriber.update.mock.results[2].value)
-                .toStrictEqual(Object.assign(startObj, {points: [19, 61]}))
+                .toStrictEqual( {points: [19, 61]});
         });
         it('Не должен вернуть ошибку при повторной отписки', function () {
             expect(()=> slider.detach(subscriber))

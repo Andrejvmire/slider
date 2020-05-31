@@ -9,7 +9,7 @@ describe("Point class", function () {
             expect(
                 this.point.value
             )
-                .toStrictEqual({point: 55})
+                .toStrictEqual( 55)
         });
     })
 })

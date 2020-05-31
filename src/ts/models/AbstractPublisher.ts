@@ -17,9 +17,9 @@ export default abstract class AbstractPublisher implements IPublisher {
         }
     }
 
-    notify(): void {
+    notify(data?: ModelResponseType): void {
         for (let subscriber of this._subscribers) {
-            subscriber.update(this.value)
+            subscriber.update(data || this.value)
         }
     }
 

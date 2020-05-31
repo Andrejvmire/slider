@@ -22,6 +22,7 @@ export default class SliderModel extends AbstractPublisher implements ISubscribe
         }
         this._points = new PointsModel(_options.points);
         this._points.attach(this);
+        this.notify();
     }
 
     private getRulerValue(): RulerResponseType {
@@ -67,8 +68,8 @@ export default class SliderModel extends AbstractPublisher implements ISubscribe
         }
     }
 
-    update(value: ModelResponseType): void {
-        this.notify();
+    update(data:ModelResponseType): void {
+        this.notify(data);
     }
 
     get value(): ModelResponseType {

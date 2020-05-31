@@ -1,19 +1,9 @@
 import AbstractPublisher from "./AbstractPublisher";
 
-export default class PointModel extends AbstractPublisher implements IPublisher {
+export default class PointModel {
+    value: number;
 
-    constructor(private _point: number) {
-        super();
-    }
-
-    get value(): PointResponseType {
-        return {
-            point: this._point
-        };
-    }
-
-    set value(point: PointResponseType) {
-        this._point = point.point;
-        this.notify();
+    constructor(point: number) {
+        this.value = point;
     }
 }

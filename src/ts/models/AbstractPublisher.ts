@@ -17,13 +17,12 @@ export default abstract class AbstractPublisher implements IPublisher {
         }
     }
 
-    notify(data?: ModelResponseType): void {
+    notify(data?: any): void {
         for (let subscriber of this._subscribers) {
             subscriber.update(data || this.value)
         }
     }
 
-    abstract get value(): ModelResponseType;
-    abstract set value(newValue: ModelResponseType);
+    abstract value: any
 
 }

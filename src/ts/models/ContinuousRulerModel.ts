@@ -1,6 +1,6 @@
 import AbstractPublisher from "./AbstractPublisher";
 
-export default class ContinuousRulerModel extends AbstractPublisher implements IPublisher, IRuler {
+export default class ContinuousRulerModel extends AbstractPublisher implements IModelPublisher, IRuler {
     private _min: number;
     private _max: number;
     private _step: number;

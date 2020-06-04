@@ -3,9 +3,9 @@ import ContinuousRulerModel from "./ContinuousRulerModel";
 import PointsModel from "./PointsModel";
 import ValidatorModel from "./ValidatorModel";
 
-export default class SliderModel extends AbstractPublisher implements ISubscriber, IPublisher {
-    private _ruler: IPublisher & IRuler;
-    private _points: IPublisher & IPointsEvents;
+export default class SliderModel extends AbstractPublisher implements IModelSubscriber, IModelPublisher {
+    private _ruler: IModelPublisher & IRuler;
+    private _points: IModelPublisher & IPointsEvents;
     private _validator: ValidatorModel;
 
     constructor(_options: SliderOptionsType) {

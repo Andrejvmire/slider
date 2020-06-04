@@ -1,7 +1,7 @@
 import PointModel from "./PointModel";
 import AbstractPublisher from "./AbstractPublisher";
 
-export default class PointsModel extends AbstractPublisher implements IPublisher, IPointsEvents {
+export default class PointsModel extends AbstractPublisher implements IModelPublisher, IPointsEvents {
     private _points: PointModel[];
 
     constructor(points: PointsType) {

@@ -1,3 +1,3 @@
 interface ISubscriber {
-    update(data: ModelResponseType): void;
+    update(data: any): void;
 }

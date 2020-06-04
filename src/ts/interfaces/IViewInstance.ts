@@ -1,0 +1,3 @@
+interface IViewInstance {
+    render(): JQuery;
+}

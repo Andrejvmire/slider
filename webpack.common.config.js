@@ -1,16 +1,16 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
     entry: [
-        './src/index.ts'
+        "./src/index.ts"
     ],
     output: {
         filename: "index.bundle.js",
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, "dist")
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js'],
+        extensions: [".ts", ".tsx", ".js"],
         alias: {
             Controller: path.resolve(__dirname, "src/ts/controllers"),
             Model: path.resolve(__dirname, "src/ts/models"),
@@ -21,7 +21,7 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                exclude: '/node_modules/',
+                exclude: "/node_modules/",
                 use: {
                     loader: "ts-loader",
                 }
@@ -46,7 +46,7 @@ module.exports = {
                         options: {
                             sourceMap: true,
                             plugins: [
-                                require('autoprefixer'),
+                                require("autoprefixer"),
                             ]
                         }
                     },
@@ -62,8 +62,8 @@ module.exports = {
     },
     plugins: [
         new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery'
+            $: "jquery",
+            jQuery: "jquery"
         })
     ]
 }

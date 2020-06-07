@@ -20,5 +20,7 @@ export default class PointView implements IPublisher {
 
     get value(): JQuery {
         return this._instance;
+    render(parent: JQuery): void {
+        parent.append(this._$instance);
     }
 };

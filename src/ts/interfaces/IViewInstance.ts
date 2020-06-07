@@ -1,3 +1,3 @@
 interface IViewInstance {
-    render(): JQuery;
+    render(parent: JQuery): void;
 }

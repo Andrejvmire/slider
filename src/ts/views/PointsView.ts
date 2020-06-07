@@ -1,7 +1,12 @@
 export default class PointsView {
     private _point: IPublisher[];
 
-    constructor(_options: PointsViewOptionsType) {
+    render(parent: JQuery): void {
+        this._points
+            .map(
+                point => point.render(parent)
+            )
+    }
 
     }
 }

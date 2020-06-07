@@ -1,3 +1,3 @@
 interface IViewSubscriber extends ISubscriber {
-    update(data: ViewResponseType): any;
+    update(data: ViewResponseType): void;
 }

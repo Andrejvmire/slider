@@ -1,5 +1,5 @@
 interface IViewPublisher extends IPublisher {
-    notify(data: JQuery): void;
+    notify(data: ViewResponseType): void;
 
     value: JQuery
 }

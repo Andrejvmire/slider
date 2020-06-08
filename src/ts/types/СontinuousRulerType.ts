@@ -1,1 +1,0 @@
-type ContinuousRulerType = [number, number];

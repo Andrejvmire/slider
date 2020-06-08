@@ -1,1 +1,0 @@
-type PointsType = PointType | [PointType, PointType];

@@ -1,1 +1,0 @@
-type SliderOptionsType = DiscreteSliderOptionsType<number | string> | ContinuousSliderOptionsType;

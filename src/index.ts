@@ -1,5 +1,3 @@
-function hello(): string {
-    return "Hello, world!";
-}
+import SliderController from "./ts/controllers/SliderController";
 
-export default hello;
+let slider = new SliderController(0);

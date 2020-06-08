@@ -28,6 +28,7 @@ export default class PointsView extends AbstractPublisher implements IViewSubscr
     }
 
     update(data: ViewResponseType): void {
+        console.log(data);
         this.notify(data);
     }
 

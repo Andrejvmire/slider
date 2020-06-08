@@ -33,16 +33,14 @@ export default class PointView extends AbstractPublisher implements IViewPublish
     private start(data: JQueryUI.DraggableEventUIParams): void {
         this._$instance
             .addClass("slider__point_selected");
-        console.log(data);
     }
 
     private stop(data: JQueryUI.DraggableEventUIParams): void {
         this._$instance
             .removeClass("slider__point_selected");
-        console.log(data);
         this.notify({
             from: this._position,
-            to: this._position
+            to: data.position
         })
     }
 

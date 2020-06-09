@@ -7,9 +7,9 @@ describe("Point class", function () {
         })
         it('should return value', () => {
             expect(
-                this.point.value
+                this.point.state
             )
-                .toStrictEqual({point: 55})
+                .toStrictEqual(55)
         });
     })
 })

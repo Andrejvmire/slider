@@ -7,6 +7,7 @@ export default class PointModel extends AbstractModelPublisher implements IPoint
 
     moveTo(newPosition: number): void {
         this._position = newPosition;
+        this.notify();
     }
 
     get state(): number {

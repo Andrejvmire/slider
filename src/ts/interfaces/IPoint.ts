@@ -1,4 +1,4 @@
-interface IPoint extends IModel {
+interface IPoint extends IModelPublisher {
     moveTo(point: number): void;
     state: number;
 }

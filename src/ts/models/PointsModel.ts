@@ -1,8 +1,8 @@
 import PointModel from "./PointModel";
 import AbstractModelPublisher from "../abstract/AbstractModelPublisher";
 
-export default class PointsModel extends AbstractModelPublisher implements IModelPublisher, ISubscriber, IPoints {
-    private _points: (IPoint & IModelPublisher)[] = [];
+export default class PointsModel extends AbstractModelPublisher implements ISubscriber, IPoints {
+    private _points: IPoint[];
     private _step: number;
 
     get state(): number[] {

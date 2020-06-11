@@ -1,4 +1,4 @@
-interface IPoint {
+interface IPoint extends IModel {
     moveTo(point: number): void;
     state: number;
 }

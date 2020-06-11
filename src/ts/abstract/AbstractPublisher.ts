@@ -6,7 +6,7 @@ export default abstract class AbstractPublisher implements IPublisher {
         modelEvent: [],
         viewEvent: []
     }
-    protected abstract state: any;
+    state: any;
 
     attach(subscriber: ISubscriber, type: modelType): void {
         const isExist = this._subscribers[type].includes(subscriber);

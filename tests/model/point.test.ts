@@ -11,5 +11,21 @@ describe("Point class", function () {
             )
                 .toStrictEqual(55)
         });
+    });
+    describe("Реализация функций оповещения подписчика", function () {
+        let point: IModelPublisher & IPoint,
+            subscriber = {
+                update: jest.fn(x => x)
+            };
+        beforeEach(() => {
+            point = new Point(20);
+
+            point.attach(subscriber);
+        });
+        it("Должен перемстить точку на позицию 80", function () {
+            point.moveTo(80);
+            expect(subscriber.update.mock.results[0].value)
+                .toBe(80);
+        });
     })
 })

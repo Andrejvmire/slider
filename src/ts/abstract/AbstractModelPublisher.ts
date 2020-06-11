@@ -11,7 +11,7 @@ export default abstract class AbstractModelPublisher extends AbstractPublisher i
         super.detach(subscriber, this._eventType);
     }
 
-    notify() {
-        super.notify(this._eventType);
+    notify(data?: any) {
+        super.notify(this._eventType, data);
     }
 }

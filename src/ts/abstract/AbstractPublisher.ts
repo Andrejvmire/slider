@@ -2,6 +2,9 @@ export default abstract class AbstractPublisher implements IPublisher {
     private _subscribers: {
         modelEvent: ISubscriber[],
         viewEvent: ISubscriber[]
+    } = {
+        modelEvent: [],
+        viewEvent: []
     }
     protected abstract state: any;
 
@@ -19,9 +22,9 @@ export default abstract class AbstractPublisher implements IPublisher {
         }
     }
 
-    notify(type: modelType): void {
+    notify(type: modelType, data?: any): void {
         for (let subscriber of this._subscribers[type]) {
-            subscriber.update(this.state);
+            subscriber.update(data || this.state);
         }
     }
 }

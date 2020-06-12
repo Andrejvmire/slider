@@ -25,7 +25,7 @@ describe("Модель Slider", function () {
                     return slider.state
                 })()
             )
-                .toStrictEqual({min: 0, max: 120, points: [0, 120], step: 1})
+                .toStrictEqual({ruler: {min: 0, max: 120}, points: [0, 120]})
         });
         it('Не сделает шаг за предельные значения вправо', () => {
             expect(
@@ -35,7 +35,7 @@ describe("Модель Slider", function () {
                     return slider.state
                 })()
             )
-                .toStrictEqual({min: 0, max: 120, points: [0, 120], step: 1})
+                .toStrictEqual({ruler: {min: 0, max: 120}, points: [0, 120]})
         });
         it('Не сделает шаг за предельные значения влево', () => {
             expect(
@@ -45,7 +45,7 @@ describe("Модель Slider", function () {
                     return slider.state
                 })()
             )
-                .toStrictEqual({min: 0, max: 120, points: [0, 120], step: 1})
+                .toStrictEqual({ruler: {min: 0, max: 120}, points: [0, 120]})
         });
     })
 
@@ -117,7 +117,7 @@ describe("Модель Slider", function () {
             expect(
                 (() => {
                     let slider = new Slider(<SliderOptionsType>{ruler: [10, 120], points: [30, 60], step: 15});
-                    slider.move(29, 30);
+                    slider.move(15, 30);
                     return slider.state;
                 })()
             )
@@ -127,7 +127,7 @@ describe("Модель Slider", function () {
             expect(
                 (() => {
                     let slider = new Slider(<SliderOptionsType>{ruler: [10, 120], points: [30, 60]});
-                    slider.move(31, 30);
+                    slider.move(52, 30);
                     return slider.state;
                 })()
             )
@@ -151,15 +151,15 @@ describe("Модель Slider", function () {
         });
         it('Должен вернуть точки 20, 60', function () {
             expect(subscriber.update.mock.results[0].value)
-                .toStrictEqual(Object.assign(startObj, {points: [20, 60]}))
+                .toStrictEqual([20, 60])
         });
         it('Должен вернуть сдвиг точки вправо (60 + 1)', function () {
             expect(subscriber.update.mock.results[1].value)
-                .toStrictEqual(Object.assign(startObj, {points: [20, 61]}))
+                .toStrictEqual([20, 61])
         });
         it('Должен вернуть сдвиг точки влево 20 - 1', function () {
             expect(subscriber.update.mock.results[2].value)
-                .toStrictEqual(Object.assign(startObj, {points: [19, 61]}))
+                .toStrictEqual([19, 61])
         });
         it('Не должен вернуть ошибку при повторной отписки', function () {
             expect(()=> slider.detach(subscriber))

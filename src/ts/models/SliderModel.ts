@@ -9,7 +9,7 @@ export default class SliderModel extends AbstractModelPublisher implements ISlid
     private readonly _points: IPoints;
     private _validator: IValidator;
 
-    constructor(options: SliderOptionsType) {
+    constructor(options: ModelOptionsType) {
         super();
         this._ruler = new RulerModel(options.ruler);
         this._points = new PointsModel(options.points, options.step);

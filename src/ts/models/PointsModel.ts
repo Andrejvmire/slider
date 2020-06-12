@@ -2,14 +2,15 @@ import PointModel from "./PointModel";
 import AbstractModelPublisher from "../abstract/AbstractModelPublisher";
 
 export default class PointsModel extends AbstractModelPublisher implements ISubscriber, IPoints {
-    private _points: IPoint[];
+    private _points: IPoint[] = [];
     private _step: number;
 
     get state(): number[] {
         return this._points
             .map(
                 point => point.state
-            );
+            )
+            .sort();
     };
 
     constructor(points: [number, number] | [number] | number, step: number = 1) {
@@ -30,11 +31,14 @@ export default class PointsModel extends AbstractModelPublisher implements ISubs
     }
 
     move(to: number, from?: number): PointsModel {
+        to = to - (to % this._step);
         if (typeof from === "undefined") {
             this._points
                 .reduce(
                     (previousValue, currentValue) => {
-                        return (previousValue.state <= currentValue.state) ? previousValue : currentValue;
+                        const absCurrVal = Math.abs(currentValue.state - to),
+                            absPrevValue = Math.abs(previousValue.state - to);
+                        return (absPrevValue <= absCurrVal) ? previousValue : currentValue;
                     }
                 )
                 .moveTo(to);

@@ -1,7 +1,7 @@
 import Slider from '../../src/ts/models/SliderModel';
 
 describe("Модель Slider", function () {
-    const startObj: SliderOptionsType = {ruler: [0, 120], points: [0, 120]}
+    const startObj: ModelOptionsType = {ruler: [0, 120], points: [0, 120]}
     describe('Обработка некорректных данных', function () {
         it('Будет вызвана ошибка при создании модели (Points за пределами Ruler`а) для 1-ой точки', function () {
             const errorInSlider = () => {
@@ -52,14 +52,14 @@ describe("Модель Slider", function () {
     describe('Корректные данные', () => {
         it('Вернет значения с одной точкой', () => {
             expect(
-                (new Slider(<SliderOptionsType>{ruler: [10, 120], points: 30}))
+                (new Slider(<ModelOptionsType>{ruler: [10, 120], points: 30}))
                     .state
             )
                 .toStrictEqual({ ruler: {min: 10, max: 120}, points: [30]})
         });
         it('вернет все переданные значения', () => {
             expect(
-                (new Slider(<SliderOptionsType>{ruler: [10, 120], points: [30, 60]}))
+                (new Slider(<ModelOptionsType>{ruler: [10, 120], points: [30, 60]}))
                     .state
             )
                 .toStrictEqual({ ruler: {min: 10, max: 120}, points: [30, 60]})
@@ -68,7 +68,7 @@ describe("Модель Slider", function () {
         // it('объеденит две переданные точки с одинаковыми значениями', () => {
         it('Не объеденит две переданные точки с одинаковыми значениями', () => {
             expect(
-                (new Slider(<SliderOptionsType>{ruler: [10, 120], points: [30, 30]}))
+                (new Slider(<ModelOptionsType>{ruler: [10, 120], points: [30, 30]}))
                     .state
             )
                 .toStrictEqual({ ruler: {min: 10, max: 120}, points: [30, 30]})
@@ -76,7 +76,7 @@ describe("Модель Slider", function () {
         it('Передвинет ближайшую к переданному значению  точку (30 => 20)', () => {
             expect(
                 (() => {
-                    let slider = new Slider(<SliderOptionsType>{ruler: [10, 120], points: [30, 60]});
+                    let slider = new Slider(<ModelOptionsType>{ruler: [10, 120], points: [30, 60]});
                     slider.move(20);
                     return slider.state;
                 })()
@@ -86,7 +86,7 @@ describe("Модель Slider", function () {
         it('Передвинет ближайшую к переданному значению  точку (60 => 70)', () => {
             expect(
                 (() => {
-                    let slider = new Slider(<SliderOptionsType>{ruler: [10, 120], points: [30, 60]});
+                    let slider = new Slider(<ModelOptionsType>{ruler: [10, 120], points: [30, 60]});
                     slider.move(70);
                     return slider.state;
                 })()
@@ -96,7 +96,7 @@ describe("Модель Slider", function () {
         it('Передвинет точку (30) на один шаг (1) вправо', () => {
             expect(
                 (() => {
-                    let slider = new Slider(<SliderOptionsType>{ruler: [10, 120], points: [30, 60]});
+                    let slider = new Slider(<ModelOptionsType>{ruler: [10, 120], points: [30, 60]});
                     slider.move(31, 30);
                     return slider.state;
                 })()
@@ -106,7 +106,7 @@ describe("Модель Slider", function () {
         it('Передвинет точку (30) на один шаг (1) влево', () => {
             expect(
                 (() => {
-                    let slider = new Slider(<SliderOptionsType>{ruler: [10, 120], points: [30, 60]});
+                    let slider = new Slider(<ModelOptionsType>{ruler: [10, 120], points: [30, 60]});
                     slider.move(29, 30);
                     return slider.state;
                 })()
@@ -116,7 +116,7 @@ describe("Модель Slider", function () {
         it('Передвинет точку (30) на один шаг (15) влево', () => {
             expect(
                 (() => {
-                    let slider = new Slider(<SliderOptionsType>{ruler: [10, 120], points: [30, 60], step: 15});
+                    let slider = new Slider(<ModelOptionsType>{ruler: [10, 120], points: [30, 60], step: 15});
                     slider.move(15, 30);
                     return slider.state;
                 })()
@@ -126,7 +126,7 @@ describe("Модель Slider", function () {
         it('Передвинет точку (30) на один шаг (22) вправо', () => {
             expect(
                 (() => {
-                    let slider = new Slider(<SliderOptionsType>{ruler: [10, 120], points: [30, 60]});
+                    let slider = new Slider(<ModelOptionsType>{ruler: [10, 120], points: [30, 60]});
                     slider.move(52, 30);
                     return slider.state;
                 })()

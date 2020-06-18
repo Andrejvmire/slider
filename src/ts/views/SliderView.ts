@@ -1,73 +1,86 @@
 import AbstractViewPublisher from "../abstract/AbstractViewPublisher";
+import PointView from "./PointView";
+import RulerView from "./RulerView";
+import TooltipView from "./TooltipView";
 
-type OptionsType = {
-    points: [number] | [number, number],
-    ruler: [number, number]
-};
-
-export default class SliderView extends AbstractViewPublisher implements IViewPublisher, ISubscriber {
-    private $_points: JQuery[] = [];
-    private $_tooltips: JQuery[] = [];
-    private $_ranger: JQuery;
+export default class SliderView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber {
+    private value: [number] | [number, number];
+    private _points: IViewPublisher[] = [];
+    private _tooltips: IView[] = [];
+    private _ruler: IView;
+    private _side: "left" | "top";
     private $_container: JQuery;
+    private static className: string = 'slider slider__container';
 
-    constructor(options: OptionsType = {points: [60, 335], ruler: [20, 400]}, parent: JQuery) {
+    constructor(private options: ViewOptionsType, private parent: JQuery) {
         super();
-        let $tooltipLine = $(document.createElement("div"));
-        this.$_container = parent;
-        this.$_container
-            .addClass("slider slider__container");
-        (this.$_instance = $(document.createElement("div")))
-            .addClass('slider slider__ruler');
-        options.points
-            .map(
-                point => {
-                    const pointInPercents = (point: number, per: [number, number]): string => {
-                        return `${(point - per[0]) / (per.reduce((p, c) => c - p)) * 100}%`;
-                    }
-                    let $point = $(document.createElement("span"))
-                            .addClass("slider slider__point"),
-                        $tooltip = $(document.createElement("span"))
-                            .addClass("slider slider__tooltip")
-                            .html(String(point)),
-                        offset = {"left": pointInPercents(point, options.ruler)};
-                    this.$_tooltips.push($tooltip);
-                    $tooltip.appendTo($point);
-                    this.$_points.push($point);
-                    $point.appendTo(this.$_instance);
-                    $point.css(offset);
-                    $point.on('mousedown.slider__point', mouseDownEvent => {
-                        $(document).one('mousedown.slider__point', () => false);
-                        $(document).one('mouseup.slider__point', mouseUpEvent => {
-                            $(document).off('mousemove.slider__point');
-                        });
-                        $(document).on("mousemove.slider__point", mouseMoveEvent => {
-                            let offset = this.$_container.offset()?.left || 0,
-                                relativeX = (mouseMoveEvent.pageX || 0) - offset,
-                                width = this.$_container.width() || 1,
-                                percent = (relativeX * 100) / width;
-                            if ((percent > 0) && (percent < 100)) {
-                                $point.css({
-                                    left: percent + "%"
-                                })
-                            }
-                        })
-                    })
-                }
-            )
-        if (typeof options.points[1] !== "undefined") {
-            this.$_ranger = $(document.createElement("div"))
-                .addClass("slider slider__ranger")
-                .css({
-                    "left": `${(options.points[0] - options.ruler[0]) / (options.ruler.reduce((p, c) => c - p)) * 100}%`,
-                    "right": `${100 - (options.points[1] - options.ruler[0]) / (options.ruler.reduce((p, c) => c - p)) * 100}%`
-                })
-                .appendTo(this.$_instance);
-        }
-        $tooltipLine.appendTo(this.$_instance);
-        this.$_instance.appendTo(parent);
+        this.value = (typeof options.points === "number") ? [options.points] : options.points;
+        this.$_container = parent
+            .addClass(SliderView.className);
+        this.pointsInit();
+        this.rulerInit();
+        this.tooltipInit();
+        this.render();
     }
 
-    update(data?: any): void {
+    private render(): void {
+        this._ruler.$instance
+            .append(
+                this._points.map(
+                    (point, index) => {
+                        return point.$instance
+                            .append(this._tooltips[index].$instance)
+                    }
+                )
+            )
+            .appendTo(this.$_container);
     }
+
+    private tooltipInit(): void {
+        let {tooltip} = this.options;
+        if (tooltip) {
+            this._tooltips = this.value.map(
+                point => new TooltipView(point, this._side)
+            )
+        }
+    }
+
+    private rulerInit(): void {
+        this._ruler = new RulerView(this.options.ruler);
+    }
+
+    private pointsInit(): void {
+        let {orientation, ruler} = this.options;
+        this._side =
+            ((orientation === 'horizontal') || (typeof orientation === "undefined"))
+                ?
+                "left"
+                :
+                "top";
+        this._points = this.value
+            .sort()
+            .map(
+                point => new PointView(SliderView.pointInPercents(point, ruler), this._side, this)
+            )
+    }
+
+    private static pointInPercents(part: number, from: [number, number]): number {
+        return (part - from[0]) * 100 / from.reduce((p, c) => c - p);
+    }
+
+    update(value: number): void {
+        let [from, to] = this.options.ruler;
+        this.value = <[number] | [number, number]>this._points.map(
+            point => {
+                let number: number;
+                if (typeof point.state !== "number") {
+                    number = point.state[0];
+                } else {
+                    number = point.state;
+                }
+                return Math.floor(number * (to - from) / 100)
+            }
+        )
+    }
+
 }

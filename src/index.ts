@@ -1,5 +1,4 @@
-function hello(): string {
-    return "Hello, world!";
-}
+import Slider from "./ts/controllers/Slider";
 
-export default hello;
+const $App = $("#app"),
+    slider = new Slider({ruler: [20, 400], points: [45, 223]}, $App);

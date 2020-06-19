@@ -9,7 +9,7 @@ export default class Slider implements ISubscriber {
         this._model = new SliderModel({
             ...options
         });
-        this._view = new SliderView({points: [60, 100], ruler: [20, 400], tooltip: true}, parent);
+        this._view = new SliderView({points: [60,257], ruler: [20, 400], tooltip: true}, parent);
         this._model.attach(this);
     }
 

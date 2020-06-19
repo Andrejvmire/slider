@@ -2,14 +2,16 @@ import AbstractViewPublisher from "../abstract/AbstractViewPublisher";
 import PointView from "./PointView";
 import RulerView from "./RulerView";
 import TooltipView from "./TooltipView";
+import RangerView from "./RangerView";
 
 export default class SliderView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber {
     private value: [number] | [number, number];
     private _points: IViewPublisher[] = [];
     private _tooltips: IView[] = [];
     private _ruler: IView;
+    private _ranger: IView & IViewSubscriber;
     private _side: "left" | "top";
-    private $_container: JQuery;
+    private readonly $_container: JQuery;
     private static className: string = 'slider slider__container';
 
     constructor(private options: ViewOptionsType, private parent: JQuery) {
@@ -20,20 +22,39 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
         this.pointsInit();
         this.rulerInit();
         this.tooltipInit();
+        this.rangerInit();
         this.render();
     }
 
+    private static appendView(view: IView, parent: IView): JQuery {
+        if (typeof view !== "undefined") {
+            view.$instance
+                .appendTo(parent.$instance);
+        }
+        return parent.$instance;
+    }
+
     private render(): void {
+        SliderView.appendView(this._ranger, this._ruler);
         this._ruler.$instance
             .append(
                 this._points.map(
                     (point, index) => {
-                        return point.$instance
-                            .append(this._tooltips[index].$instance)
+                        return SliderView.appendView(this._tooltips[index], point)
                     }
                 )
             )
             .appendTo(this.$_container);
+    }
+
+    private rangerInit(): void {
+        if (this._points.length === 2) {
+            let value = <[number, number]>this._points
+                .map(
+                    point => point.state
+                )
+            this._ranger = new RangerView(value, this._side);
+        }
     }
 
     private tooltipInit(): void {

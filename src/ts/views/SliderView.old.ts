@@ -58,7 +58,7 @@ export default class SliderViewOld extends AbstractViewPublisher implements IVie
             )
         if (typeof options.points[1] !== "undefined") {
             this.$_ranger = $(document.createElement("div"))
-                .addClass("slider slider__range")
+                .addClass("slider slider__ranger")
                 .css({
                     "left": `${(options.points[0] - options.ruler[0]) / (options.ruler.reduce((p, c) => c - p)) * 100}%`,
                     "right": `${100 - (options.points[1] - options.ruler[0]) / (options.ruler.reduce((p, c) => c - p)) * 100}%`

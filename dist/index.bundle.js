@@ -28288,7 +28288,7 @@ __webpack_require__.r(__webpack_exports__);
 class Slider {
     constructor(options, parent) {
         this._model = new _models_SliderModel__WEBPACK_IMPORTED_MODULE_0__["default"](Object.assign({}, options));
-        this._view = new _views_SliderView__WEBPACK_IMPORTED_MODULE_1__["default"]({ points: [60, 100], ruler: [20, 400], tooltip: true }, parent);
+        this._view = new _views_SliderView__WEBPACK_IMPORTED_MODULE_1__["default"]({ points: [60, 257], ruler: [20, 400], tooltip: true }, parent);
         this._model.attach(this);
     }
     update(data) {
@@ -28577,7 +28577,6 @@ class PointView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE
         this._position = point;
         this.$_instance
             .css(this._side, `${this._position}%`);
-        this.notify();
     }
     get state() {
         return this._position;
@@ -28585,6 +28584,46 @@ class PointView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE
 }
 PointView.className = 'slider slider__point';
 
+
+/***/ }),
+
+/***/ "./src/ts/views/RangerView.ts":
+/*!************************************!*\
+  !*** ./src/ts/views/RangerView.ts ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return RangerView; });
+class RangerView {
+    constructor(points, side) {
+        this._side = side || 'left';
+        this._otherSide = (this._side === 'left') ? 'right' : 'bottom';
+        this.$_instance = $(document.createElement("div"))
+            .addClass(RangerView.className);
+        this.update(points);
+    }
+    update(value) {
+        value = value.sort();
+        this.$_instance
+            .css({
+            [this._side]: `${value[0]}%`,
+            [this._otherSide]: `${100 - value[1]}%`
+        });
+        this._state = value;
+    }
+    get $instance() {
+        return this.$_instance;
+    }
+    get state() {
+        return this._state;
+    }
+}
+RangerView.className = 'slider slider__ranger';
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
 
@@ -28631,6 +28670,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PointView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PointView */ "./src/ts/views/PointView.ts");
 /* harmony import */ var _RulerView__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RulerView */ "./src/ts/views/RulerView.ts");
 /* harmony import */ var _TooltipView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TooltipView */ "./src/ts/views/TooltipView.ts");
+/* harmony import */ var _RangerView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./RangerView */ "./src/ts/views/RangerView.ts");
+
 
 
 
@@ -28648,15 +28689,30 @@ class SliderView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODUL
         this.pointsInit();
         this.rulerInit();
         this.tooltipInit();
+        this.rangerInit();
         this.render();
     }
+    static appendView(view, parent) {
+        if (typeof view !== "undefined") {
+            view.$instance
+                .appendTo(parent.$instance);
+        }
+        return parent.$instance;
+    }
     render() {
+        SliderView.appendView(this._ranger, this._ruler);
         this._ruler.$instance
             .append(this._points.map((point, index) => {
-            return point.$instance
-                .append(this._tooltips[index].$instance);
+            return SliderView.appendView(this._tooltips[index], point);
         }))
             .appendTo(this.$_container);
+    }
+    rangerInit() {
+        if (this._points.length === 2) {
+            let value = this._points
+                .map(point => point.state);
+            this._ranger = new _RangerView__WEBPACK_IMPORTED_MODULE_4__["default"](value, this._side);
+        }
     }
     tooltipInit() {
         let { tooltip } = this.options;

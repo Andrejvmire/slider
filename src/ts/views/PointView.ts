@@ -20,7 +20,7 @@ export default class PointView extends AbstractViewPublisher implements IViewPub
         this._position = point;
         this.$_instance
             .css(this._side, `${this._position}%`);
-        this.notify();
+        // this.notify();
     }
 
     get state(): number {

@@ -1,6 +1,5 @@
 import AbstractViewPublisher from "../abstract/AbstractViewPublisher";
 import $ from 'jquery';
-import TooltipView from "./TooltipView";
 
 export default class PointView extends AbstractViewPublisher implements IViewPublisher {
     private readonly _side: 'top' | 'left';
@@ -17,10 +16,10 @@ export default class PointView extends AbstractViewPublisher implements IViewPub
     };
 
     moveTo(point: number): void {
+        if (point < 0 || point > 100) return;
         this._position = point;
         this.$_instance
             .css(this._side, `${this._position}%`);
-        // this.notify();
     }
 
     get state(): number {

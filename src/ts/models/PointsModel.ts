@@ -10,7 +10,7 @@ export default class PointsModel extends AbstractModelPublisher implements ISubs
             .map(
                 point => point.state
             )
-            .sort();
+            .sort((a, b) => a - b);
     };
 
     constructor(points: [number, number] | [number] | number, step: number = 1) {

@@ -6,7 +6,7 @@ import RangerView from "./RangerView";
 
 export default class SliderView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber {
     private value: [number] | [number, number];
-    private _points: IViewPublisher[] = [];
+    private _points: (IViewPublisher & IPoint)[] = [];
     private _tooltips: IView[] = [];
     private _ruler: IView;
     private _ranger: IView & IViewSubscriber;
@@ -45,6 +45,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
                 )
             )
             .appendTo(this.$_container);
+        this.events();
     }
 
     private rangerInit(): void {
@@ -89,9 +90,22 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
         return (part - from[0]) * 100 / from.reduce((p, c) => c - p);
     }
 
+    private percentsInPoint(event: JQuery.TriggeredEvent): number {
+        let offset = this.$_container.offset(),
+            relativeX = (event.pageX || 0) - (offset?.left || 0),
+            relativeY = (event.pageY || 0) - (offset?.top || 0),
+            width = this.$_container.width() || 1,
+            height = this.$_container.height() || 1,
+            percent = {
+                left: (relativeX * 100) / width,
+                top: (relativeY * 100) / height
+            };
+            return percent[this._side];
+    }
+
     update(value: number): void {
         let [from, to] = this.options.ruler;
-        this.value = <[number] | [number, number]>this._points.map(
+        this.state = <[number] | [number, number]>this._points.map(
             point => {
                 let number: number;
                 if (typeof point.state !== "number") {
@@ -99,9 +113,41 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
                 } else {
                     number = point.state;
                 }
-                return Math.floor(number * (to - from) / 100)
+                return Math.floor(number * (to - from) / 100) + from;
             }
         )
+        this.notify();
+    }
+
+    private events(): void {
+        this._points
+            .map(
+                point => {
+                    point.$instance
+                        .on('mousedown.slider__point', () => {
+                            $(document).one('mousedown.slider__point', () => false);
+                            $(document).one('mouseup.slider__point', () => {
+                                $(document).off('mousemove.slider__point');
+                            })
+                            $(document).on('mousemove.slider__point', mouseMoveEvent => {
+                                point.moveTo(this.percentsInPoint(mouseMoveEvent));
+                                point.notify();
+                            })
+                        })
+                }
+            )
+        this._ruler.$instance
+            .on('click.slider__ruler', clickEvent => {
+                let newPoint = this.percentsInPoint(clickEvent);
+                this._points
+                    .reduce(
+                        ((previousValue, currentValue) =>
+                            (Math.abs(previousValue.state - newPoint) <= Math.abs(currentValue.state - newPoint))
+                                ? previousValue
+                                : currentValue)
+                    )
+                    .moveTo(newPoint);
+            })
     }
 
 }

@@ -28161,7 +28161,7 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var _ts_controllers_Slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ts/controllers/Slider */ "./src/ts/controllers/Slider.ts");
 
-const $App = $("#app"), slider = new _ts_controllers_Slider__WEBPACK_IMPORTED_MODULE_0__["default"]({ ruler: [20, 400], points: [45, 223] }, $App);
+const $App = $("#app"), slider = new _ts_controllers_Slider__WEBPACK_IMPORTED_MODULE_0__["default"]({ ruler: [20, 400], points: [130, 223], tooltip: true }, $App);
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
@@ -28283,15 +28283,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Slider; });
 /* harmony import */ var _models_SliderModel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/SliderModel */ "./src/ts/models/SliderModel.ts");
 /* harmony import */ var _views_SliderView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../views/SliderView */ "./src/ts/views/SliderView.ts");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 class Slider {
     constructor(options, parent) {
         this._model = new _models_SliderModel__WEBPACK_IMPORTED_MODULE_0__["default"](Object.assign({}, options));
-        this._view = new _views_SliderView__WEBPACK_IMPORTED_MODULE_1__["default"]({ points: [60, 257], ruler: [20, 400], tooltip: true }, parent);
+        this._view = new _views_SliderView__WEBPACK_IMPORTED_MODULE_1__["default"](Object.assign({}, options), parent);
         this._model.attach(this);
+        this._view.attach(this);
     }
     update(data) {
+        let modelState = this._model.state.points, viewState = this._view.state;
+        console.log(data);
+        if (lodash__WEBPACK_IMPORTED_MODULE_2___default.a.difference(modelState, data).length === 0) {
+            console.log('Good!');
+        }
     }
 }
 
@@ -28359,7 +28368,7 @@ class PointsModel extends _abstract_AbstractModelPublisher__WEBPACK_IMPORTED_MOD
     get state() {
         return this._points
             .map(point => point.state)
-            .sort();
+            .sort((a, b) => a - b);
     }
     ;
     ;
@@ -28574,6 +28583,8 @@ class PointView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE
     }
     ;
     moveTo(point) {
+        if (point < 0 || point > 100)
+            return;
         this._position = point;
         this.$_instance
             .css(this._side, `${this._position}%`);
@@ -28606,7 +28617,7 @@ class RangerView {
         this.update(points);
     }
     update(value) {
-        value = value.sort();
+        value = value.sort((a, b) => a - b);
         this.$_instance
             .css({
             [this._side]: `${value[0]}%`,
@@ -28665,7 +28676,7 @@ RulerView.className = 'slider slider__ruler';
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SliderView; });
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SliderView; });
 /* harmony import */ var _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../abstract/AbstractViewPublisher */ "./src/ts/abstract/AbstractViewPublisher.ts");
 /* harmony import */ var _PointView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PointView */ "./src/ts/views/PointView.ts");
 /* harmony import */ var _RulerView__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RulerView */ "./src/ts/views/RulerView.ts");
@@ -28706,6 +28717,7 @@ class SliderView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODUL
             return SliderView.appendView(this._tooltips[index], point);
         }))
             .appendTo(this.$_container);
+        this.events();
     }
     rangerInit() {
         if (this._points.length === 2) {
@@ -28738,9 +28750,16 @@ class SliderView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODUL
     static pointInPercents(part, from) {
         return (part - from[0]) * 100 / from.reduce((p, c) => c - p);
     }
+    percentsInPoint(event) {
+        let offset = this.$_container.offset(), relativeX = (event.pageX || 0) - ((offset === null || offset === void 0 ? void 0 : offset.left) || 0), relativeY = (event.pageY || 0) - ((offset === null || offset === void 0 ? void 0 : offset.top) || 0), width = this.$_container.width() || 1, height = this.$_container.height() || 1, percent = {
+            left: (relativeX * 100) / width,
+            top: (relativeY * 100) / height
+        };
+        return percent[this._side];
+    }
     update(value) {
         let [from, to] = this.options.ruler;
-        this.value = this._points.map(point => {
+        this.state = this._points.map(point => {
             let number;
             if (typeof point.state !== "number") {
                 number = point.state[0];
@@ -28748,12 +28767,39 @@ class SliderView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODUL
             else {
                 number = point.state;
             }
-            return Math.floor(number * (to - from) / 100);
+            return Math.floor(number * (to - from) / 100) + from;
+        });
+        this.notify();
+    }
+    events() {
+        this._points
+            .map(point => {
+            point.$instance
+                .on('mousedown.slider__point', () => {
+                $(document).one('mousedown.slider__point', () => false);
+                $(document).one('mouseup.slider__point', () => {
+                    $(document).off('mousemove.slider__point');
+                });
+                $(document).on('mousemove.slider__point', mouseMoveEvent => {
+                    point.moveTo(this.percentsInPoint(mouseMoveEvent));
+                    point.notify();
+                });
+            });
+        });
+        this._ruler.$instance
+            .on('click.slider__ruler', clickEvent => {
+            let newPoint = this.percentsInPoint(clickEvent);
+            this._points
+                .reduce(((previousValue, currentValue) => (Math.abs(previousValue.state - newPoint) <= Math.abs(currentValue.state - newPoint))
+                ? previousValue
+                : currentValue))
+                .moveTo(newPoint);
         });
     }
 }
 SliderView.className = 'slider slider__container';
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
 /***/ }),
 

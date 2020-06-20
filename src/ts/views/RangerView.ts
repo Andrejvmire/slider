@@ -14,7 +14,7 @@ export default class RangerView implements IViewSubscriber, IView {
     }
 
     update(value: [number, number]): void {
-        value = value.sort();
+        value = value.sort((a, b) => a - b);
         this.$_instance
             .css({
                 [this._side]: `${value[0]}%`,

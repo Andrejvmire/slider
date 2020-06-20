@@ -1,5 +1,5 @@
 type ViewOptionsType = {
-    orientation?: 'vertical' | 'horizontal',
+    orientation?: SliderOrientationType,
     tooltip?: boolean,
     ruler: [number, number],
     points: PointsType

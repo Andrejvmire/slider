@@ -1,0 +1,1 @@
+type SliderOrientationType = 'vertical' | 'horizontal';

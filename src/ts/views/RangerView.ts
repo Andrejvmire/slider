@@ -1,26 +1,33 @@
+import {pointInPercents} from "./pointInPercents";
+
 export default class RangerView implements IViewSubscriber, IView {
     private static className: string = 'slider slider__ranger';
     private readonly $_instance: JQuery;
+    private readonly _ruler: [number, number];
     private _state: [number, number];
     private readonly _side: 'left' | 'top';
     private readonly _otherSide: 'right' | 'bottom';
 
-    constructor(points: [number, number], side?: 'left' | 'top') {
+    constructor(points: [number, number], ruler: [number, number], side?: 'left' | 'top') {
         this._side = side || 'left';
+        this._ruler = ruler;
         this._otherSide = (this._side === 'left') ? 'right' : 'bottom';
         this.$_instance = $(document.createElement("div"))
             .addClass(RangerView.className);
         this.update(points);
     }
 
-    update(value: [number, number]): void {
-        value = value.sort((a, b) => a - b);
+    update(values: [number, number]): void {
+        values = <[number, number]>values.sort((a, b) => a - b)
+            .map(
+                value => pointInPercents(value, this._ruler)
+            );
         this.$_instance
             .css({
-                [this._side]: `${value[0]}%`,
-                [this._otherSide]: `${100 - value[1]}%`
+                [this._side]: `${values[0]}%`,
+                [this._otherSide]: `${100 - values[1]}%`
             });
-        this._state = value;
+        this._state = values;
     }
 
     get $instance(): JQuery {

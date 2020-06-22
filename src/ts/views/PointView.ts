@@ -1,18 +1,21 @@
 import AbstractViewPublisher from "../abstract/AbstractViewPublisher";
 import $ from 'jquery';
+import {pointInPercents} from "./pointInPercents";
 
 export default class PointView extends AbstractViewPublisher implements IViewPublisher {
     private readonly _side: 'top' | 'left';
     private _position: number;
+    private readonly _ruler: [number, number];
     private static className: string = 'slider slider__point';
 
-    constructor(position: number, side: 'top' | 'left', subscriber?: IViewSubscriber) {
+    constructor(value: number, side: 'top' | 'left', ruler: [number, number]) {
         super();
-        if (typeof subscriber !== "undefined") this.attach(subscriber);
         this._side = side;
+        this._ruler = ruler;
         this.$_instance = $(document.createElement('span'));
         this.$_instance.addClass(PointView.className);
-        this.moveTo(position);
+        this._position = pointInPercents(value, ruler);
+        this.moveTo(this._position);
     };
 
     moveTo(point: number): void {
@@ -20,6 +23,7 @@ export default class PointView extends AbstractViewPublisher implements IViewPub
         this._position = point;
         this.$_instance
             .css(this._side, `${this._position}%`);
+        this.notify();
     }
 
     get state(): number {

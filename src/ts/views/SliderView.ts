@@ -49,12 +49,14 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private rangerInit(): void {
-        if (this._points.length === 2) {
-            let value = <[number, number]>this._points
+        let {ruler} = this.options;
+        if (typeof this.options.points !== "number" && this.options.points.length === 2) {
+            let value = <[number, number]>this.options.points
                 .map(
-                    point => point.state
+                    point => point
                 )
-            this._ranger = new RangerView(value, this._side);
+            this._ranger = new RangerView(value,ruler, this._side);
+            this.attach(this._ranger);
         }
     }
 
@@ -80,14 +82,13 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
                 :
                 "top";
         this._points = this.value
-            .sort()
             .map(
-                point => new PointView(SliderView.pointInPercents(point, ruler), this._side, this)
+                point => {
+                    let newPoint = new PointView(point, this._side, ruler);
+                    newPoint.attach(this);
+                    return newPoint;
+                }
             )
-    }
-
-    private static pointInPercents(part: number, from: [number, number]): number {
-        return (part - from[0]) * 100 / from.reduce((p, c) => c - p);
     }
 
     private percentsInPoint(event: JQuery.TriggeredEvent): number {
@@ -103,7 +104,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
             return percent[this._side];
     }
 
-    update(value: number): void {
+    update(): void {
         let [from, to] = this.options.ruler;
         this.state = <[number] | [number, number]>this._points.map(
             point => {
@@ -131,7 +132,6 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
                             })
                             $(document).on('mousemove.slider__point', mouseMoveEvent => {
                                 point.moveTo(this.percentsInPoint(mouseMoveEvent));
-                                point.notify();
                             })
                         })
                 }

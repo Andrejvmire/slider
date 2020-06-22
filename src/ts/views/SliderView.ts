@@ -3,27 +3,42 @@ import PointView from "./PointView";
 import RulerView from "./RulerView";
 import TooltipView from "./TooltipView";
 import RangerView from "./RangerView";
+import TooltipsView from "./TooltipsView";
+import PointsView from "./PointsView";
 
 export default class SliderView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber {
-    private value: [number] | [number, number];
-    private _points: (IViewPublisher & IPoint)[] = [];
-    private _tooltips: IView[] = [];
+    // private value: [number] | [number, number];
+    private _points: PointsView;
+    private _tooltips: TooltipsView;
     private _ruler: IView;
     private _ranger: IView & IViewSubscriber;
-    private _side: "left" | "top";
+    private readonly _side: "left" | "top";
     private readonly $_container: JQuery;
     private static className: string = 'slider slider__container';
 
     constructor(private options: ViewOptionsType, private parent: JQuery) {
         super();
-        this.value = (typeof options.points === "number") ? [options.points] : options.points;
+        let {orientation} = options;
+        this.state = (typeof options.points === "number") ? [options.points] : options.points;
+        this._side =
+            ((orientation === 'horizontal') || (typeof orientation === "undefined"))
+                ?
+                "left"
+                :
+                "top";
         this.$_container = parent
             .addClass(SliderView.className);
+        this.orientation();
         this.pointsInit();
         this.rulerInit();
         this.tooltipInit();
         this.rangerInit();
         this.render();
+    }
+
+    private orientation(): void {
+        this.$_container
+            .addClass(`slider__container_${this.options.orientation || 'horizontal'}`)
     }
 
     private static appendView(view: IView, parent: IView): JQuery {
@@ -35,12 +50,20 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private render(): void {
-        SliderView.appendView(this._ranger, this._ruler);
+        if (typeof this._ranger !== "undefined") {
+            this._ruler.$instance.append(this._ranger.$instance);
+        }
         this._ruler.$instance
             .append(
-                this._points.map(
-                    (point, index) => {
-                        return SliderView.appendView(this._tooltips[index], point)
+                Array.from(this._points).map(
+                    (item, index) => {
+                        if (this.options.tooltip) {
+                            item.$instance
+                                .append(
+                                    Array.from(this._tooltips)[index].$instance
+                                )
+                        }
+                        return item.$instance;
                     }
                 )
             )
@@ -55,7 +78,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
                 .map(
                     point => point
                 )
-            this._ranger = new RangerView(value,ruler, this._side);
+            this._ranger = new RangerView(value, ruler, this._side);
             this.attach(this._ranger);
         }
     }
@@ -63,32 +86,19 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     private tooltipInit(): void {
         let {tooltip} = this.options;
         if (tooltip) {
-            this._tooltips = this.value.map(
-                point => new TooltipView(point, this._side)
-            )
+            this._tooltips = new TooltipsView(this.state, this.options.orientation || 'horizontal');
+            this._points.attach(this._tooltips);
         }
     }
 
     private rulerInit(): void {
-        this._ruler = new RulerView(this.options.ruler);
+        this._ruler = new RulerView(this.options.ruler, this.options.orientation || 'horizontal');
     }
 
     private pointsInit(): void {
-        let {orientation, ruler} = this.options;
-        this._side =
-            ((orientation === 'horizontal') || (typeof orientation === "undefined"))
-                ?
-                "left"
-                :
-                "top";
-        this._points = this.value
-            .map(
-                point => {
-                    let newPoint = new PointView(point, this._side, ruler);
-                    newPoint.attach(this);
-                    return newPoint;
-                }
-            )
+        let {ruler} = this.options;
+        this._points = new PointsView(this.state, this._side, ruler);
+        this._points.attach(this);
     }
 
     private percentsInPoint(event: JQuery.TriggeredEvent): number {
@@ -101,45 +111,31 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
                 left: (relativeX * 100) / width,
                 top: (relativeY * 100) / height
             };
-            return percent[this._side];
+        return percent[this._side];
     }
 
     update(): void {
-        let [from, to] = this.options.ruler;
-        this.state = <[number] | [number, number]>this._points.map(
-            point => {
-                let number: number;
-                if (typeof point.state !== "number") {
-                    number = point.state[0];
-                } else {
-                    number = point.state;
-                }
-                return Math.floor(number * (to - from) / 100) + from;
-            }
-        )
+        this.state = this._points.state;
         this.notify();
     }
 
     private events(): void {
-        this._points
-            .map(
-                point => {
-                    point.$instance
-                        .on('mousedown.slider__point', () => {
-                            $(document).one('mousedown.slider__point', () => false);
-                            $(document).one('mouseup.slider__point', () => {
-                                $(document).off('mousemove.slider__point');
-                            })
-                            $(document).on('mousemove.slider__point', mouseMoveEvent => {
-                                point.moveTo(this.percentsInPoint(mouseMoveEvent));
-                            })
-                        })
-                }
-            )
+        for (let point of this._points) {
+            point.$instance
+                .on('mousedown.slider__point', () => {
+                    $(document).one('mousedown.slider__point', () => false);
+                    $(document).one('mouseup.slider__point', () => {
+                        $(document).off('mousemove.slider__point');
+                    })
+                    $(document).on('mousemove.slider__point', mouseMoveEvent => {
+                        point.moveTo(this.percentsInPoint(mouseMoveEvent));
+                    })
+                })
+        }
         this._ruler.$instance
             .on('click.slider__ruler', clickEvent => {
                 let newPoint = this.percentsInPoint(clickEvent);
-                this._points
+                Array.from(this._points)
                     .reduce(
                         ((previousValue, currentValue) =>
                             (Math.abs(previousValue.state - newPoint) <= Math.abs(currentValue.state - newPoint))

@@ -28161,7 +28161,17 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var _ts_controllers_Slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ts/controllers/Slider */ "./src/ts/controllers/Slider.ts");
 
-const $App = $("#app"), slider = new _ts_controllers_Slider__WEBPACK_IMPORTED_MODULE_0__["default"]({ ruler: [20, 400], points: [130, 223], tooltip: true }, $App);
+const $App = $("#app"), slider = new _ts_controllers_Slider__WEBPACK_IMPORTED_MODULE_0__["default"]({
+    ruler: [2366, 28765],
+    points: [3560, 10300],
+    tooltip: true,
+}, $App);
+const $slider = $('#slider_2'), slider2 = new _ts_controllers_Slider__WEBPACK_IMPORTED_MODULE_0__["default"]({
+    ruler: [2755, 12667],
+    points: [5543],
+    orientation: "vertical",
+    tooltip: true
+}, $slider);
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
@@ -28569,17 +28579,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../abstract/AbstractViewPublisher */ "./src/ts/abstract/AbstractViewPublisher.ts");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _pointInPercents__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pointInPercents */ "./src/ts/views/pointInPercents.ts");
+
 
 
 class PointView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor(position, side, subscriber) {
+    constructor(value, side, ruler) {
         super();
-        if (typeof subscriber !== "undefined")
-            this.attach(subscriber);
         this._side = side;
+        this._ruler = ruler;
         this.$_instance = jquery__WEBPACK_IMPORTED_MODULE_1___default()(document.createElement('span'));
         this.$_instance.addClass(PointView.className);
-        this.moveTo(position);
+        this._position = Object(_pointInPercents__WEBPACK_IMPORTED_MODULE_2__["pointInPercents"])(value, ruler);
+        this.moveTo(this._position);
     }
     ;
     moveTo(point) {
@@ -28588,12 +28600,59 @@ class PointView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE
         this._position = point;
         this.$_instance
             .css(this._side, `${this._position}%`);
+        this.notify();
     }
     get state() {
         return this._position;
     }
 }
 PointView.className = 'slider slider__point';
+
+
+/***/ }),
+
+/***/ "./src/ts/views/PointsView.ts":
+/*!************************************!*\
+  !*** ./src/ts/views/PointsView.ts ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PointsView; });
+/* harmony import */ var _PointView__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PointView */ "./src/ts/views/PointView.ts");
+/* harmony import */ var _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../abstract/AbstractViewPublisher */ "./src/ts/abstract/AbstractViewPublisher.ts");
+
+
+class PointsView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE_1__["default"] {
+    constructor(points, side, _ruler) {
+        super();
+        this._ruler = _ruler;
+        this._points = [];
+        if (typeof points === "number") {
+            points = [points];
+        }
+        this._points = points.map(point => {
+            let newPoint = new _PointView__WEBPACK_IMPORTED_MODULE_0__["default"](point, side, _ruler);
+            newPoint.attach(this);
+            return newPoint;
+        });
+    }
+    *[Symbol.iterator]() {
+        for (let point of this._points) {
+            yield point;
+        }
+    }
+    update() {
+        let [from, to] = this._ruler;
+        this._state = this._points.map(point => Math.floor(point.state * (to - from) / 100) + from);
+        this.notify();
+    }
+    get state() {
+        return this._state;
+    }
+}
 
 
 /***/ }),
@@ -28608,22 +28667,26 @@ PointView.className = 'slider slider__point';
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return RangerView; });
+/* harmony import */ var _pointInPercents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pointInPercents */ "./src/ts/views/pointInPercents.ts");
+
 class RangerView {
-    constructor(points, side) {
+    constructor(points, ruler, side) {
         this._side = side || 'left';
-        this._otherSide = (this._side === 'left') ? 'right' : 'bottom';
+        this._ruler = ruler;
+        this._size = (this._side === 'left') ? 'width' : 'height';
         this.$_instance = $(document.createElement("div"))
             .addClass(RangerView.className);
         this.update(points);
     }
-    update(value) {
-        value = value.sort((a, b) => a - b);
+    update(values) {
+        values = values.sort((a, b) => a - b)
+            .map(value => Object(_pointInPercents__WEBPACK_IMPORTED_MODULE_0__["pointInPercents"])(value, this._ruler));
         this.$_instance
             .css({
-            [this._side]: `${value[0]}%`,
-            [this._otherSide]: `${100 - value[1]}%`
+            [this._side]: `${values[0]}%`,
+            [this._size]: `${values[1] - values[0]}%`
         });
-        this._state = value;
+        this._state = values;
     }
     get $instance() {
         return this.$_instance;
@@ -28649,10 +28712,16 @@ RangerView.className = 'slider slider__ranger';
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return RulerView; });
 class RulerView {
-    constructor(scope) {
+    constructor(scope, _orientation) {
+        this._orientation = _orientation;
         this.$_instance = $(document.createElement("div"))
             .addClass(RulerView.className);
+        this.orientation();
         this._state = scope;
+    }
+    orientation() {
+        this.$_instance
+            .addClass(`slider__ruler_${this._orientation}`);
     }
     get $instance() {
         return this.$_instance;
@@ -28678,10 +28747,10 @@ RulerView.className = 'slider slider__ruler';
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SliderView; });
 /* harmony import */ var _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../abstract/AbstractViewPublisher */ "./src/ts/abstract/AbstractViewPublisher.ts");
-/* harmony import */ var _PointView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PointView */ "./src/ts/views/PointView.ts");
-/* harmony import */ var _RulerView__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RulerView */ "./src/ts/views/RulerView.ts");
-/* harmony import */ var _TooltipView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TooltipView */ "./src/ts/views/TooltipView.ts");
-/* harmony import */ var _RangerView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./RangerView */ "./src/ts/views/RangerView.ts");
+/* harmony import */ var _RulerView__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RulerView */ "./src/ts/views/RulerView.ts");
+/* harmony import */ var _RangerView__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./RangerView */ "./src/ts/views/RangerView.ts");
+/* harmony import */ var _TooltipsView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TooltipsView */ "./src/ts/views/TooltipsView.ts");
+/* harmony import */ var _PointsView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./PointsView */ "./src/ts/views/PointsView.ts");
 
 
 
@@ -28692,16 +28761,26 @@ class SliderView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODUL
         super();
         this.options = options;
         this.parent = parent;
-        this._points = [];
-        this._tooltips = [];
-        this.value = (typeof options.points === "number") ? [options.points] : options.points;
+        let { orientation } = options;
+        this.state = (typeof options.points === "number") ? [options.points] : options.points;
+        this._side =
+            ((orientation === 'horizontal') || (typeof orientation === "undefined"))
+                ?
+                    "left"
+                :
+                    "top";
         this.$_container = parent
             .addClass(SliderView.className);
+        this.orientation();
         this.pointsInit();
         this.rulerInit();
         this.tooltipInit();
         this.rangerInit();
         this.render();
+    }
+    orientation() {
+        this.$_container
+            .addClass(`slider__container_${this.options.orientation || 'horizontal'}`);
     }
     static appendView(view, parent) {
         if (typeof view !== "undefined") {
@@ -28711,44 +28790,43 @@ class SliderView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODUL
         return parent.$instance;
     }
     render() {
-        SliderView.appendView(this._ranger, this._ruler);
+        if (typeof this._ranger !== "undefined") {
+            this._ruler.$instance.append(this._ranger.$instance);
+        }
         this._ruler.$instance
-            .append(this._points.map((point, index) => {
-            return SliderView.appendView(this._tooltips[index], point);
+            .append(Array.from(this._points).map((item, index) => {
+            if (this.options.tooltip) {
+                item.$instance
+                    .append(Array.from(this._tooltips)[index].$instance);
+            }
+            return item.$instance;
         }))
             .appendTo(this.$_container);
         this.events();
     }
     rangerInit() {
-        if (this._points.length === 2) {
-            let value = this._points
-                .map(point => point.state);
-            this._ranger = new _RangerView__WEBPACK_IMPORTED_MODULE_4__["default"](value, this._side);
+        let { ruler } = this.options;
+        if (typeof this.options.points !== "number" && this.options.points.length === 2) {
+            let value = this.options.points
+                .map(point => point);
+            this._ranger = new _RangerView__WEBPACK_IMPORTED_MODULE_2__["default"](value, ruler, this._side);
+            this.attach(this._ranger);
         }
     }
     tooltipInit() {
         let { tooltip } = this.options;
         if (tooltip) {
-            this._tooltips = this.value.map(point => new _TooltipView__WEBPACK_IMPORTED_MODULE_3__["default"](point, this._side));
+            this._tooltips = new _TooltipsView__WEBPACK_IMPORTED_MODULE_3__["default"](this.state, this.options.orientation || 'horizontal');
+            this._points.attach(this._tooltips);
         }
     }
     rulerInit() {
-        this._ruler = new _RulerView__WEBPACK_IMPORTED_MODULE_2__["default"](this.options.ruler);
+        this._ruler = new _RulerView__WEBPACK_IMPORTED_MODULE_1__["default"](this.options.ruler, this.options.orientation || 'horizontal');
     }
     pointsInit() {
-        let { orientation, ruler } = this.options;
-        this._side =
-            ((orientation === 'horizontal') || (typeof orientation === "undefined"))
-                ?
-                    "left"
-                :
-                    "top";
-        this._points = this.value
-            .sort()
-            .map(point => new _PointView__WEBPACK_IMPORTED_MODULE_1__["default"](SliderView.pointInPercents(point, ruler), this._side, this));
-    }
-    static pointInPercents(part, from) {
-        return (part - from[0]) * 100 / from.reduce((p, c) => c - p);
+        let { ruler } = this.options;
+        this._points = new _PointsView__WEBPACK_IMPORTED_MODULE_4__["default"](this.state, this._side, ruler);
+        this._points.attach(this);
     }
     percentsInPoint(event) {
         let offset = this.$_container.offset(), relativeX = (event.pageX || 0) - ((offset === null || offset === void 0 ? void 0 : offset.left) || 0), relativeY = (event.pageY || 0) - ((offset === null || offset === void 0 ? void 0 : offset.top) || 0), width = this.$_container.width() || 1, height = this.$_container.height() || 1, percent = {
@@ -28757,23 +28835,12 @@ class SliderView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODUL
         };
         return percent[this._side];
     }
-    update(value) {
-        let [from, to] = this.options.ruler;
-        this.state = this._points.map(point => {
-            let number;
-            if (typeof point.state !== "number") {
-                number = point.state[0];
-            }
-            else {
-                number = point.state;
-            }
-            return Math.floor(number * (to - from) / 100) + from;
-        });
+    update() {
+        this.state = this._points.state;
         this.notify();
     }
     events() {
-        this._points
-            .map(point => {
+        for (let point of this._points) {
             point.$instance
                 .on('mousedown.slider__point', () => {
                 $(document).one('mousedown.slider__point', () => false);
@@ -28782,14 +28849,13 @@ class SliderView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODUL
                 });
                 $(document).on('mousemove.slider__point', mouseMoveEvent => {
                     point.moveTo(this.percentsInPoint(mouseMoveEvent));
-                    point.notify();
                 });
             });
-        });
+        }
         this._ruler.$instance
             .on('click.slider__ruler', clickEvent => {
             let newPoint = this.percentsInPoint(clickEvent);
-            this._points
+            Array.from(this._points)
                 .reduce(((previousValue, currentValue) => (Math.abs(previousValue.state - newPoint) <= Math.abs(currentValue.state - newPoint))
                 ? previousValue
                 : currentValue))
@@ -28814,11 +28880,23 @@ SliderView.className = 'slider slider__container';
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TooltipView; });
 class TooltipView {
-    constructor(point, side) {
-        this.side = side;
+    constructor(point, _orientation) {
+        this._orientation = _orientation;
         this.$_instance = $(document.createElement("span")).
             addClass(TooltipView.className);
+        this.orientation();
         this.update(point);
+    }
+    orientation() {
+        let width = this.$_instance.width() || 0;
+        if (this._orientation === 'horizontal') {
+            this.$_instance
+                .css("top", "1.1rem");
+        }
+        else {
+            this.$_instance
+                .css("left", width + 18);
+        }
     }
     update(value) {
         this.$_instance
@@ -28834,6 +28912,58 @@ class TooltipView {
 TooltipView.className = 'slider slider__tooltip';
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
+
+/***/ }),
+
+/***/ "./src/ts/views/TooltipsView.ts":
+/*!**************************************!*\
+  !*** ./src/ts/views/TooltipsView.ts ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TooltipsView; });
+/* harmony import */ var _TooltipView__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TooltipView */ "./src/ts/views/TooltipView.ts");
+
+class TooltipsView {
+    constructor(points, _orientation) {
+        this._tooltip = [];
+        if (typeof points === "number") {
+            points = [points];
+        }
+        this._tooltip = points.map(point => new _TooltipView__WEBPACK_IMPORTED_MODULE_0__["default"](point, _orientation));
+    }
+    *[Symbol.iterator]() {
+        for (let tooltip of this._tooltip) {
+            yield tooltip;
+        }
+    }
+    update(values) {
+        values
+            .sort(((a, b) => a - b))
+            .map((value, index) => this._tooltip[index].update(value));
+    }
+}
+
+
+/***/ }),
+
+/***/ "./src/ts/views/pointInPercents.ts":
+/*!*****************************************!*\
+  !*** ./src/ts/views/pointInPercents.ts ***!
+  \*****************************************/
+/*! exports provided: pointInPercents */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pointInPercents", function() { return pointInPercents; });
+function pointInPercents(part, from) {
+    return (part - from[0]) * 100 / from.reduce((p, c) => c - p);
+}
+
 
 /***/ }),
 

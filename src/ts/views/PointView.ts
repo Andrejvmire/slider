@@ -2,7 +2,7 @@ import AbstractViewPublisher from "../abstract/AbstractViewPublisher";
 import $ from 'jquery';
 import {pointInPercents} from "./pointInPercents";
 
-export default class PointView extends AbstractViewPublisher implements IViewPublisher {
+export default class PointView extends AbstractViewPublisher implements IViewPublisher, IPoint {
     private readonly _side: 'top' | 'left';
     private _position: number;
     private readonly _ruler: [number, number];

@@ -6,12 +6,12 @@ export default class RangerView implements IViewSubscriber, IView {
     private readonly _ruler: [number, number];
     private _state: [number, number];
     private readonly _side: 'left' | 'top';
-    private readonly _otherSide: 'right' | 'bottom';
+    private readonly _size: 'width' | 'height';
 
     constructor(points: [number, number], ruler: [number, number], side?: 'left' | 'top') {
         this._side = side || 'left';
         this._ruler = ruler;
-        this._otherSide = (this._side === 'left') ? 'right' : 'bottom';
+        this._size = (this._side === 'left') ? 'width' : 'height';
         this.$_instance = $(document.createElement("div"))
             .addClass(RangerView.className);
         this.update(points);
@@ -25,7 +25,7 @@ export default class RangerView implements IViewSubscriber, IView {
         this.$_instance
             .css({
                 [this._side]: `${values[0]}%`,
-                [this._otherSide]: `${100 - values[1]}%`
+                [this._size]: `${values[1] - values[0]}%`
             });
         this._state = values;
     }

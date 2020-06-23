@@ -28172,6 +28172,17 @@ const $App = $("#app"), slider = new _ts_controllers_Slider__WEBPACK_IMPORTED_MO
 
 /***/ }),
 
+/***/ "./src/styles/main.scss":
+/*!******************************!*\
+  !*** ./src/styles/main.scss ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "./src/ts/abstract/AbstractModelPublisher.ts":
 /*!***************************************************!*\
   !*** ./src/ts/abstract/AbstractModelPublisher.ts ***!
@@ -28976,13 +28987,14 @@ function pointInPercents(part, from) {
 /***/ }),
 
 /***/ 0:
-/*!****************************!*\
-  !*** multi ./src/index.ts ***!
-  \****************************/
+/*!***************************************************!*\
+  !*** multi ./src/index.ts ./src/styles/main.scss ***!
+  \***************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! ./src/index.ts */"./src/index.ts");
+__webpack_require__(/*! ./src/index.ts */"./src/index.ts");
+module.exports = __webpack_require__(/*! ./src/styles/main.scss */"./src/styles/main.scss");
 
 
 /***/ })

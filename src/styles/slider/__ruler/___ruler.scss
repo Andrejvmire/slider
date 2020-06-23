@@ -1,0 +1,18 @@
+@if(&) {
+  &__ruler {
+    display: inline-block;
+    position: relative;
+    border: 1px solid red;
+    border-radius: 3px;
+
+    &_horizontal {
+      width: 100%;
+      height: .5rem;
+    }
+
+    &_vertical {
+      width: .5rem;
+      height: 100%;
+    }
+  }
+}

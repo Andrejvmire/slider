@@ -1,9 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
+const miniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: [
-        './src/index.ts'
+        './src/index.ts',
+        './src/styles/main.scss'
     ],
     output: {
         filename: "index.bundle.js",
@@ -30,10 +32,7 @@ module.exports = {
                 test: /\.(c|sa|sc)ss$/,
                 use: [
                     {
-                        loader: "style-loader",
-                        options: {
-                            sourceMap: true
-                        }
+                        loader: miniCssExtractPlugin.loader
                     },
                     {
                         loader: "css-loader",
@@ -64,6 +63,9 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery'
+        }),
+        new miniCssExtractPlugin({
+            filename: "style.css",
         })
     ]
 }

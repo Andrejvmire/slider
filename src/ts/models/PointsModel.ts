@@ -15,23 +15,23 @@ export default class PointsModel extends AbstractModelPublisher implements ISubs
 
     constructor(points: [number, number] | [number] | number, step: number = 1) {
         super();
-        this.setStep(step);
+        if (step <= 0) throw new Error("The step must be greater than 0");
+        this._step = step;
         if (typeof points === "number") {
-            this._points.push(new PointModel(points, this))
+            this._points.push(new PointModel(this.setStep(points), this))
         } else {
             this._points = points.map(
-                point => new PointModel(point, this)
+                point => new PointModel(this.setStep(point), this)
             );
         }
     };
 
-    private setStep(step: number): void {
-        if (step <= 0) throw new Error("The step must be greater than 0");
-        this._step = step;
+    private setStep(value: number): number {
+        return value - (value % this._step);
     }
 
     move(to: number, from?: number): PointsModel {
-        to = to - (to % this._step);
+        to = this.setStep(to);
         if (typeof from === "undefined") {
             this._points
                 .reduce(

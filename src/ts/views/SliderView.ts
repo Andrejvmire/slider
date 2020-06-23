@@ -6,8 +6,7 @@ import RangerView from "./RangerView";
 import TooltipsView from "./TooltipsView";
 import PointsView from "./PointsView";
 
-export default class SliderView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber {
-    // private value: [number] | [number, number];
+export default class SliderView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber, ISlider {
     private _points: PointsView;
     private _tooltips: TooltipsView;
     private _ruler: IView;
@@ -117,6 +116,11 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     update(): void {
         this.state = this._points.state;
         this.notify();
+    }
+
+    move(to: number, from: number): ISlider {
+        this._points.move(to, from);
+        return this;
     }
 
     private events(): void {

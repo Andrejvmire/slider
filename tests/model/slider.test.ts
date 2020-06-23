@@ -25,7 +25,7 @@ describe("Модель Slider", function () {
                     return slider.state
                 })()
             )
-                .toStrictEqual({ruler: {min: 0, max: 120}, points: [0, 120]})
+                .toStrictEqual([0, 120])
         });
         it('Не сделает шаг за предельные значения вправо', () => {
             expect(
@@ -35,7 +35,7 @@ describe("Модель Slider", function () {
                     return slider.state
                 })()
             )
-                .toStrictEqual({ruler: {min: 0, max: 120}, points: [0, 120]})
+                .toStrictEqual([0, 120])
         });
         it('Не сделает шаг за предельные значения влево', () => {
             expect(
@@ -45,7 +45,7 @@ describe("Модель Slider", function () {
                     return slider.state
                 })()
             )
-                .toStrictEqual({ruler: {min: 0, max: 120}, points: [0, 120]})
+                .toStrictEqual([0, 120])
         });
     })
 
@@ -55,14 +55,14 @@ describe("Модель Slider", function () {
                 (new Slider(<ModelOptionsType>{ruler: [10, 120], points: 30}))
                     .state
             )
-                .toStrictEqual({ ruler: {min: 10, max: 120}, points: [30]})
+                .toStrictEqual([30])
         });
         it('вернет все переданные значения', () => {
             expect(
                 (new Slider(<ModelOptionsType>{ruler: [10, 120], points: [30, 60]}))
                     .state
             )
-                .toStrictEqual({ ruler: {min: 10, max: 120}, points: [30, 60]})
+                .toStrictEqual([30, 60])
         })
         // Удалена функция генерации одной точки вместо 2-х с одинаковым значением
         // it('объеденит две переданные точки с одинаковыми значениями', () => {
@@ -71,7 +71,7 @@ describe("Модель Slider", function () {
                 (new Slider(<ModelOptionsType>{ruler: [10, 120], points: [30, 30]}))
                     .state
             )
-                .toStrictEqual({ ruler: {min: 10, max: 120}, points: [30, 30]})
+                .toStrictEqual([30, 30])
         });
         it('Передвинет ближайшую к переданному значению  точку (30 => 20)', () => {
             expect(
@@ -81,7 +81,7 @@ describe("Модель Slider", function () {
                     return slider.state;
                 })()
             )
-                .toStrictEqual({ ruler: {min: 10, max: 120}, points: [20, 60]})
+                .toStrictEqual([20, 60])
         });
         it('Передвинет ближайшую к переданному значению  точку (60 => 70)', () => {
             expect(
@@ -91,7 +91,7 @@ describe("Модель Slider", function () {
                     return slider.state;
                 })()
             )
-                .toStrictEqual({ ruler: {min: 10, max: 120}, points: [30, 70]})
+                .toStrictEqual([30, 70])
         });
         it('Передвинет точку (30) на один шаг (1) вправо', () => {
             expect(
@@ -101,7 +101,7 @@ describe("Модель Slider", function () {
                     return slider.state;
                 })()
             )
-                .toStrictEqual({ ruler: {min: 10, max: 120}, points: [31, 60]})
+                .toStrictEqual([31, 60])
         });
         it('Передвинет точку (30) на один шаг (1) влево', () => {
             expect(
@@ -111,7 +111,7 @@ describe("Модель Slider", function () {
                     return slider.state;
                 })()
             )
-                .toStrictEqual({ ruler: {min: 10, max: 120}, points: [29, 60]})
+                .toStrictEqual([29, 60])
         });
         it('Передвинет точку (30) на один шаг (15) влево', () => {
             expect(
@@ -121,7 +121,7 @@ describe("Модель Slider", function () {
                     return slider.state;
                 })()
             )
-                .toStrictEqual({ ruler: {min: 10, max: 120}, points: [15, 60]})
+                .toStrictEqual([15, 60])
         });
         it('Передвинет точку (30) на один шаг (22) вправо', () => {
             expect(
@@ -131,7 +131,7 @@ describe("Модель Slider", function () {
                     return slider.state;
                 })()
             )
-                .toStrictEqual({ ruler: {min: 10, max: 120}, points: [52, 60]})
+                .toStrictEqual([52, 60])
         });
     });
     describe('Тест колбэков', () => {

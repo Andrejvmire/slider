@@ -1,11 +1,12 @@
 import PointView from "../../src/ts/views/PointView";
 import $ from 'jquery';
+import {pointInPercents} from "../../src/ts/views/pointInPercents";
 
 describe("Тестируем PointView", () => {
     describe("Обработка корректных данных", () => {
         let point: IViewPublisher;
         beforeAll(() => {
-            point = new PointView(40, "left", [0, 100]);
+            point = new PointView(pointInPercents(40, [0,100]), "left");
         })
         it('Вернет не null', () => {
             expect(point.state)

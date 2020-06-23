@@ -39,10 +39,7 @@ export default class SliderModel extends AbstractModelPublisher implements ISlid
         return this;
     }
 
-    get state(): any {
-        return {
-            ruler: this._ruler.state,
-            points: this._points.state
-        }
+    get state(): number[] {
+        return this._points.state
     }
 }

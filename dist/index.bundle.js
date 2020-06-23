@@ -28163,15 +28163,10 @@ __webpack_require__.r(__webpack_exports__);
 
 const $App = $("#app"), slider = new _ts_controllers_Slider__WEBPACK_IMPORTED_MODULE_0__["default"]({
     ruler: [2366, 28765],
-    points: [3560, 10300],
+    points: [3561, 10322],
     tooltip: true,
+    step: 100
 }, $App);
-const $slider = $('#slider_2'), slider2 = new _ts_controllers_Slider__WEBPACK_IMPORTED_MODULE_0__["default"]({
-    ruler: [2755, 12667],
-    points: [5543],
-    orientation: "vertical",
-    tooltip: true
-}, $slider);
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")))
 
@@ -28301,15 +28296,18 @@ __webpack_require__.r(__webpack_exports__);
 class Slider {
     constructor(options, parent) {
         this._model = new _models_SliderModel__WEBPACK_IMPORTED_MODULE_0__["default"](Object.assign({}, options));
-        this._view = new _views_SliderView__WEBPACK_IMPORTED_MODULE_1__["default"](Object.assign({}, options), parent);
+        this._view = new _views_SliderView__WEBPACK_IMPORTED_MODULE_1__["default"](Object.assign({}, Object.assign(options, { points: this._model.state })), parent);
         this._model.attach(this);
         this._view.attach(this);
     }
     update(data) {
-        let modelState = this._model.state.points, viewState = this._view.state;
-        console.log(data);
-        if (lodash__WEBPACK_IMPORTED_MODULE_2___default.a.difference(modelState, data).length === 0) {
-            console.log('Good!');
+        let modelState = this._model.state, viewState = this._view.state;
+        let viewDif = lodash__WEBPACK_IMPORTED_MODULE_2___default.a.difference(viewState, modelState)[0], modelDif = lodash__WEBPACK_IMPORTED_MODULE_2___default.a.difference(modelState, viewState)[0];
+        if (lodash__WEBPACK_IMPORTED_MODULE_2___default.a.difference(data, modelState).length !== 0) {
+            this._model.move(viewDif, modelDif);
+        }
+        else if (lodash__WEBPACK_IMPORTED_MODULE_2___default.a.difference(data, viewState)) {
+            this._view.move(modelDif, viewDif);
         }
     }
 }
@@ -28367,12 +28365,14 @@ class PointsModel extends _abstract_AbstractModelPublisher__WEBPACK_IMPORTED_MOD
     constructor(points, step = 1) {
         super();
         this._points = [];
-        this.setStep(step);
+        if (step <= 0)
+            throw new Error("The step must be greater than 0");
+        this._step = step;
         if (typeof points === "number") {
-            this._points.push(new _PointModel__WEBPACK_IMPORTED_MODULE_0__["default"](points, this));
+            this._points.push(new _PointModel__WEBPACK_IMPORTED_MODULE_0__["default"](this.setStep(points), this));
         }
         else {
-            this._points = points.map(point => new _PointModel__WEBPACK_IMPORTED_MODULE_0__["default"](point, this));
+            this._points = points.map(point => new _PointModel__WEBPACK_IMPORTED_MODULE_0__["default"](this.setStep(point), this));
         }
     }
     get state() {
@@ -28382,13 +28382,11 @@ class PointsModel extends _abstract_AbstractModelPublisher__WEBPACK_IMPORTED_MOD
     }
     ;
     ;
-    setStep(step) {
-        if (step <= 0)
-            throw new Error("The step must be greater than 0");
-        this._step = step;
+    setStep(value) {
+        return value - (value % this._step);
     }
     move(to, from) {
-        to = to - (to % this._step);
+        to = this.setStep(to);
         if (typeof from === "undefined") {
             this._points
                 .reduce((previousValue, currentValue) => {
@@ -28489,10 +28487,7 @@ class SliderModel extends _abstract_AbstractModelPublisher__WEBPACK_IMPORTED_MOD
         return this;
     }
     get state() {
-        return {
-            ruler: this._ruler.state,
-            points: this._points.state
-        };
+        return this._points.state;
     }
 }
 
@@ -28579,31 +28574,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../abstract/AbstractViewPublisher */ "./src/ts/abstract/AbstractViewPublisher.ts");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _pointInPercents__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pointInPercents */ "./src/ts/views/pointInPercents.ts");
-
 
 
 class PointView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE_0__["default"] {
-    constructor(value, side, ruler) {
+    constructor(state, _side) {
         super();
-        this._side = side;
-        this._ruler = ruler;
+        this._side = _side;
         this.$_instance = jquery__WEBPACK_IMPORTED_MODULE_1___default()(document.createElement('span'));
         this.$_instance.addClass(PointView.className);
-        this._position = Object(_pointInPercents__WEBPACK_IMPORTED_MODULE_2__["pointInPercents"])(value, ruler);
-        this.moveTo(this._position);
+        this.moveTo(state);
     }
     ;
     moveTo(point) {
         if (point < 0 || point > 100)
             return;
-        this._position = point;
+        this._state = point;
         this.$_instance
-            .css(this._side, `${this._position}%`);
+            .css(this._side, `${this._state}%`);
         this.notify();
     }
     get state() {
-        return this._position;
+        return this._state;
     }
 }
 PointView.className = 'slider slider__point';
@@ -28623,6 +28614,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PointsView; });
 /* harmony import */ var _PointView__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PointView */ "./src/ts/views/PointView.ts");
 /* harmony import */ var _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../abstract/AbstractViewPublisher */ "./src/ts/abstract/AbstractViewPublisher.ts");
+/* harmony import */ var _pointInPercents__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pointInPercents */ "./src/ts/views/pointInPercents.ts");
+
 
 
 class PointsView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODULE_1__["default"] {
@@ -28634,7 +28627,7 @@ class PointsView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODUL
             points = [points];
         }
         this._points = points.map(point => {
-            let newPoint = new _PointView__WEBPACK_IMPORTED_MODULE_0__["default"](point, side, _ruler);
+            let newPoint = new _PointView__WEBPACK_IMPORTED_MODULE_0__["default"](Object(_pointInPercents__WEBPACK_IMPORTED_MODULE_2__["pointInPercents"])(point, this._ruler), side);
             newPoint.attach(this);
             return newPoint;
         });
@@ -28651,6 +28644,17 @@ class PointsView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODUL
     }
     get state() {
         return this._state;
+    }
+    move(to, from) {
+        let [min, max] = this._ruler;
+        this._points
+            .map(point => {
+            let state = Math.floor(point.state * (max - min) / 100) + min;
+            if (state === from) {
+                point.moveTo(Object(_pointInPercents__WEBPACK_IMPORTED_MODULE_2__["pointInPercents"])(to, this._ruler));
+            }
+        });
+        return this;
     }
 }
 
@@ -28838,6 +28842,10 @@ class SliderView extends _abstract_AbstractViewPublisher__WEBPACK_IMPORTED_MODUL
     update() {
         this.state = this._points.state;
         this.notify();
+    }
+    move(to, from) {
+        this._points.move(to, from);
+        return this;
     }
     events() {
         for (let point of this._points) {

@@ -3,5 +3,5 @@ const common = require("./webpack.common.config");
 
 module.exports = merge(common, {
     mode: "development",
-    devtool: "sourceMap",
+    devtool: "source-map",
 })

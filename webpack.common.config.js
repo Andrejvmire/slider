@@ -35,25 +35,18 @@ module.exports = {
                         loader: miniCssExtractPlugin.loader
                     },
                     {
-                        loader: "css-loader",
-                        options: {
-                            sourceMap: true
-                        }
+                        loader: "css-loader"
                     },
                     {
                         loader: "postcss-loader",
                         options: {
-                            sourceMap: true,
                             plugins: [
                                 require('autoprefixer'),
                             ]
                         }
                     },
                     {
-                        loader: "sass-loader",
-                        options: {
-                            sourceMap: true
-                        }
+                        loader: "sass-loader"
                     }
                 ]
             }

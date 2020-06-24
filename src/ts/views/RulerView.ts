@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 export default class RulerView implements IView {
     private $_instance: JQuery;
     private readonly _state: number[];

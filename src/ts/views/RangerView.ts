@@ -1,4 +1,5 @@
 import {pointInPercents} from "./pointInPercents";
+import $ from 'jquery';
 
 export default class RangerView implements IViewSubscriber, IView {
     private static className: string = 'slider slider__ranger';

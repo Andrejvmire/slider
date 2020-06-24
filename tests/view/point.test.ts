@@ -4,13 +4,13 @@ import {pointInPercents} from "../../src/ts/views/pointInPercents";
 
 describe("Тестируем PointView", () => {
     describe("Обработка корректных данных", () => {
-        let point: IViewPublisher;
+        let point: IViewPublisher & IPoint;
         beforeAll(() => {
             point = new PointView(pointInPercents(40, [0,100]), "left");
         })
         it('Вернет не null', () => {
             expect(point.state)
-                .not.toBeNull();
+                .not.toBeUndefined();
         });
         it('Вернет объект JQuery', () => {
             expect(point.$instance)
@@ -23,6 +23,11 @@ describe("Тестируем PointView", () => {
         it('содержит классы slider slider__point', function () {
             expect(point.$instance.hasClass('slider slider__point'))
                 .toBeTruthy()
+        });
+        it('не изменит значение при перемещении в точку за границами', function () {
+            point.moveTo(101);
+            expect(point.state)
+                .toStrictEqual(40)
         });
     })
 })

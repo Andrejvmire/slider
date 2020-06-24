@@ -1,11 +1,12 @@
+import $ from 'jquery';
+
 export default class TooltipView implements IViewSubscriber, IView {
     private _state: number;
     private $_instance: JQuery;
     private static className: string = 'slider slider__tooltip';
 
     constructor(point: number, private _orientation: 'horizontal' | 'vertical') {
-        this.$_instance = $(document.createElement("span")).
-            addClass(TooltipView.className);
+        this.$_instance = $(document.createElement("span")).addClass(TooltipView.className);
         this.orientation();
         this.update(point);
     }

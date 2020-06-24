@@ -28,29 +28,32 @@ export default class PointsView extends AbstractViewPublisher implements IViewPu
     }
 
     update(): void {
-        let [from, to] = this._ruler;
         this._state = this._points.map(
-            point => Math.round(point.state * (to - from) / 100) + from
+            point => this.round(point.state)
         )
-            .sort((a, b) => a - b)
         this.notify();
     }
 
     get state(): number[] {
-        return this._state;
+        return this._state
+            .sort((a, b) => a - b);
     }
 
     move(to: number, from: number): IPoints {
-        let [min, max] = this._ruler;
         this._points
             .map(
                 point => {
-                    let state = Math.round(point.state * (max - min) / 100) + min;
+                    let state = this.round(point.state);
                     if (state === from) {
                         point.moveTo(pointInPercents(to, this._ruler));
                     }
                 }
             )
         return this;
+    }
+
+    private round(point: number): number {
+        let [min, max] = this._ruler;
+        return Math.round(point * (max - min) / 100) + min
     }
 }

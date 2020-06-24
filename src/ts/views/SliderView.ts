@@ -1,14 +1,12 @@
 import AbstractViewPublisher from "../abstract/AbstractViewPublisher";
-import PointView from "./PointView";
 import RulerView from "./RulerView";
-import TooltipView from "./TooltipView";
 import RangerView from "./RangerView";
 import TooltipsView from "./TooltipsView";
 import PointsView from "./PointsView";
 
 export default class SliderView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber, ISlider {
-    private _points: PointsView;
-    private _tooltips: TooltipsView;
+    private _points: IViewPublisher & IPoints & IIterable<IViewPublisher & IPoint>;
+    private _tooltips: IViewSubscriber & IIterable<IViewSubscriber & IView>;
     private _ruler: IView;
     private _ranger: IView & IViewSubscriber;
     private readonly _side: "left" | "top";

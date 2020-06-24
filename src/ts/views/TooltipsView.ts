@@ -1,6 +1,6 @@
 import TooltipView from "./TooltipView";
 
-export default class TooltipsView implements IViewSubscriber {
+export default class TooltipsView implements IViewSubscriber, IIterable<IViewSubscriber & IView> {
     private _tooltip: (IViewSubscriber & IView)[] = [];
 
     constructor(points: PointsType, _orientation: 'horizontal' | 'vertical') {

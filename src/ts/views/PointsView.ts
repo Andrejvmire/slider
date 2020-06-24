@@ -2,7 +2,7 @@ import PointView from "./PointView";
 import AbstractViewPublisher from "../abstract/AbstractViewPublisher";
 import {pointInPercents} from "./pointInPercents";
 
-export default class PointsView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber, IPoints {
+export default class PointsView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber, IPoints, IIterable<IViewPublisher & IPoint> {
     private readonly _points: (IViewPublisher & IPoint)[] = [];
     private _state: number[];
 

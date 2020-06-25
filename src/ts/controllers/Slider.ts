@@ -11,7 +11,7 @@ export default class Slider implements ISubscriber, IViewSubscriber {
             ...options
         });
         this._view = new SliderView({
-            ...Object.assign(options, {points: this._model.state})
+            ...options, points: this._model.state
         }, parent);
         this._model.attach(this);
         this._view.attach(this);

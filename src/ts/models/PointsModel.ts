@@ -36,8 +36,8 @@ export default class PointsModel extends AbstractModelPublisher implements ISubs
             this._points
                 .reduce(
                     (previousValue, currentValue) => {
-                        const absCurrVal = Math.abs(currentValue.state - to),
-                            absPrevValue = Math.abs(previousValue.state - to);
+                        const absCurrVal = Math.abs(currentValue.state - to);
+                        const absPrevValue = Math.abs(previousValue.state - to);
                         return (absPrevValue <= absCurrVal) ? previousValue : currentValue;
                     }
                 )

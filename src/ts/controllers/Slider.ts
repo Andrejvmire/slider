@@ -18,10 +18,10 @@ export default class Slider implements ISubscriber, IViewSubscriber {
     }
 
     update(data?: any): void {
-        let modelState = this._model.state,
-            viewState = <number[]>this._view.state;
-        let viewDif = _.difference(viewState, modelState)[0],
-            modelDif = _.difference(modelState, viewState)[0];
+        const modelState = this._model.state;
+        const viewState = <number[]>this._view.state;
+        const viewDif = _.difference(viewState, modelState)[0];
+        const modelDif = _.difference(modelState, viewState)[0];
         if (_.difference(data, modelState).length !== 0) {
             this._model.move(viewDif, modelDif);
         } else if (_.difference(data, viewState)) {

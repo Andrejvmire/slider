@@ -15,7 +15,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
 
     constructor(private options: ViewOptionsType, private parent: JQuery) {
         super();
-        let {orientation} = options;
+        const {orientation} = options;
         this.state = (typeof options.points === "number") ? [options.points] : options.points;
         this._side =
             ((orientation === 'horizontal') || (typeof orientation === "undefined"))
@@ -69,9 +69,9 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private rangerInit(): void {
-        let {ruler} = this.options;
+        const {ruler} = this.options;
         if (typeof this.options.points !== "number" && this.options.points.length === 2) {
-            let value = <[number, number]>this.options.points
+            const value = <[number, number]>this.options.points
                 .map(
                     point => point
                 )
@@ -81,7 +81,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private tooltipInit(): void {
-        let {tooltip} = this.options;
+        const {tooltip} = this.options;
         if (tooltip) {
             this._tooltips = new TooltipsView(this.state, this.options.orientation || 'horizontal');
             this._points.attach(this._tooltips);
@@ -93,18 +93,18 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private pointsInit(): void {
-        let {ruler} = this.options;
+        const {ruler} = this.options;
         this._points = new PointsView(this.state, this._side, ruler);
         this._points.attach(this);
     }
 
     private percentsInPoint(event: JQuery.TriggeredEvent): number {
-        let offset = this.$_container.offset(),
-            relativeX = (event.pageX || 0) - (offset?.left || 0),
-            relativeY = (event.pageY || 0) - (offset?.top || 0),
-            width = this.$_container.width() || 1,
-            height = this.$_container.height() || 1,
-            percent = {
+        const offset = this.$_container.offset();
+        const relativeX = (event.pageX || 0) - (offset?.left || 0);
+        const relativeY = (event.pageY || 0) - (offset?.top || 0);
+        const width = this.$_container.width() || 1;
+        const height = this.$_container.height() || 1;
+        const percent = {
                 left: (relativeX * 100) / width,
                 top: (relativeY * 100) / height
             };
@@ -139,10 +139,10 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
                 let newPoint = this.percentsInPoint(clickEvent);
                 Array.from(this._points)
                     .reduce(
-                        ((previousValue, currentValue) =>
+                        (previousValue, currentValue) =>
                             (Math.abs(previousValue.state - newPoint) <= Math.abs(currentValue.state - newPoint))
                                 ? previousValue
-                                : currentValue)
+                                : currentValue
                     )
                     .moveTo(newPoint);
             })

@@ -4,9 +4,9 @@ export default class Validator implements IValidator {
     private _errors: string[] = [];
 
     static inRange(ruler: IRuler, points: IPoints | number): Validator {
-        let model: Validator = new Validator(),
-            {min, max} = ruler.state,
-            values: number[] = [];
+        const model: Validator = new Validator();
+        const {min, max} = ruler.state;
+        let values: number[] = [];
         if (typeof points === "number") {
             values.push(points);
         } else {

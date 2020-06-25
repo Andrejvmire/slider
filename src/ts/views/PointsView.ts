@@ -14,7 +14,7 @@ export default class PointsView extends AbstractViewPublisher implements IViewPu
         this._state = points;
         this._points = this._state.map(
             point => {
-                let newPoint = new PointView(pointInPercents(point, this._ruler), side);
+                const newPoint = new PointView(pointInPercents(point, this._ruler), side);
                 newPoint.attach(this);
                 return newPoint;
             }
@@ -43,7 +43,7 @@ export default class PointsView extends AbstractViewPublisher implements IViewPu
         this._points
             .map(
                 point => {
-                    let state = this.round(point.state);
+                    const state = this.round(point.state);
                     if (state === from) {
                         point.moveTo(pointInPercents(to, this._ruler));
                     }
@@ -53,7 +53,7 @@ export default class PointsView extends AbstractViewPublisher implements IViewPu
     }
 
     private round(point: number): number {
-        let [min, max] = this._ruler;
+        const [min, max] = this._ruler;
         return Math.round(point * (max - min) / 100) + min
     }
 }

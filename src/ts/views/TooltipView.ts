@@ -12,7 +12,7 @@ export default class TooltipView implements IViewSubscriber, IView {
     }
 
     private orientation(): void {
-        let width = this.$_instance.width() || 0;
+        const width = this.$_instance.width() || 0;
         if (this._orientation === 'horizontal') {
             this.$_instance
                 .css("top", "1.1rem")

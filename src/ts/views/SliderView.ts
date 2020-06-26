@@ -38,14 +38,6 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
             .addClass(`slider__container_${this.options.orientation || 'horizontal'}`)
     }
 
-    private static appendView(view: IView, parent: IView): JQuery {
-        if (typeof view !== "undefined") {
-            view.$instance
-                .appendTo(parent.$instance);
-        }
-        return parent.$instance;
-    }
-
     private render(): void {
         if (typeof this._ranger !== "undefined") {
             this._ruler.$instance.append(this._ranger.$instance);

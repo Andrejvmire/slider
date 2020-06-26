@@ -20,7 +20,7 @@ export default class TooltipsView implements IViewSubscriber, IIterable<IViewSub
 
     update(values: number[]): void {
         values
-            .sort(((a, b) => a - b))
+            .sort((a, b) => a - b)
             .map(
                 (value, index) => this._tooltip[index].update(value)
             )

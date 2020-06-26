@@ -24,7 +24,7 @@ export default class Slider implements ISubscriber, IViewSubscriber {
         const modelDif = _.difference(modelState, viewState)[0];
         if (_.difference(data, modelState).length !== 0) {
             this._model.move(viewDif, modelDif);
-        } else if (_.difference(data, viewState)) {
+        } else if (_.difference(data, viewState).length !== 0) {
             this._view.move(modelDif, viewDif);
         }
     }

@@ -105,9 +105,9 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
         const width = this.$_container.width() || 1;
         const height = this.$_container.height() || 1;
         const percent = {
-                left: (relativeX * 100) / width,
-                top: (relativeY * 100) / height
-            };
+            left: (relativeX * 100) / width,
+            top: (relativeY * 100) / height
+        };
         return percent[this._side];
     }
 
@@ -122,30 +122,57 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private events(): void {
-        for (let point of this._points) {
-            point.$instance
-                .on('mousedown.slider__point', () => {
-                    $(document).one('mousedown.slider__point', () => false);
-                    $(document).one('mouseup.slider__point', () => {
-                        $(document).off('mousemove.slider__point');
-                    })
-                    $(document).on('mousemove.slider__point', mouseMoveEvent => {
-                        point.moveTo(this.percentsInPoint(mouseMoveEvent));
-                    })
-                })
+        for (let $point of this._points) {
+            $point.$instance
+                .on(
+                    'mousedown.slider__point',
+                    {$context: $point},
+                    this.onMouseDownOnPoint.bind(this)
+                )
         }
         this._ruler.$instance
-            .on('click.slider__ruler', clickEvent => {
-                let newPoint = this.percentsInPoint(clickEvent);
-                Array.from(this._points)
-                    .reduce(
-                        (previousValue, currentValue) =>
-                            (Math.abs(previousValue.state - newPoint) <= Math.abs(currentValue.state - newPoint))
-                                ? previousValue
-                                : currentValue
-                    )
-                    .moveTo(newPoint);
-            })
+            .on('click.slider__ruler', this.onMouseClickOnSlider.bind(this));
     }
 
+    private onMouseClickOnSlider(event: JQuery.MouseEventBase): void {
+        let newPoint = this.percentsInPoint(event);
+        Array.from(this._points)
+            .reduce(
+                (previousValue, currentValue) =>
+                    (Math.abs(previousValue.state - newPoint) <= Math.abs(currentValue.state - newPoint))
+                        ? previousValue
+                        : currentValue
+            )
+            .moveTo(newPoint);
+    }
+
+    private onMouseDownOnPoint(event: JQuery.MouseDownEvent): void {
+        let {$context} = event.data;
+        let $document = $(document);
+        $document.one('mousedown.slider__point', SliderView.deselectText.bind(this));
+        $document.one(
+            'mouseup.slider__point',
+            {$context: $document},
+            SliderView.onMouseUpOnDocument
+        );
+        $document.on(
+            'mousemove.slider__point',
+            {$context},
+            this.onMouseMovePoint.bind(this)
+        )
+    }
+
+    private onMouseMovePoint(event: JQuery.MouseMoveEvent): void {
+        let {$context} = event.data;
+        $context.moveTo(this.percentsInPoint(event));
+    }
+
+    private static onMouseUpOnDocument(event: JQuery.MouseUpEvent): void {
+        let {$context} = event.data;
+        $context.off('mousemove.slider__point');
+    }
+
+    private static deselectText(): false {
+        return false;
+    }
 }

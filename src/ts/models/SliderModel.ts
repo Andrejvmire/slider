@@ -15,7 +15,9 @@ export default class SliderModel extends AbstractModelPublisher implements ISlid
         this._ruler = new RulerModel(options.ruler);
         this._step = options.step || 1;
         if (this._step <= 0) throw new Error("The step must be greater than 0");
-        this._points = new PointsModel(options.points);
+        // fixme: разобраться, почему выдает ошибку
+        // @ts-ignore
+        this._points = new PointsModel(this.setStep(options.points));
         this.inRangeValidate();
         this._points.attach(this);
     }
@@ -32,20 +34,27 @@ export default class SliderModel extends AbstractModelPublisher implements ISlid
         this.notify(data);
     }
 
-    // fixme: исправить момент формирования точки в зависимости от шага.
     move(to: number, from?: number): SliderModel {
         let value = this.setStep(to);
         try {
             this.inRangeValidate(value);
             this._points.move(value, from);
         } catch (e) {
-
+            this.notify();
         }
         return this;
     }
 
-    private setStep(value: number): number {
-        return value - (value % this._step);
+    private setStep(value: number): number;
+    private setStep(value: number[]): number[];
+    private setStep(value: any): any {
+        if (typeof value === "number") {
+            return value - (value % this._step);
+        } else if (Array.isArray(value) && typeof value === "object") {
+            return value.map(
+                (item: number) => this.setStep(item)
+            )
+        }
     }
 
     get state(): number[] {

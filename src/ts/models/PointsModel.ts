@@ -12,7 +12,7 @@ export default class PointsModel extends AbstractModelPublisher implements ISubs
             .sort((a, b) => a - b);
     };
 
-    constructor(points: [number, number] | [number] | number) {
+    constructor(points: PointsType) {
         super();
         if (typeof points === "number") {
             this._points.push(new PointModel(points, this))

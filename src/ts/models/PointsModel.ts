@@ -3,7 +3,6 @@ import AbstractModelPublisher from "../abstract/AbstractModelPublisher";
 
 export default class PointsModel extends AbstractModelPublisher implements ISubscriber, IPoints {
     private _points: IPoint[] = [];
-    private _step: number;
 
     get state(): number[] {
         return this._points
@@ -13,25 +12,18 @@ export default class PointsModel extends AbstractModelPublisher implements ISubs
             .sort((a, b) => a - b);
     };
 
-    constructor(points: [number, number] | [number] | number, step: number = 1) {
+    constructor(points: [number, number] | [number] | number) {
         super();
-        if (step <= 0) throw new Error("The step must be greater than 0");
-        this._step = step;
         if (typeof points === "number") {
-            this._points.push(new PointModel(this.setStep(points), this))
+            this._points.push(new PointModel(points, this))
         } else {
             this._points = points.map(
-                point => new PointModel(this.setStep(point), this)
+                point => new PointModel(point, this)
             );
         }
     };
 
-    private setStep(value: number): number {
-        return value - (value % this._step);
-    }
-
     move(to: number, from?: number): PointsModel {
-        to = this.setStep(to);
         if (typeof from === "undefined") {
             this._points
                 .reduce(

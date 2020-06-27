@@ -8,11 +8,14 @@ export default class SliderModel extends AbstractModelPublisher implements ISlid
     private readonly _ruler: IModel;
     private readonly _points: IPoints;
     private _validator: IValidator;
+    private readonly _step: number;
 
     constructor(options: ModelOptionsType) {
         super();
         this._ruler = new RulerModel(options.ruler);
-        this._points = new PointsModel(options.points, options.step);
+        this._step = options.step || 1;
+        if (this._step <= 0) throw new Error("The step must be greater than 0");
+        this._points = new PointsModel(options.points);
         this.inRangeValidate();
         this._points.attach(this);
     }
@@ -29,14 +32,20 @@ export default class SliderModel extends AbstractModelPublisher implements ISlid
         this.notify(data);
     }
 
+    // fixme: исправить момент формирования точки в зависимости от шага.
     move(to: number, from?: number): SliderModel {
+        let value = this.setStep(to);
         try {
-            this.inRangeValidate(to);
-            this._points.move(to, from);
+            this.inRangeValidate(value);
+            this._points.move(value, from);
         } catch (e) {
 
         }
         return this;
+    }
+
+    private setStep(value: number): number {
+        return value - (value % this._step);
     }
 
     get state(): number[] {

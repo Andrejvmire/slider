@@ -1,4 +1,5 @@
 import Slider from '../../src/ts/models/SliderModel';
+import Points from "../../src/ts/models/PointsModel";
 
 describe("Модель Slider", function () {
     const startObj: ModelOptionsType = {ruler: [0, 120], points: [0, 120]}
@@ -46,6 +47,10 @@ describe("Модель Slider", function () {
                 })()
             )
                 .toStrictEqual([0, 120])
+        });
+        it('Должен вызвать ошибку step < 0', () => {
+            expect(() => new Slider({points: [3, 45], ruler: [0, 60], step: -1}))
+                .toThrowError();
         });
     })
 

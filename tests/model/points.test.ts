@@ -21,10 +21,6 @@ describe("Class 'Points'", function () {
             )
                 .toStrictEqual([54])
         });
-        it('Должен вызвать ошибку step < 0', () => {
-            expect(() => new Points([3,45], -1))
-                .toThrowError();
-        });
     });
     describe("Подписываемся на PointsModel", function () {
         let points: IModelPublisher & IPoints,

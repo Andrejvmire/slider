@@ -1,30 +1,18 @@
 export default abstract class AbstractPublisher implements IPublisher {
-    private _subscribers: {
-        modelEvent: ISubscriber[],
-        viewEvent: ISubscriber[]
-    } = {
-        modelEvent: [],
-        viewEvent: []
-    }
+    private _subscribers: Set<ISubscriber> = new Set<ISubscriber>();
     state: any;
 
-    attach(subscriber: ISubscriber, type: modelType): void {
-        const isExist = this._subscribers[type].includes(subscriber);
-        if (!isExist) {
-            this._subscribers[type].push(subscriber);
-        }
+    attach(subscriber: ISubscriber): void {
+        this._subscribers.add(subscriber);
     }
 
-    detach(subscriber: ISubscriber, type: modelType): void {
-        const index = this._subscribers[type].indexOf(subscriber);
-        if (index !== -1) {
-            this._subscribers[type].slice(index, 1);
-        }
+    detach(subscriber: ISubscriber): void {
+        this._subscribers.delete(subscriber);
     }
 
-    notify(type: modelType, data?: any): void {
-        for (let subscriber of this._subscribers[type]) {
-            subscriber.update(data || this.state);
-        }
+    notify(data?: any): void {
+        this._subscribers.forEach(
+            subscriber => subscriber.update(data || this.state)
+        )
     }
 }

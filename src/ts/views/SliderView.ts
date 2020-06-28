@@ -10,7 +10,6 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     private _ruler: IView;
     private _ranger: IView & IViewSubscriber;
     private readonly _side: "left" | "top";
-    private readonly $_container: JQuery;
     private static className: string = 'slider slider__container';
 
     constructor(private options: ViewOptionsType, private parent: JQuery) {
@@ -23,7 +22,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
                 "left"
                 :
                 "top";
-        this.$_container = parent
+        this.$_instance = parent
             .addClass(SliderView.className);
         this.orientation();
         this.pointsInit();
@@ -34,7 +33,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private orientation(): void {
-        this.$_container
+        this.$_instance
             .addClass(`slider__container_${this.options.orientation || 'horizontal'}`)
     }
 
@@ -56,7 +55,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
                     }
                 )
             )
-            .appendTo(this.$_container);
+            .appendTo(this.$_instance);
         this.events();
     }
 
@@ -91,11 +90,11 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private percentsInPoint(event: JQuery.TriggeredEvent): number {
-        const offset = this.$_container.offset();
+        const offset = this.$_instance.offset();
         const relativeX = (event.pageX || 0) - (offset?.left || 0);
         const relativeY = (event.pageY || 0) - (offset?.top || 0);
-        const width = this.$_container.width() || 1;
-        const height = this.$_container.height() || 1;
+        const width = this.$_instance.width() || 1;
+        const height = this.$_instance.height() || 1;
         const percent = {
             left: (relativeX * 100) / width,
             top: (relativeY * 100) / height

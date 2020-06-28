@@ -1,9 +1,7 @@
 interface IPublisher extends IModel {
-    attach(subscriber: ISubscriber, type: modelType): void;
+    attach(subscriber: ISubscriber): void;
 
-    detach(subscriber: ISubscriber, type: modelType): void;
+    detach(subscriber: ISubscriber): void;
 
-    notify(type: modelType, data?: any): void;
+    notify(data?: any): void;
 }
-
-type modelType = "modelEvent" | "viewEvent";

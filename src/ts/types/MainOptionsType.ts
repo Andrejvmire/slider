@@ -4,5 +4,6 @@ type MainOptionsType = {
     step?: number,
     orientation?: 'vertical' | 'horizontal',
     value?(points: PointsType): void,
-    tooltip?: boolean
+    tooltip?: boolean,
+    ranger?: boolean | "revert",
 }

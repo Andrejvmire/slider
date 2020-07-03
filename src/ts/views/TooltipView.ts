@@ -23,8 +23,9 @@ export default class TooltipView implements IViewSubscriber, IView {
     }
 
     update(value: number): void {
+        this._state = value;
         this.$_instance
-            .html(String(value))
+            .html(String(this._state))
     }
 
     get state(): number {

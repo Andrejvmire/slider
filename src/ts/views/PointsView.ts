@@ -54,7 +54,7 @@ export default class PointsView extends AbstractViewPublisher implements IViewPu
                 point => {
                     const {state} = point;
                     if (state === from) {
-                        point.moveTo(pointInPercents(to, this._ruler));
+                        point.moveTo(to);
                     }
                 }
             )

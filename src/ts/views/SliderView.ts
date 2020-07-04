@@ -1,7 +1,6 @@
 import AbstractViewPublisher from "../abstract/AbstractViewPublisher";
 import RulerView from "./RulerView";
 import RangerView from "./RangerView";
-import TooltipsView from "./TooltipsView";
 import PointsView from "./PointsView";
 
 export default class SliderView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber, ISlider {
@@ -84,6 +83,11 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
         return percent[this._side];
     }
 
+    private round(point: number): number {
+        const [min, max] = this.options.ruler;
+        return Math.round(point * (max - min) / 100) + min
+    }
+
     update(): void {
         this.state = this._points.state;
         this.notify();
@@ -109,6 +113,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
 
     private onMouseClickOnSlider(event: JQuery.MouseEventBase): void {
         let newPoint = this.percentsInPoint(event);
+        newPoint = this.round(newPoint);
         Array.from(this._points)
             .reduce(
                 (previousValue, currentValue) =>
@@ -137,7 +142,8 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
 
     private onMouseMovePoint(event: JQuery.MouseMoveEvent): void {
         let {$context} = event.data;
-        $context.moveTo(this.percentsInPoint(event));
+        let point = this.round(this.percentsInPoint(event))
+        $context.moveTo(point);
     }
 
     private static onMouseUpOnDocument(event: JQuery.MouseUpEvent): void {

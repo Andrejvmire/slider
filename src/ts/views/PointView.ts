@@ -10,11 +10,11 @@ export default class PointView extends AbstractViewPublisher implements IViewPub
         super();
         this.$_instance = $(document.createElement('span'));
         this.$_instance.addClass(PointView.className);
-        state = pointInPercents(state, _ruler);
         this.moveTo(state);
     };
 
     moveTo(point: number): void {
+        point = pointInPercents(point, this._ruler);
         if (point < 0 || point > 100) return;
         this._state = point;
         this.$_instance

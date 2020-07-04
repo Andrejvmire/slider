@@ -1,12 +1,13 @@
 import PointView from "./PointView";
 import AbstractViewPublisher from "../abstract/AbstractViewPublisher";
 import {pointInPercents} from "./pointInPercents";
+import TooltipView from "./TooltipView";
 
 export default class PointsView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber, IPoints, IIterable<IViewPublisher & IPoint> {
     private readonly _points: (IViewPublisher & IPoint)[] = [];
     private _state: number[];
 
-    constructor(points: PointsType, side: "left" | "top", private _ruler: [number, number]) {
+    constructor(points: PointsType, side: "left" | "top", private _ruler: [number, number], tooltip: boolean = true) {
         super();
         if (typeof points === "number") {
             points = [points];
@@ -14,7 +15,15 @@ export default class PointsView extends AbstractViewPublisher implements IViewPu
         this._state = points;
         this._points = this._state.map(
             point => {
-                const newPoint = new PointView(pointInPercents(point, this._ruler), side);
+                const newPoint = new PointView(point, side, this._ruler,);
+                if (tooltip) {
+                    const newTooltip = new TooltipView(point, "horizontal");
+                    newPoint.attach(newTooltip);
+                    newPoint.$instance
+                        .append(
+                            newTooltip.$instance
+                        )
+                }
                 newPoint.attach(this);
                 return newPoint;
             }
@@ -29,7 +38,7 @@ export default class PointsView extends AbstractViewPublisher implements IViewPu
 
     update(): void {
         this._state = this._points.map(
-            point => this.round(point.state)
+            point => point.state
         )
         this.notify();
     }
@@ -43,7 +52,7 @@ export default class PointsView extends AbstractViewPublisher implements IViewPu
         this._points
             .map(
                 point => {
-                    const state = this.round(point.state);
+                    const {state} = point;
                     if (state === from) {
                         point.moveTo(pointInPercents(to, this._ruler));
                     }
@@ -52,8 +61,4 @@ export default class PointsView extends AbstractViewPublisher implements IViewPu
         return this;
     }
 
-    private round(point: number): number {
-        const [min, max] = this._ruler;
-        return Math.round(point * (max - min) / 100) + min
-    }
 }

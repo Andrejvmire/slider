@@ -19,9 +19,13 @@ describe('тестируем PointsView', () => {
             expect(Array.from(points)[0])
                 .toBeInstanceOf(PointView);
         });
-        it('Переместит состояние с учетом перемещения точки', () => {
+        it('Переместит состояние с учетом перемещения 1-ой точки', () => {
             expect(points.move(300, 55).state)
                 .toStrictEqual([300, 345])
+        });
+        it('Переместит состояние с учетом перемещения 2-ой точки', () => {
+            expect(points.move(355, 345).state)
+                .toStrictEqual([55, 355])
         });
     });
     describe('Обработка корректных данных с 1-ой точкой', () => {

@@ -6,7 +6,6 @@ import PointsView from "./PointsView";
 
 export default class SliderView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber, ISlider {
     private _points: IViewPublisher & IPoints & IIterable<IViewPublisher & IPoint>;
-    private _tooltips: IViewSubscriber & IIterable<IViewSubscriber & IView>;
     private _ruler: IView;
     private _ranger: IView & IViewSubscriber;
     private readonly _side: "left" | "top";
@@ -27,7 +26,6 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
         this.orientation();
         this.pointsInit();
         this.rulerInit();
-        this.tooltipInit();
         this.rangerInit();
         this.render();
     }
@@ -44,15 +42,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
         this._ruler.$instance
             .append(
                 Array.from(this._points).map(
-                    (item, index) => {
-                        if (this.options.tooltip) {
-                            item.$instance
-                                .append(
-                                    Array.from(this._tooltips)[index].$instance
-                                )
-                        }
-                        return item.$instance;
-                    }
+                    (point) => point.$instance
                 )
             )
             .appendTo(this.$_instance);
@@ -68,14 +58,6 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
                 )
             this._ranger = new RangerView(value, ruler, this._side);
             this.attach(this._ranger);
-        }
-    }
-
-    private tooltipInit(): void {
-        const {tooltip} = this.options;
-        if (tooltip) {
-            this._tooltips = new TooltipsView(this.state, this.options.orientation || 'horizontal');
-            this._points.attach(this._tooltips);
         }
     }
 

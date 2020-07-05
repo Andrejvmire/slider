@@ -15,7 +15,6 @@ export default class SliderModel extends AbstractModelPublisher implements ISlid
         this._ruler = new RulerModel(options.ruler);
         this._step = options.step || 1;
         if (this._step <= 0) throw new Error("The step must be greater than 0");
-        // fixme: разобраться, почему выдает ошибку
         // @ts-ignore
         this._points = new PointsModel(this.setStep(options.points));
         this.inRangeValidate();

@@ -1,8 +1,8 @@
 type MainOptionsType = {
-    ruler: [number, number],
+    ruler: RulerType,
     points: PointsType,
     step?: number,
-    orientation?: 'vertical' | 'horizontal',
+    orientation?: SliderOrientationType,
     value?(points: PointsType): void,
     tooltip?: boolean,
     ranger?: boolean | "revert",

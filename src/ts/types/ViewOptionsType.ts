@@ -1,6 +1,6 @@
 type ViewOptionsType = {
     orientation?: SliderOrientationType,
     tooltip?: boolean,
-    ruler: [number, number],
+    ruler: RulerType,
     points: PointsType
 }

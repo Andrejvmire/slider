@@ -7,7 +7,7 @@ export default class PointsView extends AbstractViewPublisher implements IViewPu
     private readonly _points: (IViewPublisher & IPoint)[] = [];
     private _state: number[];
 
-    constructor(points: PointsType, side: "left" | "top", private _ruler: [number, number], tooltip: boolean = true) {
+    constructor(points: PointsType, side: SideType, private _ruler: RulerType, tooltip: boolean = true, orientation: SliderOrientationType = "horizontal") {
         super();
         if (typeof points === "number") {
             points = [points];
@@ -17,7 +17,7 @@ export default class PointsView extends AbstractViewPublisher implements IViewPu
             point => {
                 const newPoint = new PointView(point, side, this._ruler,);
                 if (tooltip) {
-                    const newTooltip = new TooltipView(point, "horizontal");
+                    const newTooltip = new TooltipView(point, orientation);
                     newPoint.attach(newTooltip);
                     newPoint.$instance
                         .append(

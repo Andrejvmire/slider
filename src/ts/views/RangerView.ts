@@ -4,12 +4,12 @@ import $ from 'jquery';
 export default class RangerView implements IViewSubscriber, IView {
     private static className: string = 'slider slider__ranger';
     private readonly $_instance: JQuery;
-    private readonly _ruler: [number, number];
+    private readonly _ruler: RulerType;
     private _state: [number, number];
-    private readonly _side: 'left' | 'top';
+    private readonly _side: SideType;
     private readonly _size: 'width' | 'height';
 
-    constructor(points: [number, number], ruler: [number, number], side?: 'left' | 'top') {
+    constructor(points: [number, number], ruler: RulerType, side?: SideType) {
         this._side = side || 'left';
         this._ruler = ruler;
         this._size = (this._side === 'left') ? 'width' : 'height';

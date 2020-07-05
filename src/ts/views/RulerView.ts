@@ -5,7 +5,7 @@ export default class RulerView implements IView {
     private readonly _state: number[];
     private static className: string = 'slider slider__ruler';
 
-    constructor(scope: [number, number], private _orientation: 'horizontal' | 'vertical') {
+    constructor(scope: RulerType, private _orientation: SliderOrientationType) {
         this.$_instance = $(document.createElement("div"))
             .addClass(RulerView.className);
         this.orientation();

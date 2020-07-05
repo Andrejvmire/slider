@@ -7,7 +7,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     private _points: IViewPublisher & IPoints & IIterable<IViewPublisher & IPoint>;
     private _ruler: IView;
     private _ranger: IView & IViewSubscriber;
-    private readonly _side: "left" | "top";
+    private readonly _side: SideType;
     private static className: string = 'slider slider__container';
 
     constructor(private options: ViewOptionsType, private parent: JQuery) {
@@ -65,7 +65,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private pointsInit(): void {
-        const {ruler} = this.options;
+        const {ruler, orientation} = this.options;
         this._points = new PointsView(this.state, this._side, ruler);
         this._points.attach(this);
     }

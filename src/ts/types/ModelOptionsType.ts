@@ -1,5 +1,5 @@
 type ModelOptionsType = {
-    ruler: [number, number],
+    ruler: RulerType,
     points: PointsType,
     step?: number
 }

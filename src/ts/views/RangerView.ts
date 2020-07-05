@@ -2,7 +2,7 @@ import {pointInPercents} from "./pointInPercents";
 import $ from 'jquery';
 
 export default class RangerView implements IViewSubscriber, IView {
-    private static className: string = 'slider slider__ranger';
+    private className: string[] = ['slider', 'slider__ranger'];
     private readonly $_instance: JQuery;
     private readonly _ruler: RulerType;
     private _state: [number, number];
@@ -14,7 +14,7 @@ export default class RangerView implements IViewSubscriber, IView {
         this._ruler = ruler;
         this._size = (this._side === 'left') ? 'width' : 'height';
         this.$_instance = $(document.createElement("div"))
-            .addClass(RangerView.className);
+            .addClass(this.className);
         this.update(points);
     }
 

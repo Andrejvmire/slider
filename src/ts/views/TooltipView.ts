@@ -3,23 +3,18 @@ import $ from 'jquery';
 export default class TooltipView implements IViewSubscriber, IView {
     private _state: number;
     private readonly $_instance: JQuery;
-    private static className: string = 'slider slider__tooltip';
+    private className: string[] = ['slider', 'slider__tooltip'];
 
     constructor(point: number, private _orientation: SliderOrientationType) {
-        this.$_instance = $(document.createElement("span")).addClass(TooltipView.className);
-        this.orientation();
+        this.$_instance = $(document.createElement("span"));
+        this.addClass();
         this.update(point);
     }
 
-    private orientation(): void {
-        const width = this.$_instance.width() || 0;
-        if (this._orientation === 'horizontal') {
-            this.$_instance
-                .css("top", "1.1rem")
-        } else {
-            this.$_instance
-                .css("left", width + 18)
-        }
+    private addClass(): void {
+        let orientation = `slider__tooltip_${this._orientation}`;
+        this.className.push(orientation);
+        this.$_instance.addClass(this.className);
     }
 
     update(value: number): void {

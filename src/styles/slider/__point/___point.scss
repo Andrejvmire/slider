@@ -7,8 +7,9 @@
     border: .1rem solid white;
     border-radius: 50%;
     background: red;
-    transform: translate(-.45rem, -.35rem);
+    transform: translate(-.6rem, -.35rem);
     z-index: 10;
-    justify-content: center;
+    justify-content: start;
+    align-content: start;
   }
 }

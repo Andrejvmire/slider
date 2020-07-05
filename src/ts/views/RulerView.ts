@@ -3,11 +3,11 @@ import $ from 'jquery';
 export default class RulerView implements IView {
     private $_instance: JQuery;
     private readonly _state: number[];
-    private static className: string = 'slider slider__ruler';
+    private className: string = 'slider slider__ruler';
 
     constructor(scope: RulerType, private _orientation: SliderOrientationType) {
         this.$_instance = $(document.createElement("div"))
-            .addClass(RulerView.className);
+            .addClass(this.className);
         this.orientation();
         this._state = scope;
     }

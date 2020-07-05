@@ -3,15 +3,20 @@ import $ from 'jquery';
 import {pointInPercents} from "./pointInPercents";
 
 export default class PointView extends AbstractViewPublisher implements IViewPublisher, IPoint {
-    private static className: string = 'slider slider__point';
+    private className: string[] = ['slider', 'slider__point'];
     private _state: number;
 
     constructor(state: number, private _side: SideType, private _ruler: RulerType) {
         super();
         this.$_instance = $(document.createElement('span'));
-        this.$_instance.addClass(PointView.className);
+        this.addClass();
         this.moveTo(state);
     };
+
+    private addClass(): void {
+        this.$_instance
+            .addClass(this.className);
+    }
 
     moveTo(point: number): void {
         point = pointInPercents(point, this._ruler);

@@ -1,10 +1,7 @@
-interface JQuery
-{
-    slider(options: any): JQuery;
+interface JQuery {
+    simpleSlider(method?: MethodNameType, options?: MainOptionsType): JQuery;
 }
 
-interface JQueryStatic
-{
-    slider(template:string,data?:any,options?:any): JQuery;
-    slider(template:(data:any)=>string,data?:any,options?:any): JQuery;
+interface JQueryStatic {
+    simpleSlider(options: any): JQuery;
 }

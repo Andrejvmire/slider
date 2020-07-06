@@ -6,7 +6,7 @@ describe("Тестируем PointView", () => {
     describe("Обработка корректных данных", () => {
         let point: IViewPublisher & IPoint;
         beforeAll(() => {
-            point = new PointView(40, "left", [0,100]);
+            point = new PointView(40, "left", [0,100], "vertical");
         })
         it('Вернет не null', () => {
             expect(point.state)

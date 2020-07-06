@@ -6,7 +6,7 @@ export default class PointView extends AbstractViewPublisher implements IViewPub
     private className: string[] = ['slider', 'slider__point'];
     private _state: number;
 
-    constructor(state: number, private _side: SideType, private _ruler: RulerType) {
+    constructor(state: number, private _side: SideType, private _ruler: RulerType, private _orientation: SliderOrientationType) {
         super();
         this.$_instance = $(document.createElement('span'));
         this.addClass();
@@ -14,6 +14,9 @@ export default class PointView extends AbstractViewPublisher implements IViewPub
     };
 
     private addClass(): void {
+        this.className.push(
+            `slider__point_${this._orientation}`
+        );
         this.$_instance
             .addClass(this.className);
     }

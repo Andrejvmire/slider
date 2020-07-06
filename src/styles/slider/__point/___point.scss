@@ -7,9 +7,16 @@
     border: .1rem solid white;
     border-radius: 50%;
     background: red;
-    transform: translate(-.6rem, -.35rem);
     z-index: 10;
     justify-content: start;
     align-content: start;
+
+    &_horizontal {
+      transform: translate(-.6rem, -.35rem);
+    }
+
+    &_vertical {
+      transform: translate(-.35rem, -.6rem);
+    }
   }
 }

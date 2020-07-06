@@ -1,6 +1,5 @@
 import PointView from "./PointView";
 import AbstractViewPublisher from "../abstract/AbstractViewPublisher";
-import {pointInPercents} from "./pointInPercents";
 import TooltipView from "./TooltipView";
 
 export default class PointsView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber, IPoints, IIterable<IViewPublisher & IPoint> {
@@ -15,7 +14,7 @@ export default class PointsView extends AbstractViewPublisher implements IViewPu
         this._state = points;
         this._points = this._state.map(
             point => {
-                const newPoint = new PointView(point, side, this._ruler);
+                const newPoint = new PointView(point, side, this._ruler, orientation);
                 if (tooltip) {
                     const newTooltip = new TooltipView(point, orientation);
                     newPoint.attach(newTooltip);

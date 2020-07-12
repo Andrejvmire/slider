@@ -1,7 +1,9 @@
 interface JQuery {
-    simpleSlider(method?: MethodNameType, options?: MainOptionsType): JQuery;
-}
+    simpleSlider(): JQuery;
 
-interface JQueryStatic {
-    simpleSlider(options: any): JQuery;
+    simpleSlider(options: MainOptionsType): JQuery;
+
+    simpleSlider(method: "value", callback: Function): JQuery;
+
+    simpleSlider(method: "update", options: PointsType): JQuery;
 }

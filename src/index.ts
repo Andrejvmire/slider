@@ -2,37 +2,72 @@ import JQuery from 'jquery';
 import Slider from "./ts/controllers/Slider";
 
 (function ($) {
-    let methods = {
-        init: (options: MainOptionsType) => {
-            console.log(options, this);
-            return new Slider(options, $(this));
+    const methods = {
+        init: function (opts: MainOptionsType): JQuery {
+            return this.each(() => {
+                this.slider = new Slider(opts, this);
+                return this;
+            })
         },
-        update: (value: PointsType) => {
-
+        update: function (value: PointsType): JQuery {
+            console.log(value);
+            return this.each(() => {
+                this.slider.update(value);
+            })
         },
-        value: (): PointsType => {
-            return [5, 6];
+        value: function (callback: Function): PointsType {
+            return this.each(() => {
+                this.slider.subscribe(callback);
+                return this;
+            })
         }
-    };
-    $.fn.simpleSlider = function (method?: MethodNameType, options?: MainOptionsType): JQuery {
-        let settings: MainOptionsType = {
-            ruler: [2, 100],
-            points: 50,
-            step: 1,
-            orientation: "horizontal",
-            ranger: false,
-            tooltip: false,
-        };
-        return this.each(function () {
-            if (typeof method !== "undefined" && methods[method]) {
-                return methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
-            } else if (typeof method === "object" || typeof method === "undefined") {
-                return methods.init.apply(this, settings);
-            } else {
-                $.error(`Method ${method} is not defined for "simpleSlider"`);
-            }
-        });
     }
+
+    function simpleSlider(): JQuery;
+    function simpleSlider(options: MainOptionsType): JQuery;
+    function simpleSlider(method: "value", callback: Function): JQuery;
+    function simpleSlider(method: "update", options: PointsType): JQuery;
+    function simpleSlider(method?: any, options?: any, callback?: Function): any {
+        let settings = (opt?: MainOptionsType): MainOptionsType => Object.assign(
+            {},
+            {
+                ruler: [2, 100],
+                points: 50,
+                step: 1,
+                orientation: "horizontal",
+                ranger: false,
+                tooltip: false,
+            },
+            opt
+        );
+        console.log(method, options);
+        if (typeof method === "undefined") {
+            return methods.init.call(this, settings());
+        } else if (typeof method === "object") {
+            return methods.init.call(this, settings(method))
+        } else if (method === "update") {
+            return methods.update.call(this, options);
+        }
+        // if (typeof method === "undefined") {
+        //     return methods.init.call(this, settings(options));
+        // } else if (method === "update") {
+        //     return methods.update.call(this, options);
+        // } else if (method === "value") {
+        //     return methods.value.call(this, options);
+        // }
+    }
+
+    $.fn.simpleSlider = simpleSlider;
 })(JQuery)
 
-$("#app").simpleSlider("init");
+let app = $("#app").simpleSlider();
+let slider = $("#slider_2").simpleSlider({
+    points: [55, 80],
+    ruler: [-55, 230],
+    orientation: "vertical",
+    tooltip: true,
+});
+
+app.simpleSlider("update", [88])
+// app.simpleSlider("value", console.log);
+// slider.simpleSlider("value", console.log);

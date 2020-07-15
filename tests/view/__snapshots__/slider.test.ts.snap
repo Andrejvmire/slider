@@ -1,0 +1,189 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Тестируем SliderView Создаем класс дложен соответствовать слепку 1`] = `
+jQuery {
+  "0": <div
+    class="slider slider__container slider__container_vertical"
+  >
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+  </div>,
+  "length": 1,
+}
+`;
+
+exports[`Тестируем SliderView Создаем класс должен соответствовать слепку 1`] = `
+jQuery {
+  "0": <div
+    class="slider slider__container slider__container_vertical"
+  >
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+  </div>,
+  "length": 1,
+}
+`;

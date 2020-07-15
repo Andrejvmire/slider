@@ -21,6 +21,10 @@ describe('Тестируем SliderView', function () {
             expect(slider.$instance)
                 .toBeInstanceOf($);
         });
+        it("должен соответствовать снимку", function () {
+            expect(parent)
+                .toMatchSnapshot();
+        })
     });
     describe('Меняем состояние', function () {
         beforeEach(() => {
@@ -33,17 +37,6 @@ describe('Тестируем SliderView', function () {
         it('Переместит точку', function () {
             expect(slider.move(-20, -3).state)
                 .toStrictEqual([-20, 77]);
-        });
-    });
-    describe('Тестируем события', function () {
-        beforeEach(() => {
-            slider = new SliderView({
-                points: [56, 78],
-                ruler: [0, 100]
-            }, parent);
-        });
-        it('должен ', function () {
-
         });
     });
 });

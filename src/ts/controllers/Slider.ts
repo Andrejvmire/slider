@@ -3,7 +3,7 @@ import SliderView from "../views/SliderView";
 import _ from "lodash";
 import AbstractPublisher from "../abstract/AbstractPublisher";
 
-export default class Slider extends AbstractPublisher implements ISubscriber, IViewSubscriber {
+export default class Slider extends AbstractPublisher implements ISubscriber, IViewSubscriber, IPublisher {
     private _model: ISlider;
     private _view: ISlider;
 

@@ -2,11 +2,13 @@ import AbstractViewPublisher from "../abstract/AbstractViewPublisher";
 import RulerView from "./RulerView";
 import RangerView from "./RangerView";
 import PointsView from "./PointsView";
+import ScaleView from "./ScaleView";
 
 export default class SliderView extends AbstractViewPublisher implements IViewPublisher, IViewSubscriber, ISlider {
     private _points: IViewPublisher & IPoints & IIterable<IViewPublisher & IPoint>;
     private _ruler: IView;
     private _ranger: IView & IViewSubscriber;
+    private _scale: IIterable<JQuery>;
     private readonly _side: SideType;
     private className: string[] = ['slider', 'slider__container'];
 
@@ -25,6 +27,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
         this.pointsInit();
         this.rulerInit();
         this.rangerInit();
+        this.scaleInit();
         this.render();
     }
 
@@ -40,6 +43,9 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
         if (typeof this._ranger !== "undefined") {
             this._ruler.$instance.append(this._ranger.$instance);
         }
+        if (typeof this._scale !== "undefined") {
+            this._ruler.$instance.append(Array.from(this._scale));
+        }
         this._ruler.$instance
             .append(
                 Array.from(this._points).map(
@@ -48,6 +54,18 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
             )
             .appendTo(this.$_instance);
         this.events();
+    }
+
+    private scaleInit(): void {
+        const {scale, ruler} = this.options;
+        let point: number[];
+        if (typeof scale === "undefined" || scale === false) return;
+        if (typeof scale === "boolean") {
+            point = ruler;
+        } else {
+            point = scale;
+        }
+        this._scale = new ScaleView(point, ruler, this._side);
     }
 
     private rangerInit(): void {

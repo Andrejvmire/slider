@@ -1,5 +1,543 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Тестируем SliderView  Добавляем шкалу должен соответствовать снимку 1`] = `
+jQuery {
+  "0": <div
+    class="slider slider__container slider__container_vertical slider__container_horizontal"
+  >
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 1.3513513513513513%; height: 43.69369369369369%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 1.3513513513513513%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          -20
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 45.04504504504504%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          77
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_horizontal"
+    >
+      <div
+        class="slider slider__ranger"
+        style="left: 8.13953488372093%; width: 46.279069767441854%;"
+      />
+      <span
+        class="slider slider__scale"
+        style="left: 0%;"
+      >
+        0
+      </span>
+      <span
+        class="slider slider__scale"
+        style="left: 100%;"
+      >
+        430
+      </span>
+      <span
+        class="slider slider__point slider__point_horizontal"
+        style="left: 8.13953488372093%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_horizontal"
+        >
+          35
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_horizontal"
+        style="left: 54.41860465116279%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_horizontal"
+        >
+          234
+        </span>
+      </span>
+    </div>
+  </div>,
+  "length": 1,
+}
+`;
+
+exports[`Тестируем SliderView  Добавляем шкалу должен соответствовать снимку с двумя точками шкалы 1`] = `
+jQuery {
+  "0": <div
+    class="slider slider__container slider__container_vertical slider__container_horizontal"
+  >
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 1.3513513513513513%; height: 43.69369369369369%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 1.3513513513513513%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          -20
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 45.04504504504504%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          77
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_horizontal"
+    >
+      <div
+        class="slider slider__ranger"
+        style="left: 8.13953488372093%; width: 46.279069767441854%;"
+      />
+      <span
+        class="slider slider__scale"
+        style="left: 0%;"
+      >
+        0
+      </span>
+      <span
+        class="slider slider__scale"
+        style="left: 100%;"
+      >
+        430
+      </span>
+      <span
+        class="slider slider__point slider__point_horizontal"
+        style="left: 8.13953488372093%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_horizontal"
+        >
+          35
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_horizontal"
+        style="left: 54.41860465116279%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_horizontal"
+        >
+          234
+        </span>
+      </span>
+    </div>
+  </div>,
+  "length": 1,
+}
+`;
+
+exports[`Тестируем SliderView  Добавляем шкалу должен соответствовать снимку с произвольным количесвом точек шкалы 1`] = `
+jQuery {
+  "0": <div
+    class="slider slider__container slider__container_vertical slider__container_horizontal"
+  >
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 1.3513513513513513%; height: 43.69369369369369%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 1.3513513513513513%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          -20
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 45.04504504504504%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          77
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_horizontal"
+    >
+      <div
+        class="slider slider__ranger"
+        style="left: 8.13953488372093%; width: 46.279069767441854%;"
+      />
+      <span
+        class="slider slider__scale"
+        style="left: 0%;"
+      >
+        0
+      </span>
+      <span
+        class="slider slider__scale"
+        style="left: 100%;"
+      >
+        430
+      </span>
+      <span
+        class="slider slider__point slider__point_horizontal"
+        style="left: 8.13953488372093%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_horizontal"
+        >
+          35
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_horizontal"
+        style="left: 54.41860465116279%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_horizontal"
+        >
+          234
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_horizontal"
+    >
+      <div
+        class="slider slider__ranger"
+        style="left: 8.13953488372093%; width: 46.279069767441854%;"
+      />
+      <span
+        class="slider slider__scale"
+        style="left: 10.465116279069768%;"
+      >
+        45
+      </span>
+      <span
+        class="slider slider__scale"
+        style="left: 15.813953488372093%;"
+      >
+        68
+      </span>
+      <span
+        class="slider slider__scale"
+        style="left: 23.023255813953487%;"
+      >
+        99
+      </span>
+      <span
+        class="slider slider__scale"
+        style="left: 34.883720930232556%;"
+      >
+        150
+      </span>
+      <span
+        class="slider slider__point slider__point_horizontal"
+        style="left: 8.13953488372093%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_horizontal"
+        >
+          35
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_horizontal"
+        style="left: 54.41860465116279%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_horizontal"
+        >
+          234
+        </span>
+      </span>
+    </div>
+  </div>,
+  "length": 1,
+}
+`;
+
 exports[`Тестируем SliderView Создаем класс дложен соответствовать слепку 1`] = `
 jQuery {
   "0": <div
@@ -95,6 +633,100 @@ jQuery {
 `;
 
 exports[`Тестируем SliderView Создаем класс должен соответствовать слепку 1`] = `
+jQuery {
+  "0": <div
+    class="slider slider__container slider__container_vertical"
+  >
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+    <div
+      class="slider slider__ruler slider__ruler_vertical"
+    >
+      <div
+        class="slider slider__ranger"
+        style="top: 28.333333333333332%; height: 9.166666666666668%;"
+      />
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 28.333333333333332%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          34
+        </span>
+      </span>
+      <span
+        class="slider slider__point slider__point_vertical"
+        style="top: 37.5%;"
+      >
+        <span
+          class="slider slider__tooltip slider__tooltip_vertical"
+        >
+          45
+        </span>
+      </span>
+    </div>
+  </div>,
+  "length": 1,
+}
+`;
+
+exports[`Тестируем SliderView Создаем класс должен соответствовать снимку 1`] = `
 jQuery {
   "0": <div
     class="slider slider__container slider__container_vertical"

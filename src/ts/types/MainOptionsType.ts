@@ -6,4 +6,5 @@ type MainOptionsType = {
     value?(points: PointsType): void,
     tooltip?: boolean,
     ranger?: boolean | "revert",
+    scale?: boolean | number[],
 }

@@ -57,7 +57,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private scaleInit(): void {
-        const {scale, ruler} = this.options;
+        const {scale, ruler, orientation} = this.options;
         let point: number[];
         if (typeof scale === "undefined" || scale === false) return;
         if (typeof scale === "boolean") {
@@ -65,7 +65,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
         } else {
             point = scale;
         }
-        this._scale = new ScaleView(point, ruler, this._side);
+        this._scale = new ScaleView(point, ruler, this._side, orientation);
     }
 
     private rangerInit(): void {

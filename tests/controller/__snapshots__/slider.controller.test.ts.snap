@@ -1,71 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Тестируем контроллер должен переместить точку на новое место, оповестить подписчика и соответствовать слепку 1`] = `
-jQuery {
-  "0": <div
-    class="slider slider__container slider__container_horizontal"
-  >
-    <div
-      class="slider slider__ruler slider__ruler_horizontal"
-    >
-      <div
-        class="slider slider__ranger"
-        style="left: 30.470633007738172%; width: 21.375110998350877%;"
-      />
-      <span
-        class="slider slider__point slider__point_horizontal"
-        style="left: 30.470633007738172%;"
-      >
-        <span
-          class="slider slider__tooltip slider__tooltip_horizontal"
-        >
-          3
-        </span>
-      </span>
-      <span
-        class="slider slider__point slider__point_horizontal"
-        style="left: 51.84574400608905%;"
-      >
-        <span
-          class="slider slider__tooltip slider__tooltip_horizontal"
-        >
-          1688
-        </span>
-      </span>
-    </div>
-    <div
-      class="slider slider__ruler slider__ruler_horizontal"
-    >
-      <div
-        class="slider slider__ranger"
-        style="left: 25.35836610427502%; width: 26.48737790181403%;"
-      />
-      <span
-        class="slider slider__point slider__point_horizontal"
-        style="left: 25.35836610427502%;"
-      >
-        <span
-          class="slider slider__tooltip slider__tooltip_horizontal"
-        >
-          -400
-        </span>
-      </span>
-      <span
-        class="slider slider__point slider__point_horizontal"
-        style="left: 51.84574400608905%;"
-      >
-        <span
-          class="slider slider__tooltip slider__tooltip_horizontal"
-        >
-          1688
-        </span>
-      </span>
-    </div>
-  </div>,
-  "length": 1,
-}
-`;
-
 exports[`Тестируем контроллер должен переместить точку на новое место, оповестить подписчика и соответствовать снимку 1`] = `
 jQuery {
   "0": <div
@@ -114,44 +48,6 @@ jQuery {
           class="slider slider__tooltip slider__tooltip_horizontal"
         >
           -400
-        </span>
-      </span>
-      <span
-        class="slider slider__point slider__point_horizontal"
-        style="left: 51.84574400608905%;"
-      >
-        <span
-          class="slider slider__tooltip slider__tooltip_horizontal"
-        >
-          1688
-        </span>
-      </span>
-    </div>
-  </div>,
-  "length": 1,
-}
-`;
-
-exports[`Тестируем контроллер должен соответствовать слепку 1`] = `
-jQuery {
-  "0": <div
-    class="slider slider__container slider__container_horizontal"
-  >
-    <div
-      class="slider slider__ruler slider__ruler_horizontal"
-    >
-      <div
-        class="slider slider__ranger"
-        style="left: 30.470633007738172%; width: 21.375110998350877%;"
-      />
-      <span
-        class="slider slider__point slider__point_horizontal"
-        style="left: 30.470633007738172%;"
-      >
-        <span
-          class="slider slider__tooltip slider__tooltip_horizontal"
-        >
-          3
         </span>
       </span>
       <span

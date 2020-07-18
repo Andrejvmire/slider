@@ -1,0 +1,28 @@
+@if(&) {
+  &__scale {
+    position: relative;
+    display: inline-grid;
+    width: 0;
+    height: 0;
+
+    &:after {
+      content: attr(data-scale-value);
+      position: absolute;
+      justify-self: center;
+      align-self: self-end;
+      opacity: .5;
+    }
+
+    &_vertical {
+      &:after {
+        left: 1rem;
+      }
+    }
+
+    &_horizontal {
+      &:after {
+        top: .1rem;
+      }
+    }
+  }
+}

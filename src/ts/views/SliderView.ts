@@ -119,29 +119,47 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private events(): void {
-        for (let $point of this._points) {
-            $point.$instance
+        for (let point of this._points) {
+            point.$instance
                 .on(
                     'mousedown.slider__point',
-                    {$context: $point},
+                    {$context: point},
                     this.onMouseDownOnPoint.bind(this)
+                )
+        }
+        for (let $scaleValue of this._scale) {
+            $scaleValue
+                .on(
+                    'click.slider__scale',
+                    {state: $scaleValue.data("scaleValue")},
+                    this.onMouseClickOnScale.bind(this)
                 )
         }
         this._ruler.$instance
             .on('click.slider__ruler', this.onMouseClickOnSlider.bind(this));
     }
 
-    private onMouseClickOnSlider(event: JQuery.MouseEventBase): void {
-        let newPoint = this.percentsInPoint(event);
-        newPoint = this.round(newPoint);
+    private onMouseClickOnScale(event: JQuery.MouseUpEvent): void {
+        const {state} = event.data;
+        event.stopPropagation();
+        this.moveSomePoint(state);
+    }
+
+    private moveSomePoint(to: number): void {
         Array.from(this._points)
             .reduce(
                 (previousValue, currentValue) =>
-                    (Math.abs(previousValue.state - newPoint) <= Math.abs(currentValue.state - newPoint))
+                    (Math.abs(previousValue.state - to) <= Math.abs(currentValue.state - to))
                         ? previousValue
                         : currentValue
             )
-            .moveTo(newPoint);
+            .moveTo(to);
+    }
+
+    private onMouseClickOnSlider(event: JQuery.MouseEventBase): void {
+        let newPoint = this.percentsInPoint(event);
+        newPoint = this.round(newPoint);
+        this.moveSomePoint(newPoint);
     }
 
     private onMouseDownOnPoint(event: JQuery.MouseDownEvent): void {

@@ -5,35 +5,38 @@ import Slider from "./ts/controllers/Slider";
     const DATA_FIELD = 'simpleSlider';
     const methods = {
         init: function (opts: MainOptionsType): JQuery {
-            return this.each(() => {
-                let data = $(this).data(DATA_FIELD);
-                if (data) return this;
-                this.slider = new Slider(opts, this);
-                $(this).data(DATA_FIELD, {
-                    slider: this
-                })
-                return this;
+            return this.each(function () {
+                let $this = $(this);
+                let data = $this.data(DATA_FIELD);
+                if (data) return $this;
+                let slider = new Slider(opts, $this);
+                $this.data(DATA_FIELD, {
+                    slider
+                });
+                return $this;
             })
         },
         update: function (value: PointsType): JQuery {
-            return this.each(() => {
-                let data = $(this).data(DATA_FIELD);
-                if (!data) return this;
-                this.slider.update(value);
-                return this;
+            return this.each(function () {
+                let $this = $(this);
+                let data = $this.data(DATA_FIELD);
+                if (!data) return $this;
+                data.slider.update(value);
+                return $this;
             })
         },
         value: function (callback: Function): JQuery {
-            return this.each(() => {
-                let data = $(this).data(DATA_FIELD);
-                if (!data) return this;
+            return this.each(function () {
+                let $this = $(this);
+                let data = $this.data(DATA_FIELD);
+                if (!data) return $this;
                 let subscriber: ISubscriber = {
                     update(data?: any) {
                         callback(data);
                     }
                 }
-                this.slider.attach(subscriber);
-                return this;
+                data.slider.attach(subscriber);
+                return $this;
             })
         }
     }

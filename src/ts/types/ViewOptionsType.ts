@@ -4,4 +4,5 @@ type ViewOptionsType = {
     ruler: RulerType,
     points: PointsType,
     scale?: boolean | number[],
+    ranger?: boolean | "revert",
 }

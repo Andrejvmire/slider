@@ -69,13 +69,10 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private rangerInit(): void {
-        const {ruler} = this.options;
-        if (typeof this.options.points !== "number" && this.options.points.length === 2) {
-            const value = <[number, number]>this.options.points
-                .map(
-                    point => point
-                )
-            this._ranger = new RangerView(value, ruler, this._side);
+        let {ruler, points, ranger} = this.options;
+        if (typeof points === "object" && points.length === 2) ranger = true;
+        if (typeof ranger !== "undefined") {
+            this._ranger = new RangerView(points, ruler, this._side, ranger);
             this.attach(this._ranger);
         }
     }
@@ -127,7 +124,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
                     this.onMouseDownOnPoint.bind(this)
                 )
         }
-        for (let $scaleValue of this._scale) {
+        for (let $scaleValue of (this._scale || [])) {
             $scaleValue
                 .on(
                     'click.slider__scale',

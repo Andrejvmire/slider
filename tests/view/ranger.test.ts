@@ -11,7 +11,7 @@ describe('тестируем RangerView', () => {
         })
     describe('корректные данные', () => {
         beforeEach(() => {
-            ranger = new RangerView([45, 89], [0, 300]);
+            ranger = new RangerView([45, 89], [0, 300], "left", true);
         })
         it('Вернет не undefined', () => {
             expect(ranger)

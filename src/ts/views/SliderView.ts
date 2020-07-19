@@ -88,7 +88,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
     }
 
     private percentsInPoint(event: JQuery.TriggeredEvent): number {
-        const offset = this.$_instance.offset();
+        const offset = this._ruler.$instance.offset();
         const relativeX = (event.pageX || 0) - (offset?.left || 0);
         const relativeY = (event.pageY || 0) - (offset?.top || 0);
         const width = this.$_instance.width() || 1;

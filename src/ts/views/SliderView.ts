@@ -102,7 +102,7 @@ export default class SliderView extends AbstractViewPublisher implements IViewPu
 
     private round(point: number): number {
         const [min, max] = this.options.ruler;
-        return Math.round(point * (max - min) / 100) + min
+        return (point * (max - min) / 100) + min
     }
 
     update(): void {

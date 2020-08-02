@@ -48,12 +48,21 @@ export default class SliderModel extends AbstractModelPublisher implements ISlid
     private setStep(value: number[]): number[];
     private setStep(value: any): any {
         if (typeof value === "number") {
-            return value - (value % this._step);
+            return this.round(value - (value % this._step));
         } else if (Array.isArray(value) && typeof value === "object") {
             return value.map(
                 (item: number) => this.setStep(item)
             )
         }
+    }
+
+    private round(value: number): number {
+        const [, fractionalPart] = this._step
+            .toString()
+            .split('.');
+        if (typeof fractionalPart === "undefined") return value;
+        const fractionalPartLength = fractionalPart.length;
+        return +value.toFixed(fractionalPartLength);
     }
 
     get state(): number[] {

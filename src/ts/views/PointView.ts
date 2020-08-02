@@ -22,20 +22,15 @@ export default class PointView extends AbstractViewPublisher implements IViewPub
     }
 
     moveTo(point: number): void {
-        point = pointInPercents(point, this._ruler);
-        if (point < 0 || point > 100) return;
+        let newPoint = pointInPercents(point, this._ruler);
+        if (newPoint < 0 || newPoint > 100) return;
         this._state = point;
         this.$_instance
-            .css(this._side, `${this._state}%`);
+            .css(this._side, `${newPoint}%`);
         this.notify();
     }
 
     get state(): number {
-        return this.round(this._state);
-    }
-
-    private round(point: number): number {
-        const [min, max] = this._ruler;
-        return Math.round(point * (max - min) / 100) + min
+        return this._state;
     }
 }

@@ -1,24 +1,26 @@
 import _ from "lodash";
 
-export default class Validator implements IValidator {
+export const Validator: IValidator = class ValidatorConstructor implements IValidatorConstructor {
     private _errors: string[] = [];
 
-    static inRange(ruler: IRuler, points: IPoints | number): Validator {
-        const model: Validator = new Validator();
-        const {min, max} = ruler.state;
-        let values: number[] = [];
-        if (typeof points === "number") {
-            values.push(points);
-        } else {
-            values = _.concat(values, points.state);
+    [index: string]: any;
+
+    private constructor() {
+    }
+
+    inRange(value: number, condition: [number, number]): ValidatorConstructor {
+        const [min, max] = condition;
+        if ((value < min) || (value > min)) {
+            this._errors.push(`Point ${value} less then ${min} or great then ${max}`)
         }
-        values
-            .map(point => {
-                if ((point < min) || (point > max)) {
-                    model._errors
-                        .push(`Point ${point} less then ${min} or great then ${max}`)
-                }
-            })
+        return this;
+    }
+
+    static callValidator(functionName: string, value: any, condition: any): ValidatorConstructor {
+        const model = new ValidatorConstructor();
+        if (functionName in this) {
+            return model[functionName](value, condition);
+        }
         return model;
     }
 

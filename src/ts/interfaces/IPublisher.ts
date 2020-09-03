@@ -1,4 +1,4 @@
-interface IPublisher extends IModel {
+interface IPublisher {
     attach(subscriber: ISubscriber): void;
 
     detach(subscriber: ISubscriber): void;

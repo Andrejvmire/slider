@@ -1,12 +1,9 @@
-import _ from "lodash";
-
 export const Validator: IValidator = class ValidatorConstructor implements IValidatorConstructor {
     private _errors: string[] = [];
 
     [index: string]: any;
 
-    private constructor() {
-    }
+    private constructor() {}
 
     inRange(value: number, condition: [number, number]): ValidatorConstructor {
         const [min, max] = condition;

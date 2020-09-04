@@ -5,17 +5,26 @@ export const Validator: IValidator = class ValidatorConstructor implements IVali
 
     private constructor() {}
 
-    inRange(value: number, condition: [number, number]): ValidatorConstructor {
+    inRange(value: PointsType, condition: [number, number]): ValidatorConstructor {
         const [min, max] = condition;
-        if ((value < min) || (value > min)) {
-            this._errors.push(`Point ${value} less then ${min} or great then ${max}`)
+        const valueInRange = (value: number) => {
+            if ((value < min) || (value > max)) {
+                this._errors.push(`Point ${value} less then ${min} or great then ${max}`)
+            }
+        }
+        if (typeof value === "number") {
+            valueInRange(value)
+        } else {
+            value.map(
+                valueInRange
+            )
         }
         return this;
     }
 
     static callValidator(functionName: string, value: any, condition: any): ValidatorConstructor {
         const model = new ValidatorConstructor();
-        if (functionName in this) {
+        if (functionName in model) {
             return model[functionName](value, condition);
         }
         return model;

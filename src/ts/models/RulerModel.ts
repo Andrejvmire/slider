@@ -1,16 +1,9 @@
-export default class RulerModel implements IRuler {
-    private readonly _min: number;
-    private readonly _max: number;
+export default class RulerModel implements IModel {
+    private readonly _state: IStateWriteable;
+    private readonly _fieldName: string = "ruler";
 
-    constructor(options: RulerType) {
-        this._min = options[0];
-        this._max = options[1];
-    }
-
-    get state(): RulerResponseType {
-        return {
-            min: this._min,
-            max: this._max
-        }
+    constructor(stateObject: IStateWriteable, options: RulerType) {
+        this._state = stateObject;
+        this._state.setState(this._fieldName, options);
     }
 }

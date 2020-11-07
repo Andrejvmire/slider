@@ -1,6 +1,7 @@
 import ValidDataState from "../abstract/ValidDataState";
 
 export default class ModelState extends ValidDataState {
+
     rules(): RuleType[] {
         return [
             {
@@ -8,5 +9,4 @@ export default class ModelState extends ValidDataState {
             },
         ];
     }
-
 }

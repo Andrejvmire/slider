@@ -1,11 +1,11 @@
-export const Validator: IValidator = class ValidatorConstructor implements IValidatorConstructor {
+export const Validator = class ValidatorConstructor implements IValidator {
     private _errors: string[] = [];
 
     [index: string]: any;
 
-    private constructor() {}
+    protected constructor() {}
 
-    inRange(value: PointsType, condition: [number, number]): ValidatorConstructor {
+    inRange(value: PointsType, condition: [number, number]): IValidator {
         const [min, max] = condition;
         const valueInRange = (value: number) => {
             if ((value < min) || (value > max)) {

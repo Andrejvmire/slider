@@ -21,8 +21,8 @@ describe("Тестируем контроллер", function () {
     });
     it('должен переместить точку на новое место, оповестить подписчика и соответствовать снимку', function () {
         slider.update([-400]);
-        expect(slider.state)
-            .toStrictEqual([-400, 1688]);
+        // expect(slider.state)
+        //     .toStrictEqual([-400, 1688]);
         expect(subscriber.update.mock.results[0].value)
             .toStrictEqual([-400, 1688]);
         expect(parent)

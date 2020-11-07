@@ -1,20 +1,25 @@
-import Singleton from "../models/Singleton";
-
-export default abstract class DataState extends Singleton implements IPublisher {
-    private _state: any = {};
+export default abstract class DataState implements IState {
+    private readonly _state: Map<string, any>;
     private _subscribers: Set<ISubscriber> = new Set<ISubscriber>();
 
+    constructor(initState: any = {}) {
+        this._state = new Map<string, any>(Object.entries(initState));
+    }
+
     setState(fieldName: string, value: any): DataState {
-        this._state[fieldName] = value;
+        this._state.set(fieldName, value);
         this.notify();
         return this;
     }
 
-    getState(fieldName?: string): any {
+    getState(): IterableIterator<[string, any]>;
+    getState(fieldName: string): any;
+    getState(fieldName?: any): any {
         if (typeof fieldName === "undefined") {
             return this._state;
+        } else {
+            return this._state.get(fieldName);
         }
-        return this._state[fieldName];
     }
 
     attach(subscriber: ISubscriber): void {
@@ -25,7 +30,7 @@ export default abstract class DataState extends Singleton implements IPublisher 
         this._subscribers.delete(subscriber);
     }
 
-    notify(data?: any): void {
+    notify(): void {
         this._subscribers.forEach(
             subscriber => subscriber.update(this._state)
         )

@@ -1,3 +1,0 @@
-interface IModelPublisher extends IPublisher {
-
-}

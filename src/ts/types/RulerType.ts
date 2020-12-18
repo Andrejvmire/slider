@@ -1,1 +1,0 @@
-type RulerType = [number, number];

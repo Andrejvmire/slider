@@ -1,1 +1,0 @@
-type MethodNameType = 'init' | 'update' | 'value';

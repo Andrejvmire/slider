@@ -1,1 +1,0 @@
-type SideType = "top" | "left";

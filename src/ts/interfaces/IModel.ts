@@ -1,3 +1,0 @@
-interface IModel {
-    state: any;
-}

@@ -1,15 +1,12 @@
-class SimpleRepository<T, K extends keyof T> implements IRepository<T, K> {
-    protected _repository: Map<K, T>
+class SimpleRepository {
+    protected static _repository: Map<string, any>;
 
-    public constructor() {
-        this._repository = new Map<K, T>();
-    }
+    private constructor() {}
 
-    public setValue(key: K, value: T) {
-        this._repository.set(key, value);
-    }
-
-    public getValue(key: K): T | undefined {
-        return this._repository.get(key);
+    public static init(): Map<string, any> {
+        if (typeof SimpleRepository._repository === "undefined") {
+            SimpleRepository._repository = new Map();
+        }
+        return SimpleRepository._repository;
     }
 }

@@ -1,9 +1,9 @@
 interface JQuery {
     simpleSlider(): JQuery;
 
-    simpleSlider(options: MainOptionsType): JQuery;
+    simpleSlider(options: TSliderOptions): JQuery;
 
     simpleSlider(method: "value", callback: Function): JQuery;
 
-    simpleSlider(method: "update", options: PointsType): JQuery;
+    simpleSlider(method: "update", options: TSliderOptions): JQuery;
 }

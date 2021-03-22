@@ -1,0 +1,1 @@
+type TSliderOptions = TModelOptions & TViewOptions;

@@ -1,1 +1,1 @@
-type TPublisher = "error" | "apply" | null | "root";
+type TPublisher = "error" | "apply" | "root";

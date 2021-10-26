@@ -1,7 +1,7 @@
-interface IModelSlider<K extends keyof V, V extends TModelOptions> {
+interface IModelSlider {
     value(): TModelOptions;
 
-    value(key: K): V;
+    value(key: string): number;
 
-    value(key: K, value: V): void;
+    value(key: string, value: number): void;
 }

@@ -14,16 +14,10 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "@typescript-eslint/strict-boolean-expressions": [
-      2,
-      {
-        "allowString": false,
-        "allowNumber": false
-      }
-    ]
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off"
   },
   "ignorePatterns": [
-    "src/**/*.test.ts",
-    "src/frontend/generated/*"
+    "src/**/*.test.ts"
   ]
 }

@@ -9,7 +9,7 @@ describe("Тест издателя", function () {
         },
         publisher: IPublisher = new Publisher(),
         error: TPublisher = "error",
-        type: TPublisher = null;
+        type: TPublisher = "apply";
     it('Отписываем несуществующего подписчика', () => {
         expect(() => publisher.detach(subscriber_1, error)).not.toThrowError();
     });
@@ -19,7 +19,7 @@ describe("Тест издателя", function () {
     });
     it('Оповещает подписчика', () => {
         publisher.notify(type);
-        expect(subscriber_1.update.mock.calls).toEqual([[null]]);
+        expect(subscriber_1.update.mock.calls).toEqual([["apply"]]);
     });
     it('Пытаемся подписаться еще раз', () => {
         publisher.attach(subscriber_1, type);
@@ -30,7 +30,7 @@ describe("Тест издателя", function () {
         expect(publisher).toMatchSnapshot();
     });
     it('Оповещаем несколько групп', () => {
-        expect(() => publisher.notify(["error", "apply", "root"]))
+        expect(() => publisher.notify(["error", "apply", "change"]))
             .not.toThrowError();
     });
     it('Выполнит отписку 1-го', () => {

@@ -7,12 +7,12 @@ class SimpleRepository<K, V> implements IRepository<K, V> {
     protected repository: Map<K, V>;
     protected newValues: Map<K, V> | undefined;
 
-    constructor() {
-        this.init();
+    constructor(entries: [K, V][]) {
+        this.init(entries);
     }
 
-    private init(): void {
-        this.repository = new Map<K, V>();
+    private init(entries: [K, V][]): void {
+        this.repository = new Map<K, V>(entries);
     }
 
     /**
@@ -34,8 +34,8 @@ class SimpleRepository<K, V> implements IRepository<K, V> {
      * @param key
      */
     get(key: K): V | undefined;
-    get(key: undefined): Map<K, V>;
-    get(key: K | undefined): V | Map<K, V> | undefined {
+    get(): Map<K, V>;
+    get(key?: K | undefined): V | Map<K, V> | undefined {
         let currentRepository: Map<K, V>;
         if (!isUndefined(this.newValues)) {
             currentRepository = this.newValues;

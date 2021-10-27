@@ -10,11 +10,11 @@ describe("Тесты для репозитория", function () {
         subscriber_2 = {
             update: jest.fn((publisher: TPublisher) => publisher)
         };
-    publisher.attach(subscriber_1, "root");
+    publisher.attach(subscriber_1, "apply");
     publisher.attach(subscriber_2, "apply");
     it('Должен не вызывать ошибку при создании', () => {
         expect(() => {
-            repository = new RepositoryWithSubscribe(publisher);
+            repository = new RepositoryWithSubscribe(publisher, [["min", 0]]);
         }).not.toThrowError();
     });
     it('Должен оповещать подписчиков', () => {

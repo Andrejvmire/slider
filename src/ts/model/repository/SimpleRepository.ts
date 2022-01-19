@@ -3,16 +3,16 @@ import {isUndefined} from "lodash";
 /**
  * Класс простого репозитория
  */
-class SimpleRepository<K, V> implements IRepository<K, V> {
-    protected repository: Map<K, V>;
-    protected newValues: Map<K, V> | undefined;
+class SimpleRepository<K extends keyof V, V> implements IRepository<K, V> {
+    protected repository: Map<K, V[K]>;
+    protected newValues: Map<K, V[K]> | undefined;
 
-    constructor(entries: [K, V][]) {
+    constructor(entries: [K, V[K]][]) {
         this.init(entries);
     }
 
-    private init(entries: [K, V][]): void {
-        this.repository = new Map<K, V>(entries);
+    private init(entries: [K, V[K]][]): void {
+        this.repository = new Map<K, V[K]>(entries);
     }
 
     /**
@@ -20,7 +20,7 @@ class SimpleRepository<K, V> implements IRepository<K, V> {
      * @param key
      * @param value
      */
-    set(key: K, value: V): IRepository<K, V> {
+    set(key: K, value: V[K]): IRepository<K, V> {
         if (isUndefined(this.newValues)) {
             this.newValues = new Map(this.repository);
         }
@@ -33,10 +33,10 @@ class SimpleRepository<K, V> implements IRepository<K, V> {
      * Если репозиторий в процессе изменения, то будут возвращаться новые значения
      * @param key
      */
-    get(key: K): V | undefined;
-    get(): Map<K, V>;
-    get(key?: K | undefined): V | Map<K, V> | undefined {
-        let currentRepository: Map<K, V>;
+    get(key: K): V[K] | undefined;
+    get(): Map<K, V[K]>;
+    get(key?: K | undefined): V[K] | Map<K, V[K]> | undefined {
+        let currentRepository: Map<K, V[K]>;
         if (!isUndefined(this.newValues)) {
             currentRepository = this.newValues;
         } else {
@@ -52,8 +52,9 @@ class SimpleRepository<K, V> implements IRepository<K, V> {
     /**
      * откатывает не принятые изменения в репозитории
      */
-    rollback(): void {
+    rollback(): SimpleRepository<K, V> {
         this.newValues = undefined;
+        return this;
     }
 
     /**

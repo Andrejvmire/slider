@@ -1,9 +1,11 @@
-interface IRepository<K, V> {
-    set(key: K, value: V): IRepository<K, V>;
+interface IRepository<K extends keyof V, V> {
+    set(key: K, value: V[K]): IRepository<K, V>;
 
-    get(key?: K | undefined): V | Map<K, V> | undefined;
+    get(): Map<K, V[K]>;
 
-    rollback(): void;
+    get(key: K): V[K] | undefined;
+
+    rollback(): IRepository<K, V>;
 
     acceptValues(): IRepository<K, V>;
 }

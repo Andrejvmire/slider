@@ -4,34 +4,34 @@ import Slider from "./ts/controllers/Slider";
 (function ($) {
     const DATA_FIELD = 'simpleSlider';
     const methods = {
-        init: function (opts: MainOptionsType): JQuery {
+        init: function (opts: TSliderOptions): JQuery {
             return this.each(function () {
-                let $this = $(this);
-                let data = $this.data(DATA_FIELD);
+                const $this = $(this);
+                const data = $this.data(DATA_FIELD);
                 if (data) return $this;
-                let slider = new Slider(opts, $this);
+                const slider = new Slider(opts, $this);
                 $this.data(DATA_FIELD, {
                     slider
                 });
                 return $this;
             })
         },
-        update: function (value: PointsType): JQuery {
+        update: function (value: TPoints): JQuery {
             return this.each(function () {
-                let $this = $(this);
-                let data = $this.data(DATA_FIELD);
+                const $this = $(this);
+                const data = $this.data(DATA_FIELD);
                 if (!data) return $this;
                 data.slider.update(value);
                 return $this;
             })
         },
-        value: function (callback: Function): JQuery {
+        value: function (callback: CallableFunction): JQuery {
             return this.each(function () {
-                let $this = $(this);
-                let data = $this.data(DATA_FIELD);
+                const $this = $(this);
+                const data = $this.data(DATA_FIELD);
                 if (!data) return $this;
-                let subscriber: ISubscriber = {
-                    update(data?: any) {
+                const subscriber: ISubscriber = {
+                    update(data?: TPublisher) {
                         callback(data);
                     }
                 }
@@ -42,11 +42,11 @@ import Slider from "./ts/controllers/Slider";
     }
 
     function simpleSlider(): JQuery;
-    function simpleSlider(options: MainOptionsType): JQuery;
-    function simpleSlider(method: "value", callback: Function): JQuery;
-    function simpleSlider(method: "update", options: PointsType): JQuery;
-    function simpleSlider(method?: any, options?: any): any {
-        let settings = (opt?: MainOptionsType): MainOptionsType => Object.assign(
+    function simpleSlider(options: TSliderOptions): JQuery;
+    function simpleSlider(method: "value", callback: CallableFunction): JQuery;
+    function simpleSlider(method: "update", options: TPoints): JQuery;
+    function simpleSlider(method?: TSliderOptions | "value" | "update", options?: CallableFunction | TPoints): JQuery {
+        const settings = (opt?: TSliderOptions): TSliderOptions => Object.assign(
             {},
             {
                 ruler: [0, 100],

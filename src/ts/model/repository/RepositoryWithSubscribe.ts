@@ -1,15 +1,15 @@
 import SimpleRepository from "./SimpleRepository";
 import {isUndefined} from "lodash";
 
-class RepositoryWithSubscribe<K extends keyof TModelOptions, V extends number> implements IRepository<K, V> {
+class RepositoryWithSubscribe<K extends keyof V, V extends TModelOptions> implements IRepository<K, V> {
     private publishers: IPublisher;
     private repository: SimpleRepository<K, V>
 
-    constructor(publisher: IPublisher, entries: [K, V][]) {
+    constructor(publisher: IPublisher, entries: [K, V[K]][]) {
         this.init(publisher, entries);
     }
 
-    private init(publisher: IPublisher, entries: [K, V][]): void {
+    private init(publisher: IPublisher, entries: [K, V[K]][]): void {
         this.repository = new SimpleRepository<K, V>(entries);
         this.publishers = publisher;
     }
@@ -19,7 +19,7 @@ class RepositoryWithSubscribe<K extends keyof TModelOptions, V extends number> i
      * @param key ключ
      * @param value значение
      */
-    set(key: K, value: V): IRepository<K, V> {
+    set(key: K, value: V[K]): IRepository<K, V> {
         this.repository.set(key, value);
         this.publishers.notify("change");
         return this;
@@ -30,9 +30,9 @@ class RepositoryWithSubscribe<K extends keyof TModelOptions, V extends number> i
      * Если репозиторий в процессе изменения, то будут возвращаться новые значения
      * @param key
      */
-    get(key: K): V | undefined;
-    get(): Map<K, V>;
-    get(key?: K | undefined): V | Map<K, V> | undefined {
+    get(key: K): V[K] | undefined;
+    get(): Map<K, V[K]>;
+    get(key?: K | undefined): V[K] | Map<K, V[K]> | undefined {
         if (isUndefined(key)) {
             return this.repository.get();
         }
@@ -42,9 +42,10 @@ class RepositoryWithSubscribe<K extends keyof TModelOptions, V extends number> i
     /**
      * отмена изменений
      */
-    rollback(): void {
+    rollback(): RepositoryWithSubscribe<K, V> {
         this.repository.rollback();
         this.publishers.notify("error");
+        return this;
     }
 
     /**

@@ -2,7 +2,7 @@ import RepositoryWithSubscribe from "../../src/ts/model/repository/RepositoryWit
 import Publisher from "../../src/ts/model/Publisher";
 
 describe("Тесты для репозитория", function () {
-    let repository: IRepository<keyof TModelOptions, number>;
+    let repository: IRepository<keyof TModelOptions, TModelOptions>;
     const publisher: IPublisher = new Publisher(),
         subscriber_1 = {
             update: jest.fn((publisher: TPublisher) => publisher)

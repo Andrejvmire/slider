@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Тест издателя Выполнение подписки на издателя 1`] = `
+Publisher {
+  "observer": Map {
+    "apply" => Set {
+      Object {
+        "update": [MockFunction],
+      },
+    },
+  },
+}
+`;
+
+exports[`Тест издателя Выполнит отписку 1-го 1`] = `
+Publisher {
+  "observer": Map {
+    "apply" => Set {
+      Object {
+        "update": [MockFunction] {
+          "calls": Array [
+            Array [
+              "apply",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": "apply",
+            },
+          ],
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`Тест издателя Выполнит отписку 2-го 1`] = `
+Publisher {
+  "observer": Map {
+    "apply" => Set {},
+  },
+}
+`;
+
+exports[`Тест издателя Добавляем еще одного (другого) подписчика 1`] = `
+Publisher {
+  "observer": Map {
+    "apply" => Set {
+      Object {
+        "update": [MockFunction] {
+          "calls": Array [
+            Array [
+              "apply",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": "apply",
+            },
+          ],
+        },
+      },
+      Object {
+        "update": [MockFunction],
+      },
+    },
+  },
+}
+`;
+
+exports[`Тест издателя Пытаемся подписаться еще раз 1`] = `
+Publisher {
+  "observer": Map {
+    "apply" => Set {
+      Object {
+        "update": [MockFunction] {
+          "calls": Array [
+            Array [
+              "apply",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": "apply",
+            },
+          ],
+        },
+      },
+    },
+  },
+}
+`;

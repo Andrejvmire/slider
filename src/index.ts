@@ -10,7 +10,6 @@ import Slider from "./ts/controllers/Slider";
             from: 0,
             step: 1,
             vertical: false,
-            range: false,
             tooltip: false,
         };
 

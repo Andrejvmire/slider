@@ -2,7 +2,18 @@ import JQuery from 'jquery';
 import Slider from "./ts/controllers/Slider";
 
 (function ($) {
-    const DATA_FIELD = 'simpleSlider';
+    const DATA_FIELD = 'simpleSlider',
+        DEFAULT_SLIDER: TSliderOptions = {
+            min: 0,
+            max: 100,
+            to: 50,
+            from: 0,
+            step: 1,
+            vertical: false,
+            range: false,
+            tooltip: false,
+        };
+
     const methods = {
         init: function (opts: TSliderOptions): JQuery {
             return this.each(function () {
@@ -48,14 +59,7 @@ import Slider from "./ts/controllers/Slider";
     function simpleSlider(method?: TSliderOptions | "value" | "update", options?: CallableFunction | TPoints): JQuery {
         const settings = (opt?: TSliderOptions): TSliderOptions => Object.assign(
             {},
-            {
-                ruler: [0, 100],
-                points: 50,
-                step: 1,
-                orientation: "horizontal",
-                ranger: false,
-                tooltip: false,
-            },
+            DEFAULT_SLIDER,
             opt
         );
         if (typeof method === "undefined") {

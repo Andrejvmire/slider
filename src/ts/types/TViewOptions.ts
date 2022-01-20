@@ -3,5 +3,5 @@ type TViewOptions = {
     range?: boolean,
     scale?: boolean,
     bar?: boolean,
-    tip?: boolean,
+    tooltip?: boolean,
 }

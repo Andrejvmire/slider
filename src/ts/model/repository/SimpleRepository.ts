@@ -3,16 +3,16 @@ import {isUndefined} from "lodash";
 /**
  * Класс простого репозитория
  */
-class SimpleRepository<K extends keyof V, V> implements IRepository<K, V> {
-    protected repository: Map<K, V[K]>;
-    protected newValues: Map<K, V[K]> | undefined;
+class SimpleRepository<V> implements IRepository<V> {
+    protected repository: Map<keyof V, V[keyof V]>;
+    protected newValues: Map<keyof V, V[keyof V]> | undefined;
 
-    constructor(entries: [K, V[K]][]) {
+    constructor(entries: [keyof V, V[keyof V]][]) {
         this.init(entries);
     }
 
-    private init(entries: [K, V[K]][]): void {
-        this.repository = new Map<K, V[K]>(entries);
+    private init(entries: [keyof V, V[keyof V]][]): void {
+        this.repository = new Map<keyof V, V[keyof V]>(entries);
     }
 
     /**
@@ -20,7 +20,7 @@ class SimpleRepository<K extends keyof V, V> implements IRepository<K, V> {
      * @param key
      * @param value
      */
-    set(key: K, value: V[K]): IRepository<K, V> {
+    set(key: keyof V, value: V[keyof V]): IRepository<V> {
         if (isUndefined(this.newValues)) {
             this.newValues = new Map(this.repository);
         }
@@ -33,10 +33,10 @@ class SimpleRepository<K extends keyof V, V> implements IRepository<K, V> {
      * Если репозиторий в процессе изменения, то будут возвращаться новые значения
      * @param key
      */
-    get(key: K): V[K] | undefined;
-    get(): Map<K, V[K]>;
-    get(key?: K | undefined): V[K] | Map<K, V[K]> | undefined {
-        let currentRepository: Map<K, V[K]>;
+    get(key: keyof V): V[keyof V] | undefined;
+    get(): Map<keyof V, V[keyof V]>;
+    get(key?: keyof V | undefined): V[keyof V] | Map<keyof V, V[keyof V]> | undefined {
+        let currentRepository: Map<keyof V, V[keyof V]>;
         if (!isUndefined(this.newValues)) {
             currentRepository = this.newValues;
         } else {
@@ -52,7 +52,7 @@ class SimpleRepository<K extends keyof V, V> implements IRepository<K, V> {
     /**
      * откатывает не принятые изменения в репозитории
      */
-    rollback(): SimpleRepository<K, V> {
+    rollback(): SimpleRepository<V> {
         this.newValues = undefined;
         return this;
     }
@@ -60,7 +60,7 @@ class SimpleRepository<K extends keyof V, V> implements IRepository<K, V> {
     /**
      * принимает последние изменения в репозитории
      */
-    acceptValues(): SimpleRepository<K, V> {
+    acceptValues(): SimpleRepository<V> {
         if (!isUndefined(this.newValues)) {
             this.repository = new Map(this.newValues);
         }

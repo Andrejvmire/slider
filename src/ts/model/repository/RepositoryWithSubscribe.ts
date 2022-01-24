@@ -1,16 +1,16 @@
 import SimpleRepository from "./SimpleRepository";
 import {isUndefined} from "lodash";
 
-class RepositoryWithSubscribe<K extends keyof V, V extends TModelOptions> implements IRepository<K, V> {
+class RepositoryWithSubscribe<V extends TModelOptions> implements IRepository<V> {
     private publishers: IPublisher;
-    private repository: SimpleRepository<K, V>
+    private repository: SimpleRepository<V>
 
-    constructor(publisher: IPublisher, entries: [K, V[K]][]) {
+    constructor(publisher: IPublisher, entries: [keyof V, V[keyof V]][] = []) {
         this.init(publisher, entries);
     }
 
-    private init(publisher: IPublisher, entries: [K, V[K]][]): void {
-        this.repository = new SimpleRepository<K, V>(entries);
+    private init(publisher: IPublisher, entries: [keyof V, V[keyof V]][]): void {
+        this.repository = new SimpleRepository<V>(entries);
         this.publishers = publisher;
     }
 
@@ -19,7 +19,7 @@ class RepositoryWithSubscribe<K extends keyof V, V extends TModelOptions> implem
      * @param key ключ
      * @param value значение
      */
-    set(key: K, value: V[K]): IRepository<K, V> {
+    set(key: keyof V, value: V[keyof V]): IRepository<V> {
         this.repository.set(key, value);
         this.publishers.notify("change");
         return this;
@@ -30,9 +30,9 @@ class RepositoryWithSubscribe<K extends keyof V, V extends TModelOptions> implem
      * Если репозиторий в процессе изменения, то будут возвращаться новые значения
      * @param key
      */
-    get(key: K): V[K] | undefined;
-    get(): Map<K, V[K]>;
-    get(key?: K | undefined): V[K] | Map<K, V[K]> | undefined {
+    get(key: keyof V): V[keyof V] | undefined;
+    get(): Map<keyof V, V[keyof V]>;
+    get(key?: keyof V | undefined): V[keyof V] | Map<keyof V, V[keyof V]> | undefined {
         if (isUndefined(key)) {
             return this.repository.get();
         }
@@ -42,7 +42,7 @@ class RepositoryWithSubscribe<K extends keyof V, V extends TModelOptions> implem
     /**
      * отмена изменений
      */
-    rollback(): RepositoryWithSubscribe<K, V> {
+    rollback(): RepositoryWithSubscribe<V> {
         this.repository.rollback();
         this.publishers.notify("error");
         return this;
@@ -51,7 +51,7 @@ class RepositoryWithSubscribe<K extends keyof V, V extends TModelOptions> implem
     /**
      * подтверждение изменений
      */
-    acceptValues(): IRepository<K, V> {
+    acceptValues(): IRepository<V> {
         this.repository.acceptValues();
         this.publishers.notify("apply");
         return this;

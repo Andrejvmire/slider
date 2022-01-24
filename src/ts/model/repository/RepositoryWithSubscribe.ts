@@ -1,7 +1,7 @@
 import SimpleRepository from "./SimpleRepository";
 import {isUndefined} from "lodash";
 
-class RepositoryWithSubscribe<V extends TModelOptions> implements IRepository<V> {
+class RepositoryWithSubscribe<V> implements IRepository<V> {
     private publishers: IPublisher;
     private repository: SimpleRepository<V>
 

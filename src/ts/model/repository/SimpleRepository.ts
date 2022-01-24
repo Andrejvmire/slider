@@ -64,7 +64,7 @@ class SimpleRepository<V> implements IRepository<V> {
         if (!isUndefined(this.newValues)) {
             this.repository = new Map(this.newValues);
         }
-        return this;
+        return this.rollback();
     }
 }
 

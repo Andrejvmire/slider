@@ -29,7 +29,7 @@ describe("Тест цепочки обязательств", function () {
         expect(min.handle(req)).toBeTruthy();
     });
 
-    it('', function () {
-
+    it('должен прервать цепочку и вернуть false', () => {
+        expect(min.handle({from: 1})).not.toBeTruthy();
     });
 })

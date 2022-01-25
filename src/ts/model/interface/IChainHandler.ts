@@ -1,5 +1,5 @@
-interface IChainHandler {
-    setNext(handler: IChainHandler): IChainHandler;
+interface IChainHandler<T> {
+    setNext(handler: IChainHandler<T>): IChainHandler<T>;
 
-    handle(request: TSliderOptions): boolean;
+    handle(request: Partial<T>): boolean;
 }

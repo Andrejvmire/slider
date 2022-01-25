@@ -1,28 +1,31 @@
 import {isUndefined} from "lodash";
 
-abstract class Validator<T> implements IValidator<keyof T, keyof T> {
+abstract class Validator<T extends object> implements IValidator<T> {
     protected abstract rules(): TValidatorRules<T>;
 
-    protected repository: IRepository<keyof T, T> | undefined;
+    protected repository: IRepository<T>;
 
-    less(value: keyof T, then: keyof T, strictly = false): boolean {
-        const v1 = this.repository?.get(value),
-            v2 = this.repository?.get(then);
+    less(value: T[keyof T], then: keyof T, strictly = false): boolean {
+        const valueFromRepository = this.repository.get(then);
 
-        if (isUndefined(this.repository)) {
+        if (isUndefined(valueFromRepository)) {
             return false;
-        } else if (isUndefined(v1) || isUndefined(v2)) {
-            return true;
         } else {
-            return strictly ? v1 <= v2 : v1 < v2;
+            return strictly ? value <= valueFromRepository : value < valueFromRepository;
         }
     }
 
-    more(value: keyof T, then: keyof T, strictly = false): boolean {
-        return this.less(then, value, strictly);
+    more(value: T[keyof T], then: keyof T, strictly = false): boolean {
+        const valueFromRepository = this.repository.get(then);
+
+        if (isUndefined(valueFromRepository)) {
+            return false;
+        } else {
+            return strictly ? value >= valueFromRepository : value > valueFromRepository;
+        }
     }
 
-    multiple(value: keyof T, of: keyof T): boolean {
-        return false;
+    multiple(value: T[keyof T], of: keyof T, object: T): T {
+        return object;
     }
 }

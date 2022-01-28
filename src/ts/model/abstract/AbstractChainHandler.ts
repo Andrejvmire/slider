@@ -46,7 +46,6 @@ abstract class AbstractChainHandler<T extends object> implements IChainHandler<T
 
     protected checkValue(request: Partial<T>): boolean {
         if (isUndefined(this.validator)) return true;
-        console.log(this.rules());
         for (const rule in this.rules()) {
             console.log(rule);
         }

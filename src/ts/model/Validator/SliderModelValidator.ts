@@ -3,26 +3,37 @@ import {isUndefined} from "lodash";
 class SliderModelValidator implements IValidator<TModelOptions> {
 
     less(value: keyof TModelOptions, then: keyof TModelOptions, object: TModelOptions): TModelOptions {
-        if (isUndefined(object[value]) || isUndefined(object[then])) return object;
-        object[value] = object[value] >= object[then] ? object[then] : object[value];
+        const val = object[value],
+            th = object[then];
+        if (isUndefined(val) || isUndefined(th)) {
+            return object;
+        }
+        object[value] = val >= th ? th : val;
         return object;
     }
 
     more(value: keyof TModelOptions, then: keyof TModelOptions, object: TModelOptions): TModelOptions {
-        if (isUndefined(object[value]) || isUndefined(object[then])) return object;
-        object[value] = object[value] <= object[then] ? object[then] : object[value];
+        const val = object[value],
+            th = object[then];
+        if (isUndefined(val) || isUndefined(th)) {
+            return object;
+        }
+        object[value] = val <= th ? th : val;
         return object;
     }
 
     multiple(value: keyof TModelOptions, then: keyof TModelOptions, object: TModelOptions, referencePoint: keyof TModelOptions): TModelOptions {
-        if (isUndefined(object[value]) || isUndefined(object[then])) return object;
-        const valueFromReferencePoint = object[value] - object[referencePoint];
-        const multiplicity = valueFromReferencePoint % object[then];
+        const val = object[value],
+            th = object[then],
+            refP = object[referencePoint];
+        if (isUndefined(val) || isUndefined(th) || isUndefined(refP)) return object;
+        const valueFromReferencePoint = val - refP;
+        const multiplicity = valueFromReferencePoint % th;
         if (multiplicity !== 0) {
-            if ((multiplicity / object[then]) < 0.5) {
-                object[value] -= multiplicity;
+            if ((multiplicity / th) < 0.5) {
+                object[value] = val - multiplicity;
             } else {
-                object[value] += (object[then] - multiplicity);
+                object[value] = val + (th - multiplicity);
             }
         }
         return object;

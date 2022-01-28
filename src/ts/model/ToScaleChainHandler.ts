@@ -4,8 +4,12 @@ class ToScaleChainHandler extends AbstractChainHandler<TModelOptions> {
     protected field: Partial<keyof TModelOptions> = "to";
     protected referenceField: Partial<keyof TModelOptions> = "max";
 
-    protected checkValue(request: TModelOptions): boolean {
-        return true;
+    protected rules(): TValidatorRules<IValidator<TModelOptions>, TModelOptions> {
+        return {
+            less: "max",
+            more: "to",
+            multiple: "step"
+        };
     }
 
 }

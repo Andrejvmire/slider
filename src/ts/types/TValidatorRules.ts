@@ -1,3 +1,3 @@
-type TValidatorRules<T> = {
-    [K in keyof T]: IValidatorRule<K, T>[];
-}
+type TValidatorRules<T, V> = Partial<{
+    [K in keyof T]: keyof V | undefined;
+}>

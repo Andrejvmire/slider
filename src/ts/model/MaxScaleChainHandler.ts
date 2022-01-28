@@ -4,8 +4,10 @@ class MaxScaleChainHandler extends AbstractChainHandler<TModelOptions> {
     protected field: Partial<keyof TModelOptions> = "max";
     protected referenceField?: Partial<keyof TModelOptions> = undefined;
 
-    protected checkValue(request: TModelOptions): boolean {
-        return true;
+    protected rules(): TValidatorRules<IValidator<TModelOptions>, TModelOptions> {
+        return {
+            more: "min"
+        };
     }
 
 }

@@ -1,7 +1,7 @@
 interface IValidator<T extends object> {
-    less(value: T[keyof T], then: keyof T, strictly?: boolean): boolean;
+    less(value: keyof T, then: keyof T, object: T, referencePoint: keyof T): T;
 
-    more(value: T[keyof T], then: keyof T, strictly?: boolean): boolean;
+    more(value: keyof T, then: keyof T, object: T, referencePoint: keyof T): T;
 
-    multiple(value: T[keyof T], of: keyof T, object: T): T;
+    multiple(value: keyof T, then: keyof T, object: T, referencePoint: keyof T): T;
 }

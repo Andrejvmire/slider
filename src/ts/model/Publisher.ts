@@ -11,12 +11,18 @@ class Publisher implements IPublisher {
         this.observer = new Map<TPublisher, Set<ISubscriber>>();
     }
 
-    attach(subscriber: ISubscriber, type: TPublisher): void {
-        let subscribers = this.observer.get(type);
-        if (isUndefined(subscribers)) {
-            subscribers = new Set<ISubscriber>()
+    attach(subscriber: ISubscriber, type: TPublisher | TPublisher[]): void {
+        if (isArray(type)) {
+            type.forEach(
+                eachType => this.attach(subscriber, eachType)
+            );
+        } else {
+            let subscribers = this.observer.get(type);
+            if (isUndefined(subscribers)) {
+                subscribers = new Set<ISubscriber>()
+            }
+            this.observer.set(type, subscribers.add(subscriber));
         }
-        this.observer.set(type, subscribers.add(subscriber));
     }
 
     detach(subscriber: ISubscriber, type: TPublisher): void {

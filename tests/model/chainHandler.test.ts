@@ -18,10 +18,10 @@ describe("Тест цепочки обязательств", function () {
         to = new ToScaleChainHandler(repository);
     min.setNext(max).setNext(step).setNext(from).setNext(to);
 
-    it('set должена быть вызвана 5 раз', () => {
+    it('set должена быть вызвана 3 раза', () => {
         const req = {min: 2, max: 99, step: 3};
         expect(min.handle(req)).toBeTruthy();
-        expect(repository.set.mock.calls.length).toBe(5);
+        expect(repository.set.mock.calls.length).toBe(3);
     });
 
     it('должен принять новое значение', () => {

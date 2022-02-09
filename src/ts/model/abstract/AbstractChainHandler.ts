@@ -2,6 +2,7 @@ import {isUndefined} from "lodash";
 
 abstract class AbstractChainHandler<T extends object> implements IChainHandler<T> {
     private nextHandler?: IChainHandler<T>;
+
     protected abstract field: Partial<keyof T>;
 
     protected abstract rules(): TValidatorRules<IValidator<T>, T>;
@@ -13,9 +14,13 @@ abstract class AbstractChainHandler<T extends object> implements IChainHandler<T
         const checkValue = this.checkValue(request);
         if (checkValue) {
             this.execute(request);
-        }
-        if (!isUndefined(this.nextHandler)) {
-            return this.nextHandler.handle(request);
+            if (!isUndefined(this.nextHandler)) {
+                return this.nextHandler.handle(request);
+            } else {
+                this.repository.acceptValues();
+            }
+        } else {
+            this.repository.rollback();
         }
         return checkValue;
     }
@@ -38,8 +43,13 @@ abstract class AbstractChainHandler<T extends object> implements IChainHandler<T
 
     protected checkValue(request: Partial<T>): boolean {
         if (isUndefined(this.validator)) return true;
-        for (const [key, rule] of Object.entries(this.rules())) {
-            console.log(request);
+        let validateMethod: keyof IValidator<T>,
+            chainName: keyof T;
+        // @ts-ignore
+        for ([validateMethod, chainName] of Object.entries(this.rules())) {
+            if (validateMethod in this.validator) {
+                Object.call(this.validator[validateMethod], this.field, chainName, request);
+            }
         }
         return true;
     }

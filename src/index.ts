@@ -4,13 +4,15 @@ import Slider from "./ts/controllers/Slider";
 (function ($) {
     const DATA_FIELD = 'simpleSlider',
         DEFAULT_SLIDER: TSliderOptions = {
+            bar: false,
+            scale: false,
             min: 0,
             max: 100,
             to: 50,
             from: 0,
             step: 1,
             vertical: false,
-            tooltip: false,
+            tooltip: false
         };
 
     const methods = {

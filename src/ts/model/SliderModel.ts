@@ -10,35 +10,38 @@ import SliderModelValidator from "./Validator/SliderModelValidator";
 class SliderModel implements ISubscriber {
     private entryPoint: IChainHandler<TModelOptions>;
 
+    private repository: IRepository<TModelOptions>;
+
     constructor(dataObject: TModelOptions) {
         this.init(dataObject);
+        this.handle(dataObject);
     }
 
     private init(dataObject: TModelOptions): void {
         const publisher = new Publisher();
-        publisher.attach(this, ["change", "apply"]);
-        const repository: IRepository<TModelOptions> = new RepositoryWithSubscribe(publisher);
+        publisher.attach(this, ["apply", "error"]);
+        this.repository = new RepositoryWithSubscribe(publisher);
         const validator: IValidator<TModelOptions> = new SliderModelValidator();
-        const min = new MinScaleChainHandler(repository, validator),
-            max = new MaxScaleChainHandler(repository, validator),
-            from = new FromScaleChainHandler(repository, validator),
-            to = new ToScaleChainHandler(repository, validator),
-            step = new StepScaleChainHandler(repository, validator);
+        const min = new MinScaleChainHandler(this.repository, validator),
+            max = new MaxScaleChainHandler(this.repository, validator),
+            from = new FromScaleChainHandler(this.repository, validator),
+            to = new ToScaleChainHandler(this.repository, validator),
+            step = new StepScaleChainHandler(this.repository, validator);
         step.setNext(min)
             .setNext(max)
             .setNext(from)
             .setNext(to);
         this.entryPoint = step;
-        this.handle(dataObject);
     }
 
-    public handle(dataObject: Partial<TModelOptions>) {
-        this.entryPoint.handle(dataObject);
+    public handle(dataObject: Partial<TModelOptions>): boolean {
+        return this.entryPoint.handle(dataObject);
     }
 
-    update(publisher: TPublisher): void {
-        console.log(publisher);
+    public update(publisher: TPublisher): void {
+        console.log(Object.fromEntries(this.repository.get()));
     }
+
 }
 
 export default SliderModel;

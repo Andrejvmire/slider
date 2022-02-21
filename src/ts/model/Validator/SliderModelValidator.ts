@@ -1,5 +1,7 @@
 import {isUndefined} from "lodash";
+import {injectable} from "tsyringe";
 
+@injectable()
 class SliderModelValidator implements IValidator<TModelOptions> {
 
     less(value: keyof TModelOptions, then: keyof TModelOptions, object: TModelOptions): TModelOptions {

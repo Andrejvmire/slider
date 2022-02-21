@@ -37,6 +37,7 @@
     "@typescript-eslint/parser": "^5.1.0",
     "autoprefixer": "^10.3.7",
     "babel-jest": "^27.3.0",
+    "babel-plugin-transform-typescript-metadata": "^0.3.2",
     "css-loader": "^6.4.0",
     "eslint": "^8.0.1",
     "file-loader": "^6.2.0",
@@ -57,9 +58,13 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-decorators": "^7.17.2",
     "jquery": "^3.6.0",
     "jquery-ui": "^1.13.0",
     "jsdom": "^18.0.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "reflect-metadata": "^0.1.13",
+    "tsyringe": "^4.6.0"
   }
 }

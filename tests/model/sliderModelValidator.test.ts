@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import SliderModelValidator from "../../src/ts/model/Validator/SliderModelValidator";
 
 describe("Тест валидатора модели", function () {

@@ -1,17 +1,13 @@
 import SimpleRepository from "./SimpleRepository";
 import {isUndefined} from "lodash";
+import {inject, singleton} from "tsyringe";
 
+@singleton()
 class RepositoryWithSubscribe<V> implements IRepository<V> {
-    private publishers: IPublisher;
-    private repository: SimpleRepository<V>
 
-    constructor(publisher: IPublisher, entries: [keyof V, V[keyof V]][] = []) {
-        this.init(publisher, entries);
-    }
-
-    private init(publisher: IPublisher, entries: [keyof V, V[keyof V]][]): void {
-        this.repository = new SimpleRepository<V>(entries);
-        this.publishers = publisher;
+    constructor(
+        @inject("IPublisher") private publishers: IPublisher,
+        @inject(SimpleRepository) private repository: SimpleRepository<V>) {
     }
 
     /**

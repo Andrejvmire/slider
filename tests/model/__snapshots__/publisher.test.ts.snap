@@ -71,6 +71,61 @@ Publisher {
 }
 `;
 
+exports[`Тест издателя Подписываем сразу на 2 типа рассылки 1`] = `
+Publisher {
+  "observer": Map {
+    "apply" => Set {
+      Object {
+        "update": [MockFunction] {
+          "calls": Array [
+            Array [
+              "apply",
+            ],
+            Array [
+              "apply",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": "apply",
+            },
+            Object {
+              "type": "return",
+              "value": "apply",
+            },
+          ],
+        },
+      },
+    },
+    "error" => Set {
+      Object {
+        "update": [MockFunction] {
+          "calls": Array [
+            Array [
+              "apply",
+            ],
+            Array [
+              "apply",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": "apply",
+            },
+            Object {
+              "type": "return",
+              "value": "apply",
+            },
+          ],
+        },
+      },
+    },
+  },
+}
+`;
+
 exports[`Тест издателя Пытаемся подписаться еще раз 1`] = `
 Publisher {
   "observer": Map {

@@ -1,4 +1,6 @@
+import "reflect-metadata";
 import Publisher from "../../src/ts/model/Publisher";
+import {container} from "tsyringe";
 
 describe("Тест издателя", function () {
     const subscriber_1 = {
@@ -7,9 +9,15 @@ describe("Тест издателя", function () {
         subscriber_2 = {
             update: jest.fn((publisher: TPublisher) => publisher)
         },
-        publisher: IPublisher = new Publisher(),
         error: TPublisher = "error",
         type: TPublisher = "apply";
+    let publisher: IPublisher;
+    it("Создаем без ошибки", () => {
+        expect(() => {
+            container.register("IPublisher", Publisher);
+            publisher = container.resolve<IPublisher>("IPublisher");
+        }).not.toThrowError();
+    })
     it('Отписываем несуществующего подписчика', () => {
         expect(() => publisher.detach(subscriber_1, error)).not.toThrowError();
     });
@@ -41,4 +49,8 @@ describe("Тест издателя", function () {
         publisher.detach(subscriber_2, type);
         expect(publisher).toMatchSnapshot();
     });
+    it("Подписываем сразу на 2 типа рассылки", () => {
+        publisher.attach(subscriber_1, [type, error]);
+        expect(publisher).toMatchSnapshot();
+    })
 })

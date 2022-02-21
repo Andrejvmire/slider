@@ -1,20 +1,31 @@
+import "reflect-metadata";
 import RepositoryWithSubscribe from "../../src/ts/model/repository/RepositoryWithSubscribe";
 import Publisher from "../../src/ts/model/Publisher";
+import {container, Lifecycle} from "tsyringe";
+import SimpleRepository from "../../src/ts/model/repository/SimpleRepository";
 
 describe("Тесты для репозитория", function () {
-    let repository: IRepository<TModelOptions>;
-    const publisher: IPublisher = new Publisher(),
-        subscriber_1 = {
+    const subscriber_1 = {
             update: jest.fn((publisher: TPublisher) => publisher)
         },
         subscriber_2 = {
             update: jest.fn((publisher: TPublisher) => publisher)
         };
-    publisher.attach(subscriber_1, "apply");
-    publisher.attach(subscriber_2, "apply");
+    let repository: IRepository<TModelOptions>,
+        publisher: IPublisher;
+
+    beforeAll(() => {
+        container.register("IPublisher", {useClass: Publisher}, {lifecycle: Lifecycle.Singleton});
+        publisher = container.resolve("IPublisher");
+        container.resolve(SimpleRepository);
+        publisher
+            .attach(subscriber_1, "apply")
+            .attach(subscriber_2, "apply");
+    });
+
     it('Должен не вызывать ошибку при создании', () => {
         expect(() => {
-            repository = new RepositoryWithSubscribe(publisher, [["min", 0]]);
+            repository = container.resolve<IRepository<TModelOptions>>(RepositoryWithSubscribe);
         }).not.toThrowError();
     });
     it('Должен оповещать подписчиков', () => {

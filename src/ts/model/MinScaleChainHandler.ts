@@ -1,5 +1,7 @@
 import AbstractChainHandler from "./abstract/AbstractChainHandler";
+import {injectable} from "tsyringe";
 
+@injectable()
 class MinScaleChainHandler extends AbstractChainHandler<TModelOptions> {
     protected field: Partial<keyof TModelOptions> = 'min';
 

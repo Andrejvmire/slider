@@ -1,5 +1,8 @@
 import {isUndefined} from "lodash";
+import {inject, injectable} from "tsyringe";
 
+// @ts-ignore
+@injectable()
 abstract class AbstractChainHandler<T extends object> implements IChainHandler<T> {
     private nextHandler?: IChainHandler<T>;
 
@@ -7,7 +10,10 @@ abstract class AbstractChainHandler<T extends object> implements IChainHandler<T
 
     protected abstract rules(): TValidatorRules<IValidator<T>, T>;
 
-    constructor(protected repository: IRepository<T>, private validator?: IValidator<T>) {
+    constructor(
+        @inject("IRepository") private repository: IRepository<T>,
+        @inject("IValidator") private validator?: IValidator<T>
+    ) {
     }
 
     public handle(request: Partial<T>): boolean {

@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import JQuery from 'jquery';
 import Slider from "./ts/controllers/Slider";
 

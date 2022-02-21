@@ -1,5 +1,7 @@
 import {isArray, isNil, isUndefined} from "lodash";
+import {singleton} from "tsyringe";
 
+@singleton()
 class Publisher implements IPublisher {
     private observer: Map<TPublisher, Set<ISubscriber>>;
 
@@ -11,7 +13,7 @@ class Publisher implements IPublisher {
         this.observer = new Map<TPublisher, Set<ISubscriber>>();
     }
 
-    attach(subscriber: ISubscriber, type: TPublisher | TPublisher[]): void {
+    attach(subscriber: ISubscriber, type: TPublisher | TPublisher[]): IPublisher {
         if (isArray(type)) {
             type.forEach(
                 eachType => this.attach(subscriber, eachType)
@@ -23,9 +25,10 @@ class Publisher implements IPublisher {
             }
             this.observer.set(type, subscribers.add(subscriber));
         }
+        return this;
     }
 
-    detach(subscriber: ISubscriber, type: TPublisher): void {
+    detach(subscriber: ISubscriber, type: TPublisher): IPublisher {
         let keys: IterableIterator<TPublisher>;
         if (isNil(type)) {
             keys = this.observer.keys();
@@ -40,11 +43,12 @@ class Publisher implements IPublisher {
                 this.observer.get(result.value)?.delete(subscriber);
             }
         }
+        return this;
     }
 
-    notify(type: TPublisher): void;
-    notify(type: TPublisher[]): void;
-    notify(type: TPublisher | TPublisher[]): void {
+    notify(type: TPublisher): IPublisher;
+    notify(type: TPublisher[]): IPublisher;
+    notify(type: TPublisher | TPublisher[]): IPublisher {
         if (isArray(type)) {
             type.forEach(this.notify.bind(this));
         } else {
@@ -54,6 +58,7 @@ class Publisher implements IPublisher {
                     subscriber => subscriber.update(type)
                 );
         }
+        return this;
     }
 
 }

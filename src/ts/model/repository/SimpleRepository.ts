@@ -1,18 +1,16 @@
 import {isUndefined} from "lodash";
+import {singleton} from "tsyringe";
 
 /**
  * Класс простого репозитория
  */
+@singleton()
 class SimpleRepository<V> implements IRepository<V> {
     protected repository: Map<keyof V, V[keyof V]>;
     protected newValues: Map<keyof V, V[keyof V]> | undefined;
 
-    constructor(entries: [keyof V, V[keyof V]][]) {
-        this.init(entries);
-    }
-
-    private init(entries: [keyof V, V[keyof V]][]): void {
-        this.repository = new Map<keyof V, V[keyof V]>(entries);
+    constructor() {
+        this.repository = new Map<keyof V, V[keyof V]>();
     }
 
     /**
